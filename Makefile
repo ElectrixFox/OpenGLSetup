@@ -1,9 +1,15 @@
 CXX = gcc
-CXXFLAGS = -Wall -g -O2 -I. -IInclude
+CXXFLAGS = -g -Wall -O2 -I. -IInclude
 LIBS = -L./Libs -lglew32 -lopengl32 -lglfw3dll -lpthread
 
+APPNAME = main
+
+SRCFILES := $(wildcard *.c)
+OBJS := $(addprefix obj/, $(patsubst %.c, %.o, $(SRCFILES)))
+
+obj/%.o: %.c
+	$(CXX) $(CXXFLAGS) -c -o $@ $^
 
 
-
-all:
-	$(CXX) $(CXXFLAGS) main.c -o main $(LIBS)
+all: $(OBJS)
+	$(CXX) $(CXXFLAGS) $^ -o $(APPNAME) $(LIBS)
