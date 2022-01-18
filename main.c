@@ -8,16 +8,22 @@
 
 const char *vertexShaderSource = "#version 430 core\n"
     "layout (location = 0) in vec3 aPos;\n"
+    "layout (location = 1) in vec2 Texpos;\n"
+    "out vec2 TexCoords;\n"
     "void main()\n"
     "{\n"
     "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+    "   TexCoords = Texpos;\n"
     "}\0";
 
 const char *fragmentShaderSource = "#version 430 core\n"
     "out vec4 FragColour;\n"
+    "in vec2 TexCoords;\n"
+    "uniform sampler2D screenTexture;\n"
     "void main()\n"
     "{\n"
-    "   FragColour = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
+    "vec3 colour = texture(screenTexture, TexCoords).rgb;\n"
+    "FragColour = vec4(colour, 1.0f);\n"
     "}\n\0";
 
 int main()
@@ -33,9 +39,14 @@ int main()
 
     float vertex[] =
     {
-        -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
+        /* -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
          0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
-         0.0f,  0.5f, 0.0f, 0.5f, 1.0f
+         0.0f,  0.5f, 0.0f, 0.5f, 1.0f */
+
+         0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
+         0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+        -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
+        -0.5f,  0.5f, 0.0f, 0.0f, 1.0f 
     };
 
     float texCoords[] =
@@ -102,11 +113,11 @@ int main()
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertex), vertex, GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-    glEnableVertexAttribArray(2);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
@@ -118,21 +129,31 @@ int main()
 
     unsigned int texture;
     glGenTextures(1, &texture);
+    glBindTexture(GL_TEXTURE_2D, texture);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
     glGenerateMipmap(GL_TEXTURE_2D);
 
     stbi_image_free(data);
 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+    glUniform1i(glGetUniformLocation(program, "U_Texture"), 0);
+
 
     while(!glfwWindowShouldClose(window))
     {
         glClear(GL_COLOR_BUFFER_BIT);
         
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, texture);
+
         glUseProgram(program);
         glBindVertexArray(vao);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glDrawArrays(GL_TRIANGLES, 0, 12);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
