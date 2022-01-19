@@ -10,9 +10,10 @@ const char *vertexShaderSource = "#version 430 core\n"
     "layout (location = 0) in vec3 aPos;\n"
     "layout (location = 1) in vec2 Texpos;\n"
     "out vec2 TexCoords;\n"
+    "uniform mat4 U_Projection;\n"
     "void main()\n"
     "{\n"
-    "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+    "   gl_Position = U_Projection * vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
     "   TexCoords = Texpos;\n"
     "}\0";
 
@@ -56,6 +57,14 @@ int main()
         0.0f, 0.0f,
         1.0f, 0.0f,
         0.5f, 1.0f
+    };
+
+    float matrix[4][4] =
+    {
+        1.0f, 0.0f, 0.0f, 0.0f, 
+        0.0f, 1.0f, 0.0f, 0.0f, 
+        0.0f, 0.0f, 1.0f, 0.0f, 
+        0.0f, 0.0f, 0.0f, 1.0f
     };
 
     int success;
@@ -127,10 +136,9 @@ int main()
 
     // Texture stuff
     int width, height, channels;
-    
+
     stbi_set_flip_vertically_on_load(1);
     unsigned char* data = stbi_load("Face.png", &width, &height, &channels, 0);
-
 
     unsigned int texture;
     glGenTextures(1, &texture);
@@ -146,7 +154,9 @@ int main()
 
     stbi_image_free(data);
 
+    glUseProgram(program);
     glUniform1i(glGetUniformLocation(program, "U_Texture"), 0);
+    glUniformMatrix4fv(glGetUniformLocation(program, "U_Projection"), 1, GL_FALSE, &matrix[0][0]);
 
 
     while(!glfwWindowShouldClose(window))
