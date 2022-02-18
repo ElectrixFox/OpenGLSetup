@@ -5,13 +5,12 @@ layout(location = 0) in vec3 position;
 layout(location = 1) in vec2 texCoord;
 
 uniform mat4 U_Transform;
-uniform mat4 U_Scale;
 
 out vec2 V_TexCoord;
 
 void main(void)
 {
-	gl_Position = vec4(position.x, position.y, position.z, 1) * U_Scale;
+	gl_Position = vec4(position.x, position.y, position.z, 1) * U_Transform;
 	V_TexCoord = texCoord;
 };
 
