@@ -8,6 +8,8 @@
 #include "Shader.h"
 #include "Texture.h"
 #include "VertexBuffer.h"
+#include "VertexArray.h"
+#include "IndexBuffer.h"
 
 typedef struct BuffersStuff
 {
@@ -18,50 +20,32 @@ typedef struct BuffersStuff
     unsigned int* textures;
 } BuffersStuff;
 
-/* unsigned int CreateVBO(float* vertices, int size)
-{
-    unsigned int vbo;
-    glGenBuffers(1, &vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-
-    glBufferData(GL_ARRAY_BUFFER, size * sizeof(float), vertices, GL_STATIC_DRAW);
-
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-
-    return vbo;
-} */
-
-// glVertexAttribPointer(index of layout, number of items in one, type of data, normalise?, the length of a row * sizeof(type), (void*)(how many items before it starts * sizeof(type))));
-// glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
-
-
-unsigned int CreateVAO()
-{
-    unsigned int vao;
-    glGenVertexArrays(1, &vao);
-    glBindVertexArray(vao);
-
-    return vao;
-}
-
-unsigned int CreateIBO(unsigned int* indecies, int size)
-{
-    unsigned int ibo;
-    glGenBuffers(1, &ibo);
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, size * sizeof(unsigned int), indecies, GL_STATIC_DRAW);
-
-    return ibo;
-}
+float wid, high;
 
 GLFWwindow* CreateWindow(int width, int height, char* title)
 {
     GLFWwindow* window = glfwCreateWindow(width, height, title, 0, 0);
     glfwMakeContextCurrent(window);
 
+    wid = width;
+    high = height;
+
     return window;
+}
+
+void Transform(unsigned int program, int R)
+{
+    float matrix[4][4] =
+    {
+        { 0.25f, 0.0f,  0.0f,  0.0f },
+        { 0.0f,  0.25f, 0.0f,  0.0f },
+        { 0.0f,  0.0f,  0.25f, 0.0f },
+        { 0.0f,  0.0f,  0.0f,  1.0f }
+    };
+
+    matrix[0][3] += R/wid;
+
+    SetUniformMat4(program, "U_Transform", matrix);
 }
 
 int main()
@@ -99,16 +83,18 @@ int main()
     };
 
 
-    bs.vaos[0] = CreateVAO();
+    bs.vaos[0] = CreateVertexArray();
     bs.vbos[0] = CreateVertexBufferDepth(vertices, sizeof vertices, 0, 3, 5, 0);
     AddAttribute(1, 2, 5, 3);
 
     bs.textures[0] = CreateTexture("Face.png");
-
-    bs.ibos[0] = CreateIBO(indecies, sizeof indecies);
+    bs.ibos[0] = CreateIndexBuffer(indecies, sizeof indecies);
 
     SetUniform4f(bs.shaders[0], "U_Colour", 1.0f, 0.5f, 0.2f, 1.0f);
     SetUniform1i(bs.shaders[0], "U_Texture", 0);
+
+    Transform(bs.shaders[0], 100);
+
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bs.ibos[0]);
 
     while(!glfwWindowShouldClose(window))
@@ -118,7 +104,7 @@ int main()
 
         glUseProgram(bs.shaders[0]);
         glBindVertexArray(bs.vaos[0]);
-        
+
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
         glfwSwapBuffers(window);

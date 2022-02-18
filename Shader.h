@@ -17,5 +17,6 @@ unsigned int CreateShader(const LCstring FilePath);
 
 void SetUniform4f(unsigned int program, LCstring name, float v1, float v2, float v3, float v4);
 void SetUniform1i(unsigned int program, LCstring name, int value);
+void SetUniformMat4(unsigned int program, LCstring name, float value[4][4]);
 
 #endif
