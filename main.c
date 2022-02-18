@@ -1,183 +1,132 @@
-#define STB_IMAGE_IMPLEMENTATION
-#include <STB/stb_image.h>
-
+#pragma once
 #include <stdio.h>
 #include <stdlib.h>
 #include <GLEW/glew.h>
 #include <GLFW/glfw3.h>
 
-const char *vertexShaderSource = "#version 430 core\n"
-    "layout (location = 0) in vec3 aPos;\n"
-    "layout (location = 1) in vec2 Texpos;\n"
-    "out vec2 TexCoords;\n"
-    "uniform mat4 U_Projection;\n"
-    "void main()\n"
-    "{\n"
-    "   gl_Position = U_Projection * vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-    "   TexCoords = Texpos;\n"
-    "}\0";
+#include <LCString/LCString.h>
+#include "Shader.h"
+#include "Texture.h"
+#include "VertexBuffer.h"
 
-const char *fragmentShaderSource = "#version 430 core\n"
-    "out vec4 FragColour;\n"
-    "in vec2 TexCoords;\n"
-    "uniform sampler2D U_Texture;\n"
-    "void main()\n"
-    "{\n"
-    "vec3 colour = texture(U_Texture, TexCoords).rgb;\n"
-    "FragColour = vec4(colour, 1.0f);\n"
-    "}\n\0";
-
-int main()
+typedef struct BuffersStuff
 {
-    printf("Hello World!");
+    unsigned int* vbos;
+    unsigned int* vaos;
+    unsigned int* ibos;
+    unsigned int* shaders;
+    unsigned int* textures;
+} BuffersStuff;
 
-    glfwInit();
-
-    GLFWwindow* window = glfwCreateWindow(400, 400, "Test Window", NULL, NULL);
-    glfwMakeContextCurrent(window);
-
-    glewInit();
-
-    float vertex[] =
-    {
-        /* -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
-         0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
-         0.0f,  0.5f, 0.0f, 0.5f, 1.0f */
-
-         0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
-         0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
-        -0.5f,  0.5f, 0.0f, 0.0f, 1.0f,
-         0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
-        -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
-        -0.5f,  0.5f, 0.0f, 0.0f, 1.0f 
-    };
-
-    float texCoords[] =
-    {
-        0.0f, 0.0f,
-        1.0f, 0.0f,
-        0.5f, 1.0f
-    };
-
-    float matrix[4][4] =
-    {
-        1.0f, 0.0f, 0.0f, 0.0f, 
-        0.0f, 1.0f, 0.0f, 0.0f, 
-        0.0f, 0.0f, 1.0f, 0.0f, 
-        0.0f, 0.0f, 0.0f, 1.0f
-    };
-
-    int success;
-    char infolog[512];
-
-    unsigned int v_shader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(v_shader, 1, &vertexShaderSource, NULL);
-    glCompileShader(v_shader);
-    
-    glGetShaderiv(v_shader, GL_COMPILE_STATUS, &success);
-    
-    if(!success)
-    {
-        printf("\nVertex shader is broke");
-
-        glGetShaderInfoLog(v_shader, 512, NULL, infolog);
-        printf("\nLets have a looksie what's wrong with it: %s", infolog);
-    }
-
-    unsigned int f_shader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(f_shader, 1, &fragmentShaderSource, NULL);
-    glCompileShader(f_shader);
-
-    glGetShaderiv(f_shader, GL_COMPILE_STATUS, &success);
-    
-    if(!success)
-    {
-        printf("\nFragment shader is broke");
-
-        glGetShaderInfoLog(f_shader, 512, NULL, infolog);
-        printf("\nLets have a looksie what's wrong with it: %s", infolog);
-    }
-
-    unsigned int program = glCreateProgram();
-    glAttachShader(program, v_shader);
-    glAttachShader(program, f_shader);
-    glLinkProgram(program);
-
-    glGetProgramiv(program, GL_LINK_STATUS, &success);
-    if(!success)
-    {
-        printf("\nThe program doesn't want to do the linkie winkie");
-
-        glGetProgramInfoLog(program, 512, NULL, infolog);
-        printf("\nLet's have a sneeky peaky at why it no work: %s", infolog);
-    }
-
-    glDeleteShader(v_shader);
-    glDeleteShader(f_shader);
-
-    unsigned int vao, vbo;
-    glGenVertexArrays(1, &vao);
+/* unsigned int CreateVBO(float* vertices, int size)
+{
+    unsigned int vbo;
     glGenBuffers(1, &vbo);
-
-    glBindVertexArray(vao);
-
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertex), vertex, GL_STATIC_DRAW);
+
+    glBufferData(GL_ARRAY_BUFFER, size * sizeof(float), vertices, GL_STATIC_DRAW);
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
+    return vbo;
+} */
 
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
+// glVertexAttribPointer(index of layout, number of items in one, type of data, normalise?, the length of a row * sizeof(type), (void*)(how many items before it starts * sizeof(type))));
+// glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
 
-    glBindVertexArray(0);
 
-    // Texture stuff
-    int width, height, channels;
+unsigned int CreateVAO()
+{
+    unsigned int vao;
+    glGenVertexArrays(1, &vao);
+    glBindVertexArray(vao);
 
-    stbi_set_flip_vertically_on_load(1);
-    unsigned char* data = stbi_load("Face.png", &width, &height, &channels, 0);
+    return vao;
+}
 
-    unsigned int texture;
-    glGenTextures(1, &texture);
-    glBindTexture(GL_TEXTURE_2D, texture);
+unsigned int CreateIBO(unsigned int* indecies, int size)
+{
+    unsigned int ibo;
+    glGenBuffers(1, &ibo);
 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, size * sizeof(unsigned int), indecies, GL_STATIC_DRAW);
 
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-    glBindTexture(GL_TEXTURE_2D, 0);
+    return ibo;
+}
 
-    stbi_image_free(data);
+GLFWwindow* CreateWindow(int width, int height, char* title)
+{
+    GLFWwindow* window = glfwCreateWindow(width, height, title, 0, 0);
+    glfwMakeContextCurrent(window);
 
-    glUseProgram(program);
-    glUniform1i(glGetUniformLocation(program, "U_Texture"), 0);
-    glUniformMatrix4fv(glGetUniformLocation(program, "U_Projection"), 1, GL_FALSE, &matrix[0][0]);
+    return window;
+}
 
+int main()
+{
+    BuffersStuff bs;
+    bs.vaos = malloc(sizeof(unsigned int*) * 128);
+    bs.vbos = malloc(sizeof(unsigned int*) * 128);
+    bs.ibos = malloc(sizeof(unsigned int*) * 128);
+    bs.shaders = malloc(sizeof(unsigned int*) * 128);
+    bs.textures = malloc(sizeof(unsigned int*) * 128);
+
+    glfwInit();
+
+    GLFWwindow* window = CreateWindow(960, 540, "Hello World!");
+
+    glewInit();
+
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    bs.shaders[0] = CreateShader("texShader.shader");
+
+    float vertices[] = 
+    {
+        0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
+        0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+       -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
+       -0.5f,  0.5f, 0.0f, 0.0f, 1.0f
+    };
+
+    unsigned int indecies[] = 
+    {
+        0, 1, 3,
+        1, 2, 3
+    };
+
+
+    bs.vaos[0] = CreateVAO();
+    bs.vbos[0] = CreateVertexBufferDepth(vertices, sizeof vertices, 0, 3, 5, 0);
+    AddAttribute(1, 2, 5, 3);
+
+    bs.textures[0] = CreateTexture("Face.png");
+
+    bs.ibos[0] = CreateIBO(indecies, sizeof indecies);
+
+    SetUniform4f(bs.shaders[0], "U_Colour", 1.0f, 0.5f, 0.2f, 1.0f);
+    SetUniform1i(bs.shaders[0], "U_Texture", 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bs.ibos[0]);
 
     while(!glfwWindowShouldClose(window))
     {
         glClear(GL_COLOR_BUFFER_BIT);
-        
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, texture);
+        glClearColor(0.25f, 0.5f, 0.35f, 1.0f);
 
-        glUseProgram(program);
-        glBindVertexArray(vao);
-        glDrawArrays(GL_TRIANGLES, 0, 6);
+        glUseProgram(bs.shaders[0]);
+        glBindVertexArray(bs.vaos[0]);
+        
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
+
     }
 
-    glDeleteVertexArrays(1, &vao);
-    glDeleteProgram(program);
-    glDeleteBuffers(1, &vbo);
-
     glfwTerminate();
+
     return 0;
 }

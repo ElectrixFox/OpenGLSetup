@@ -1,5 +1,10 @@
 {
     "files.associations": {
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "shader.h": "c",
+        "glew.h": "c",
+        "stb_image.h": "c",
+        "texture.h": "c",
+        "vertexbuffer.h": "c"
     }
 }
