@@ -162,3 +162,9 @@ void SetUniformMat4(unsigned int program, LCstring name, float value[4][4])
     glUseProgram(program);
     glUniformMatrix4fv(glGetUniformLocation(program, name), 1, GL_FALSE, &value[0][0]);
 }
+
+void SetUniformM4(unsigned int program, LCstring name, m4 value)
+{
+    glUseProgram(program);
+    glUniformMatrix4fv(glGetUniformLocation(program, name), 1, GL_FALSE, &value.matrix[0][0]);
+}

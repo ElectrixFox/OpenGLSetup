@@ -3,6 +3,8 @@
 
 #pragma once
 #include <LCString/LCString.h>
+#include <LCMaths.h>
+
 #include <GLEW/glew.h>
 #include <GLFW/glfw3.h>
 
@@ -18,5 +20,6 @@ unsigned int CreateShader(const LCstring FilePath);
 void SetUniform4f(unsigned int program, LCstring name, float v1, float v2, float v3, float v4);
 void SetUniform1i(unsigned int program, LCstring name, int value);
 void SetUniformMat4(unsigned int program, LCstring name, float value[4][4]);
+void SetUniformM4(unsigned int program, LCstring name, m4 value);
 
 #endif

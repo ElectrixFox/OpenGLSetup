@@ -5,6 +5,8 @@
 #include <GLFW/glfw3.h>
 
 #include <LCString/LCString.h>
+#include <LCMaths.h>
+
 #include "Shader.h"
 #include "Texture.h"
 #include "VertexBuffer.h"
@@ -33,19 +35,17 @@ GLFWwindow* CreateWindow(int width, int height, char* title)
     return window;
 }
 
-void Transform(unsigned int program, int R)
+void TransformInWindow(GLFWwindow* window, unsigned int program, vec3 transform)
 {
-    float matrix[4][4] =
-    {
-        { 0.25f, 0.0f,  0.0f,  0.0f },
-        { 0.0f,  0.25f, 0.0f,  0.0f },
-        { 0.0f,  0.0f,  0.25f, 0.0f },
-        { 0.0f,  0.0f,  0.0f,  1.0f }
-    };
+    int w, h;
+    glfwGetWindowSize(window, &w, &h);
 
-    matrix[0][3] += R/wid;
+    transform[0] /= w;
+    transform[1] /= h;
 
-    SetUniformMat4(program, "U_Transform", matrix);
+    m4 trans = M4_Identity();
+    trans = Transform_OPENGL(trans, transform);
+    SetUniformM4(program, "U_Transform", trans);
 }
 
 int main()
@@ -93,7 +93,7 @@ int main()
     SetUniform4f(bs.shaders[0], "U_Colour", 1.0f, 0.5f, 0.2f, 1.0f);
     SetUniform1i(bs.shaders[0], "U_Texture", 0);
 
-    Transform(bs.shaders[0], 100);
+    TransformInWindow(window, bs.shaders[0], (vec3){1, 0, 0});
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bs.ibos[0]);
 
@@ -104,6 +104,12 @@ int main()
 
         glUseProgram(bs.shaders[0]);
         glBindVertexArray(bs.vaos[0]);
+
+        vec3 trns = {0};
+        trns[0] = (float)glfwGetTime() * 5;
+
+        TransformInWindow(window, bs.shaders[0], trns);
+
 
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 

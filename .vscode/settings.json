@@ -5,6 +5,8 @@
         "glew.h": "c",
         "stb_image.h": "c",
         "texture.h": "c",
-        "vertexbuffer.h": "c"
+        "vertexbuffer.h": "c",
+        "lcstring.h": "c",
+        "stdio.h": "c"
     }
 }
