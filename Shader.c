@@ -168,3 +168,34 @@ void SetUniformM4(unsigned int program, LCstring name, m4 value)
     glUseProgram(program);
     glUniformMatrix4fv(glGetUniformLocation(program, name), 1, GL_FALSE, &value.matrix[0][0]);
 }
+
+void TransformInWindow(m4* projection, vec3 transform)
+{
+    int w, h;
+    w = Width_x;
+    h = Height_y;
+
+    transform[0] /= w;
+    transform[1] /= h;
+    
+    m4 m = *projection;
+    m = Transform_OPENGL(m, transform);
+
+    projection = &m;
+}
+
+void ScaleInWindow(m4* projection, vec3 Scale)
+{
+    m4 m = *projection;
+    m = Scale_OPENGL(m, Scale);
+
+    projection = &m;
+}
+
+void UpdateProjection(unsigned int program, m4 pos, m4 scale)
+{
+    m4 projection = M4_Identity();
+    projection = Mul(scale, pos);
+
+    SetUniformM4(program, "U_Transform", projection);
+}

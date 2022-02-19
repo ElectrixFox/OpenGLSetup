@@ -24,28 +24,16 @@ typedef struct BuffersStuff
 
 float wid, high;
 
+int Width_x, Height_y;
+
 GLFWwindow* CreateWindow(int width, int height, char* title)
 {
     GLFWwindow* window = glfwCreateWindow(width, height, title, 0, 0);
     glfwMakeContextCurrent(window);
 
-    wid = width;
-    high = height;
+    glfwGetWindowSize(window, &Width_x, &Height_y);
 
     return window;
-}
-
-void TransformInWindow(GLFWwindow* window, unsigned int program, vec3 transform)
-{
-    int w, h;
-    glfwGetWindowSize(window, &w, &h);
-
-    transform[0] /= w;
-    transform[1] /= h;
-
-    m4 trans = M4_Identity();
-    trans = Transform_OPENGL(trans, transform);
-    SetUniformM4(program, "U_Transform", trans);
 }
 
 int main()
@@ -83,6 +71,9 @@ int main()
     };
 
 
+    m4 trans = M4_Identity();
+    m4 scale = M4_Identity();
+
     bs.vaos[0] = CreateVertexArray();
     bs.vbos[0] = CreateVertexBufferDepth(vertices, sizeof vertices, 0, 3, 5, 0);
     AddAttribute(1, 2, 5, 3);
@@ -93,9 +84,12 @@ int main()
     SetUniform4f(bs.shaders[0], "U_Colour", 1.0f, 0.5f, 0.2f, 1.0f);
     SetUniform1i(bs.shaders[0], "U_Texture", 0);
 
-    TransformInWindow(window, bs.shaders[0], (vec3){1, 0, 0});
+    TransformInWindow(&trans, (vec3){1, 0, 0});
+    ScaleInWindow(&scale, (vec3){0.25f, 0.25f, 0.25f});
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bs.ibos[0]);
+
+    //LogM4(projection);
 
     while(!glfwWindowShouldClose(window))
     {
@@ -105,11 +99,10 @@ int main()
         glUseProgram(bs.shaders[0]);
         glBindVertexArray(bs.vaos[0]);
 
-        vec3 trns = {0};
+        vec3 trns = {0, 0, 0};
         trns[0] = (float)glfwGetTime() * 5;
 
-        TransformInWindow(window, bs.shaders[0], trns);
-
+        TransformInWindow(&trans, trns);
 
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
