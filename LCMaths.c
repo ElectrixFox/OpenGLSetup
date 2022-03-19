@@ -22,8 +22,29 @@ m4 Scale_OPENGL(m4 mat, vec3 Scale)
     return matrix;
 }
 
+void SetMatrix(m4* set, matrixv4 as)
+{
+    for (int y = 0; y < 4; y++)
+        for (int x = 0; x < 4; x++)
+            set->matrix[y][x] = as[y][x];
+}
+
 m4 Mul(m4 x, m4 y)
 {
+    m4 result = M4_Identity();
+
+    for (int i = 0; i < 4; i++) 
+    {
+        for (int j = 0; j < 4; j++) {
+            float num = 0;
+            for (int k = 0; k < 4; k++) {
+                num += x.matrix[i][k] * y.matrix[k][j];
+            }
+            result.matrix[i][j] = num;
+        }
+    }
+
+    return result;
     
 }
 

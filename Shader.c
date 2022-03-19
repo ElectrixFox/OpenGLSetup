@@ -169,33 +169,17 @@ void SetUniformM4(unsigned int program, LCstring name, m4 value)
     glUniformMatrix4fv(glGetUniformLocation(program, name), 1, GL_FALSE, &value.matrix[0][0]);
 }
 
-void TransformInWindow(m4* projection, vec3 transform)
+void UpdateProjection(unsigned int program, char* name, m4 mvp)
 {
-    int w, h;
-    w = Width_x;
-    h = Height_y;
-
-    transform[0] /= w;
-    transform[1] /= h;
-    
-    m4 m = *projection;
-    m = Transform_OPENGL(m, transform);
-
-    projection = &m;
+    SetUniformM4(program, "U_Transform", mvp);
 }
 
-void ScaleInWindow(m4* projection, vec3 Scale)
+void EasierUpdateProjection(unsigned int program, char* name, m4* mvp, m4 transform, m4 scale, m4 rotation)
 {
-    m4 m = *projection;
-    m = Scale_OPENGL(m, Scale);
+    mvp->matrix[0][3]  /= 960;
+    mvp->matrix[1][3] /= 540;
 
-    projection = &m;
-}
-
-void UpdateProjection(unsigned int program, m4 pos, m4 scale)
-{
-    m4 projection = M4_Identity();
-    projection = Mul(scale, pos);
-
-    SetUniformM4(program, "U_Transform", projection);
+    SetMatrix(mvp->matrix, Mul(transform, scale).matrix);
+    SetMatrix(mvp->matrix, Mul(*mvp, rotation).matrix);
+    UpdateProjection(program, "U_Transform", *mvp);
 }
