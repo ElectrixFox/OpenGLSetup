@@ -9,19 +9,22 @@
 // The vertices of the object and the sizeof them (their length (sizeof(verticies))).
 unsigned int CreateVertexBuffer(float* vertices, int size);
 
-// A more in depth and controlable version.
-// - Vertices and their length.
-// - The size of the vertices.
-// - The index of the attribute in the layout. 
-// - How many items are in the attribute.
-// - How many items are in a full row.
-// - How many items are before it. 
+/** A more in depth and controlable version.
+* @param vertices Vertices and their length.
+* @param size The size of the vertices.
+* @param index The index of the attribute in the layout. 
+* @param m_len How many items are in the attribute.
+* @param R_len How many items are in a full row.
+* @param Start How many items are before it. 
+*/
 unsigned int CreateVertexBufferDepth(float* vertices, int size, int index, int m_len, int R_len, int Start);
 
-// - The index of the attribute in the layout. 
-// - How many items are in the attribute.
-// - How many items are in a full row.
-// - How many items are before it. 
+/**
+* @param index The index of the attribute in the layout. 
+* @param m_len How many items are in the attribute.
+* @param R_len How many items are in a full row.
+* @param Start How many items are before it.
+*/ 
 void AddAttribute(int index, int m_len, int R_len, int Start);
 
 #endif

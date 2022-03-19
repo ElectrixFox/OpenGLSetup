@@ -8,6 +8,9 @@
         "vertexbuffer.h": "c",
         "lcstring.h": "c",
         "stdio.h": "c",
-        "lcmaths.h": "c"
+        "lcmaths.h": "c",
+        "glfw3.h": "c",
+        "indexbuffer.h": "c",
+        "vertexarray.h": "c"
     }
 }
