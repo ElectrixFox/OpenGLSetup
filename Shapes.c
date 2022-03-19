@@ -19,6 +19,9 @@ void Square(float cR, int trans)
     };
 
     bs.shaders[as] = CreateShader("texShader.shader");
+
+    SetUniformM4(bs.shaders[as], "U_Transform", M4_Identity());
+
     SetUniform4f(bs.shaders[as], "U_Colour", cR, 1.0f, 0.0f, 1.0f);
     SetUniform4f(bs.shaders[as], "U_Trans", trans, 0.0f, 0.0f, 1.0f);
     SetUniform1i(bs.shaders[as], "U_Texture", 0);
@@ -50,6 +53,9 @@ void Triangle(float cR, int trans)
     };
 
     bs.shaders[as] = CreateShader("texShader.shader");
+    
+    SetUniformM4(bs.shaders[as], "U_Transform", M4_Identity());
+    
     SetUniform4f(bs.shaders[as], "U_Colour", cR, 1.0f, 0.0f, 1.0f);
     SetUniform4f(bs.shaders[as], "U_Trans", trans, 0.0f, 0.0f, 1.0f);
     SetUniform1i(bs.shaders[as], "U_Texture", 0);

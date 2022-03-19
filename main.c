@@ -5,6 +5,7 @@
 #include <GLFW/glfw3.h>
 
 #include <LCString/LCString.h>
+#include <LCMaths/LCMaths.h>
 
 #include "Shader.h"
 #include "Texture.h"
@@ -15,14 +16,21 @@
 #include "Shapes.h"
 #include "Renderer.h"
 
+unsigned int as = 0;
 extern BuffersStuff bs;
-int as = 0;
 
 float wid, high;
+int x_angle = 0;
+int y_angle = 0;
+int z_angle = 0;
+
+int kan = 0;
 
 int Width_x, Height_y;
 
 unsigned int stop = 0;
+
+m4 proj;
 
 GLFWwindow* CreateWindow(int width, int height, char* title)
 {
@@ -39,6 +47,48 @@ int Callback(GLFWwindow* window, int key, int scancode, int action, int mods)
     if(key == GLFW_KEY_SPACE)
     {
         stop = 1;
+    }
+    else if(key == GLFW_KEY_UP)
+    {
+        if(kan == 0)
+            x_angle++;
+        else if(kan == 1)
+            y_angle++;
+        else if(kan == 2)
+            z_angle++;
+    }
+    else if(key == GLFW_KEY_ENTER)
+    {
+        printf("\n x: %d y: %d z: %d\n", x_angle, y_angle, z_angle);
+        LogM4(proj);
+        printf("\n");
+    }
+    else if(key == GLFW_KEY_DOWN)
+    {
+        if(kan == 0)
+            x_angle--;
+        else if(kan == 1)
+            y_angle--;
+        else if(kan == 2)
+            z_angle--;
+    }
+    else if(key == GLFW_KEY_X)
+    {
+        kan = 0;
+    }
+    else if(key == GLFW_KEY_Y)
+    {
+        kan = 1;
+    }
+    else if(key == GLFW_KEY_Z)
+    {
+        kan = 2;
+    }
+    else if(key == GLFW_KEY_0)
+    {
+        x_angle = 0;
+        y_angle = 0;
+        z_angle = 0;
     }
 }
 
@@ -91,14 +141,33 @@ int main()
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bs.ibos[0]); */
 
-    Square(1, 500);
     Image("Face.png", -500);
-    //Triangle(0.25f, -500);
+    Square(1, 500);
+    Triangle(0.25f, -500);
+
+    proj = M4_Identity();
+    m4 rx = M4_Identity();
+    m4 ry = M4_Identity();
+    m4 rz = M4_Identity();
+
+    printf("\n");
+    LogM4(proj);
+
+    m4 trns = M4_Identity();
+    Transform(&trns, (vec3){500.0, 0.0, 0.0});
+    Scale(&trns, (vec3){1.0, 1.0, 1.0});
 
     while(!glfwWindowShouldClose(window))
     {
         if(stop == 1)
             return 0;
+
+        Rotate_X(&rx, x_angle);
+        Rotate_Y(&ry, y_angle);
+        Rotate_Z(&rz, z_angle);
+        SetMatrix(&proj, Mul(trns, TotalRotation(rx, ry, rz)).matrix);
+
+        SetUniformM4(bs.shaders[0], "U_Transform", proj);
 
         Render(window);
     }

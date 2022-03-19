@@ -3,6 +3,7 @@
 
 #pragma once
 #include <LCString/LCString.h>
+#include <LCMaths/LCMaths.h>
 
 #include <GLEW/glew.h>
 #include <GLFW/glfw3.h>
@@ -22,9 +23,9 @@ void SetUniform1f(unsigned int program, LCstring name, float value);
 void SetUniform1i(unsigned int program, LCstring name, int value);
 void SetUniformMat4(unsigned int program, LCstring name, float value[4][4]);
 
-/*void SetUniformM4(unsigned int program, LCstring name, m4 value);
+void SetUniformM4(unsigned int program, LCstring name, m4 value);
 
 void UpdateProjection(unsigned int program, char* name, m4 mvp);
 void EasierUpdateProjection(unsigned int program, char* name, m4* mvp, m4 transform, m4 scale, m4 rotation);
-*/
+
 #endif

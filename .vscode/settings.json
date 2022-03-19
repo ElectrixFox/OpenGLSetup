@@ -11,6 +11,7 @@
         "lcmaths.h": "c",
         "glfw3.h": "c",
         "indexbuffer.h": "c",
-        "vertexarray.h": "c"
+        "vertexarray.h": "c",
+        "renderer.h": "c"
     }
 }

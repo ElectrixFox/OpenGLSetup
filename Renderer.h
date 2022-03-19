@@ -24,6 +24,8 @@ typedef struct BuffersStuff
 
 BuffersStuff bs;
 
+extern unsigned int as;
+
 void Render(GLFWwindow* window);
 
 #endif

@@ -1,6 +1,6 @@
 CXX = gcc
 CXXFLAGS = -g -Wall -I. -IInclude
-LIBS = -L./Libs -lglew32 -lopengl32 -lglfw3dll -lpthread -lLCStr
+LIBS = -L./Libs -lglew32 -lopengl32 -lglfw3dll -lpthread -lLCStr -lLCMaths
 
 APPNAME = main
 

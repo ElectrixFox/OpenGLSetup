@@ -7,7 +7,7 @@ void Render(GLFWwindow* window)
 
     int lst = sizeof(bs.vaos) / sizeof(bs.vaos[0]);
 
-    for (int i = 0; i < 2; i++)
+    for (int i = 0; i < as+1; i++)
     {
          glUseProgram(bs.shaders[i]);
          glBindVertexArray(bs.vaos[i]);

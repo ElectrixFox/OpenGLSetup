@@ -7,7 +7,7 @@
 #include <Renderer.h>
 
 extern BuffersStuff bs;
-extern int as;
+extern unsigned int as;
 
 // Creates a square.
 void Square(float cR, int trans);
