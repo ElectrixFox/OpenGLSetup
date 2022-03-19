@@ -146,6 +146,7 @@ int main()
     Triangle(0.25f, -500);
 
     proj = M4_Identity();
+    m4 rot = M4_Identity();
     m4 rx = M4_Identity();
     m4 ry = M4_Identity();
     m4 rz = M4_Identity();
@@ -162,10 +163,14 @@ int main()
         if(stop == 1)
             return 0;
 
-        Rotate_X(&rx, x_angle);
-        Rotate_Y(&ry, y_angle);
-        Rotate_Z(&rz, z_angle);
-        SetMatrix(&proj, Mul(trns, TotalRotation(rx, ry, rz)).matrix);
+        //rot = Rotation(rot, x_angle, (vec3){1.0f, 0.0f, 0.0f});
+        rot = Rotation(rot, y_angle, (vec3){0.0f, 1.0f, 0.0f});
+        //rot = Rotation(rot, z_angle, (vec3){0.0f, 0.0f, 1.0f});
+
+        //Rotate_X(&rx, x_angle);
+        //Rotate_Y(&ry, y_angle);
+        //Rotate_Z(&rz, z_angle);
+        SetMatrix(&proj, Mul(trns, rot).matrix);
 
         SetUniformM4(bs.shaders[0], "U_Transform", proj);
 

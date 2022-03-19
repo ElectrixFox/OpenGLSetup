@@ -24,6 +24,8 @@ m4 M4_Identity();
 void Transform(m4* transform, vec3 pos);
 void Scale(m4* scale, vec3 sf);
 
+m4 Rotation(m4 rotation, double angle, vec3 axis);
+
 m4 TotalRotation(m4 x, m4 y, m4 z);
 
 void Rotate_X(m4* Rotation, float degrees);
