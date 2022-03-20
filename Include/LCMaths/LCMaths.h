@@ -32,4 +32,6 @@ void Rotate_X(m4* Rotation, float degrees);
 void Rotate_Y(m4* Rotation, float degrees);
 void Rotate_Z(m4* Rotation, float degrees);
 
+m4 LookAt(vec3 V_Right, vec3 V_Up, vec3 V_Direction, vec3 V_Position);
+
 #endif

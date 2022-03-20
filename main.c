@@ -24,13 +24,19 @@ int x_angle = 0;
 int y_angle = 0;
 int z_angle = 0;
 
+int cr = 0;
+vec3 crt = {0};
+int crtc = 0;
+
 int kan = 0;
 
 int Width_x, Height_y;
 
 unsigned int stop = 0;
 
-m4 proj;
+m4 Projection;
+m4 View;
+m4 MVP;
 
 GLFWwindow* CreateWindow(int width, int height, char* title)
 {
@@ -60,7 +66,7 @@ int Callback(GLFWwindow* window, int key, int scancode, int action, int mods)
     else if(key == GLFW_KEY_ENTER)
     {
         printf("\n x: %d y: %d z: %d\n", x_angle, y_angle, z_angle);
-        LogM4(proj);
+        LogM4(View);
         printf("\n");
     }
     else if(key == GLFW_KEY_DOWN)
@@ -90,6 +96,34 @@ int Callback(GLFWwindow* window, int key, int scancode, int action, int mods)
         y_angle = 0;
         z_angle = 0;
     }
+    else if(key == GLFW_KEY_W)
+    {
+        cr += 1;
+    }
+    else if(key == GLFW_KEY_S)
+    {
+        cr -= 1;
+    }
+    else if(key == GLFW_KEY_A)
+    {
+        crt[crtc] += 1;
+    }
+    else if(key == GLFW_KEY_D)
+    {
+        crt[crtc] -= 1;
+    }
+    else if(key == GLFW_KEY_1)
+    {
+        crtc = 0;
+    }
+    else if(key == GLFW_KEY_2)
+    {
+        crtc = 1;
+    }
+    else if(key == GLFW_KEY_3)
+    {
+        crtc = 2;
+    }
 }
 
 int main()
@@ -113,66 +147,51 @@ int main()
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    /* bs.shaders[0] = CreateShader("texShader.shader");
+    MVP = M4_Identity();
+    m4 Model = M4_Identity();
+    View = M4_Identity();
+    Projection = M4_Identity();
+    
+    Image("Face.png", (vec3){500, 500, 0}, (vec3){1, 1, 1});
+    Square(1, (vec3){500, 500, 0}, (vec3){0.5, 0.5, 0.5});
+    Triangle(0.25f, (vec3){500, 500, 0}, (vec3){1, 1, 1});
 
-    float vertices[] = 
-    {
-        0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
-        0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
-       -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
-       -0.5f,  0.5f, 0.0f, 0.0f, 1.0f
-    };
 
-    unsigned int indecies[] = 
-    {
-        0, 1, 3,
-        1, 2, 3
-    };
 
-    bs.vaos[0] = CreateVertexArray();
-    bs.vbos[0] = CreateVertexBufferDepth(vertices, sizeof vertices, 0, 3, 5, 0);
-    AddAttribute(1, 2, 5, 3);
-
-    bs.textures[0] = CreateTexture("Face.png");
-    bs.ibos[0] = CreateIndexBuffer(indecies, sizeof indecies);
-
-    SetUniform4f(bs.shaders[0], "U_Colour", 1.0f, 0.5f, 0.2f, 1.0f);
-    SetUniform1i(bs.shaders[0], "U_Texture", 0);
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bs.ibos[0]); */
-
-    Image("Face.png", -500);
-    Square(1, 500);
-    Triangle(0.25f, -500);
-
-    proj = M4_Identity();
     m4 rot = M4_Identity();
     m4 rx = M4_Identity();
     m4 ry = M4_Identity();
     m4 rz = M4_Identity();
 
     printf("\n");
-    LogM4(proj);
+    LogM4(Projection);
 
     m4 trns = M4_Identity();
-    Transform(&trns, (vec3){500.0, 0.0, 0.0});
-    Scale(&trns, (vec3){1.0, 1.0, 1.0});
+    Transform(&trns, (vec3){-250.0, 0.0, 0.0});
+    Scale(&Model, (vec3){1.0, 1.0, 1.0});
+
+    MVP = Mul(Mul(Model, View), Projection);
 
     while(!glfwWindowShouldClose(window))
     {
         if(stop == 1)
             return 0;
+        
+        if(kan == 0)
+            rot = Rotation(rot, x_angle, (vec3){1.0f, 0.0f, 0.0f});
+        else if(kan == 1)
+            rot = Rotation(rot, y_angle, (vec3){0.0f, 1.0f, 0.0f});
+        else if(kan == 2)
+            rot = Rotation(rot, z_angle, (vec3){0.0f, 0.0f, 1.0f});
+        
+        View = Mul(Rotation(View, cr, (vec3){1.0f, 0.0f, 0.0f}), LookAt((vec3){1, 0, 0}, (vec3){0, 1, 0}, (vec3){0, 0, 1}, crt));
 
-        //rot = Rotation(rot, x_angle, (vec3){1.0f, 0.0f, 0.0f});
-        rot = Rotation(rot, y_angle, (vec3){0.0f, 1.0f, 0.0f});
-        //rot = Rotation(rot, z_angle, (vec3){0.0f, 0.0f, 1.0f});
 
-        //Rotate_X(&rx, x_angle);
-        //Rotate_Y(&ry, y_angle);
-        //Rotate_Z(&rz, z_angle);
-        SetMatrix(&proj, Mul(trns, rot).matrix);
+        SetMatrix(&Model, Mul(trns, rot).matrix);
 
-        SetUniformM4(bs.shaders[0], "U_Transform", proj);
+        MVP = Mul(Mul(Model, View), Projection);
+
+        SetUniformM4(bs.shaders[0], "U_Transform", MVP);
 
         Render(window);
     }

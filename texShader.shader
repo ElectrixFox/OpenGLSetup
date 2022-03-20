@@ -6,16 +6,14 @@ layout(location = 1) in vec2 texCoord;
 
 uniform mat4 U_Transform;
 
-uniform vec4 U_Trans;
-
 out vec2 V_TexCoord;
 
 mat4 GetMatrix()
 {
 	mat4 mat = 
 	{
-		{1.0f, 0.0f, 0.0f, U_Trans.x/960},
-		{0.0f, 1.0f, 0.0f, U_Trans.y/540},
+		{1.0f, 0.0f, 0.0f, 960},
+		{0.0f, 1.0f, 0.0f, 540},
 		{0.0f, 0.0f, 1.0f, 0.0f},
 		{0.0f, 0.0f, 0.0f, 1.0f} 
 	};

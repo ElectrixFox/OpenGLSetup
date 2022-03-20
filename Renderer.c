@@ -9,8 +9,11 @@ void Render(GLFWwindow* window)
 
     for (int i = 0; i < as+1; i++)
     {
-         glUseProgram(bs.shaders[i]);
-         glBindVertexArray(bs.vaos[i]);
+        m4 MVP;
+        glUseProgram(bs.shaders[i]);
+        SetUniformM4(bs.shaders[i], "U_Transform", MVP);
+
+        glBindVertexArray(bs.vaos[i]);
 
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bs.ibos[i]);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);

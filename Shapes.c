@@ -1,6 +1,6 @@
 #include "Shapes.h"
 
-void Square(float cR, int trans)
+void Square(float cR, vec3 trans, vec3 scale)
 {
     printf("\nSquare %d", as);
 
@@ -23,7 +23,19 @@ void Square(float cR, int trans)
     SetUniformM4(bs.shaders[as], "U_Transform", M4_Identity());
 
     SetUniform4f(bs.shaders[as], "U_Colour", cR, 1.0f, 0.0f, 1.0f);
-    SetUniform4f(bs.shaders[as], "U_Trans", trans, 0.0f, 0.0f, 1.0f);
+
+    m4 MVP = M4_Identity();
+    m4 Model = M4_Identity();
+    m4 View = M4_Identity();
+    
+    View = Mul(Rotation(View, 90, (vec3){1.0f, 0.0f, 0.0f}), LookAt((vec3){1, 0, 0}, (vec3){0, 1, 0}, (vec3){0, 0, 1}, (vec3){0, 0, 0}));
+
+    Transform(&Model, trans);
+    Scale(&Model, scale);
+
+    MVP = Mul(Mul(Model, View), Projection);
+    SetUniformM4(bs.shaders[as], "U_Transform", MVP);
+
     SetUniform1i(bs.shaders[as], "U_Texture", 0);
     SetUniform1f(bs.shaders[as], "U_Tex", 0);
     
@@ -36,7 +48,7 @@ void Square(float cR, int trans)
     as++;
 }
 
-void Triangle(float cR, int trans)
+void Triangle(float cR, vec3 trans, vec3 scale)
 {
     printf("\nTriangle %d", as);
 
@@ -55,9 +67,14 @@ void Triangle(float cR, int trans)
     bs.shaders[as] = CreateShader("texShader.shader");
     
     SetUniformM4(bs.shaders[as], "U_Transform", M4_Identity());
-    
+
     SetUniform4f(bs.shaders[as], "U_Colour", cR, 1.0f, 0.0f, 1.0f);
-    SetUniform4f(bs.shaders[as], "U_Trans", trans, 0.0f, 0.0f, 1.0f);
+
+    m4 proj = M4_Identity();
+    Transform(&proj, trans);
+    Scale(&proj, scale);
+    SetUniformM4(bs.shaders[as], "U_Transform", proj);
+
     SetUniform1i(bs.shaders[as], "U_Texture", 0);
     SetUniform1f(bs.shaders[as], "U_Tex", 0);
     
@@ -70,7 +87,7 @@ void Triangle(float cR, int trans)
     as++;
 }
 
-void Image(const char* FilePath, int trans)
+void Image(const char* FilePath, vec3 trans, vec3 scale)
 {
     printf("\nImage %d", as);
 
@@ -98,7 +115,12 @@ void Image(const char* FilePath, int trans)
     bs.ibos[as] = CreateIndexBuffer(indecies, sizeof indecies);
 
     SetUniform4f(bs.shaders[as], "U_Colour", 1.0f, 0.5f, 0.2f, 1.0f);
-    SetUniform4f(bs.shaders[as], "U_Trans", trans, 0.0f, 0.0f, 1.0f);
+
+    m4 proj = M4_Identity();
+    Transform(&proj, trans);
+    Scale(&proj, scale);
+    SetUniformM4(bs.shaders[as], "U_Transform", proj);
+
     SetUniform1i(bs.shaders[as], "U_Texture", 0);
     SetUniform1f(bs.shaders[as], "U_Tex", 1);
 
