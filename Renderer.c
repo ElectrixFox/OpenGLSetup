@@ -9,9 +9,9 @@ void Render(GLFWwindow* window)
 
     for (int i = 0; i < as+1; i++)
     {
-        m4 MVP;
         glUseProgram(bs.shaders[i]);
-        SetUniformM4(bs.shaders[i], "U_Transform", MVP);
+
+        //SetUniformM4(bs.shaders[i], "U_Transform", MVP);
 
         glBindVertexArray(bs.vaos[i]);
 

@@ -12,6 +12,7 @@
         "glfw3.h": "c",
         "indexbuffer.h": "c",
         "vertexarray.h": "c",
-        "renderer.h": "c"
+        "renderer.h": "c",
+        "renderassistant.h": "c"
     }
 }

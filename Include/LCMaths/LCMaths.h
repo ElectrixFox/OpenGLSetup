@@ -21,8 +21,8 @@ m4 Mul(m4 x, m4 y);
 
 m4 M4_Identity();
 
-void Transform(m4* transform, vec3 pos);
-void Scale(m4* scale, vec3 sf);
+m4 Transform(m4* transform, vec3 pos);
+m4 Scale(m4* scale, vec3 sf);
 
 m4 Rotation(m4 rotation, double angle, vec3 axis);
 

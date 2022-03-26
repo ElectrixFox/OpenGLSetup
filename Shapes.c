@@ -2,6 +2,10 @@
 
 void Square(float cR, vec3 trans, vec3 scale)
 {
+    /* *Shapes_Data.Transforms[as] = *trans;
+    *Shapes_Data.Scales[as] = *scale;
+    *Shapes_Data.Rotations[as] = *(vec3){0, 0, 0}; */
+
     printf("\nSquare %d", as);
 
     float vertices[] = 
@@ -50,6 +54,10 @@ void Square(float cR, vec3 trans, vec3 scale)
 
 void Triangle(float cR, vec3 trans, vec3 scale)
 {
+    /* *Shapes_Data.Transforms[as] = *trans;
+    *Shapes_Data.Scales[as] = *scale;
+    *Shapes_Data.Rotations[as] = *(vec3){0, 0, 0}; */
+
     printf("\nTriangle %d", as);
 
     float vertices[] = 
@@ -89,6 +97,10 @@ void Triangle(float cR, vec3 trans, vec3 scale)
 
 void Image(const char* FilePath, vec3 trans, vec3 scale)
 {
+    SetArray(&Shapes_Data.Transforms, trans, as);
+    SetArray(&Shapes_Data.Scales, scale, as);
+    SetArray(&Shapes_Data.Rotations, (vec3){0, 0, 0}, as);
+
     printf("\nImage %d", as);
 
     bs.shaders[as] = CreateShader("texShader.shader");
@@ -126,5 +138,11 @@ void Image(const char* FilePath, vec3 trans, vec3 scale)
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bs.ibos[as]);
     as++;
+}
+
+void SetArray(vec3* array, vec3 item, int index)
+{
+    for(int i = 0; i < 3; i++)
+        array[index][i] = item[i];
 }
 

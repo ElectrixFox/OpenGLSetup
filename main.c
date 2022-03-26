@@ -126,6 +126,8 @@ int Callback(GLFWwindow* window, int key, int scancode, int action, int mods)
     }
 }
 
+extern ShapesData Shapes_Data;
+
 int main()
 {
     {

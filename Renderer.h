@@ -12,20 +12,15 @@
 #include <VertexArray.h>
 
 #include <IndexBuffer.h>
+#include <RenderAssistant.h>
+#include <Shapes.h>
 
-typedef struct BuffersStuff
-{
-    unsigned int* vbos;
-    unsigned int* vaos;
-    unsigned int* ibos;
-    unsigned int* shaders;
-    unsigned int* textures;
-} BuffersStuff;
-
-BuffersStuff bs;
+extern BuffersStuff bs;
 
 extern unsigned int as;
-extern ShapesData ShD;
+extern ShapesData Shapes_Data;
+extern m4 View;
+extern m4 Projection;
 
 void Render(GLFWwindow* window);
 
