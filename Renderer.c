@@ -1,4 +1,5 @@
 #include "Renderer.h"
+#include <stdio.h>
 
 void Render(GLFWwindow* window)
 {
@@ -6,8 +7,7 @@ void Render(GLFWwindow* window)
     glClearColor(0.25f, 0.5f, 0.35f, 1.0f);
 
     int lst = sizeof(bs.vaos) / sizeof(bs.vaos[0]);
-
-    for (int i = 0; i < as+1; i++)
+    for (int i = 0; i < as; i++)
     {
         glUseProgram(bs.shaders[i]);
 
