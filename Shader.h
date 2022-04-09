@@ -2,11 +2,11 @@
 #define SHADER_H
 
 #pragma once
-#include "Include/LCString/LCString.h"
-#include "Include/LCMaths/LCMaths.h"
+#include <LCString/LCString.h>
+#include <LCMaths/LCMaths.h>
 
-#include "Include/GLEW/glew.h"
-#include "Include/GLFW/glfw3.h"
+#include <GLEW/glew.h>
+#include <GLFW/glfw3.h>
 
 typedef struct ShaderSources
 {

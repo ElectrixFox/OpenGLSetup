@@ -1,6 +1,6 @@
 CXX = gcc
 CXXFLAGS = -g -Wall -I. -IInclude
-LIBS = -LLibs -lGLEW -lglfw3 -lGL -lpthread -lLCStr -lLCMaths -lm
+LIBS = -L./Libs -lglew32 -lopengl32 -lglfw3dll -lpthread -lLCStr -lLCMaths
 
 APPNAME = main
 
@@ -13,6 +13,3 @@ obj/%.o: %.c
 
 all: $(OBJS)
 	$(CXX) $(CXXFLAGS) $^ -o $(APPNAME) $(LIBS)
-
-clean:
-	rm obj/*.o

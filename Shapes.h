@@ -4,14 +4,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "Shader.h"
-#include "Texture.h"
+#include <Shader.h>
+#include <Texture.h>
 
-#include "VertexBuffer.h"
-#include "VertexArray.h"
+#include <VertexBuffer.h>
+#include <VertexArray.h>
 
-#include "IndexBuffer.h"
-#include "RenderAssistant.h"
+#include <IndexBuffer.h>
+#include <RenderAssistant.h>
 
 extern BuffersStuff bs;
 extern unsigned int as;

@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "Include/LCMaths/LCMaths.h"
+#include <LCMaths/LCMaths.h>
 
 typedef struct BuffersStuff
 {
@@ -14,7 +14,7 @@ typedef struct BuffersStuff
     unsigned int* textures;
 } BuffersStuff;
 
-extern BuffersStuff bs;
+BuffersStuff bs;
 
 typedef struct ShapesData
 {
@@ -23,6 +23,6 @@ typedef struct ShapesData
     vec3* Scales;
 } ShapesData;
 
-extern ShapesData Shapes_Data;
+ShapesData Shapes_Data;
 
 #endif

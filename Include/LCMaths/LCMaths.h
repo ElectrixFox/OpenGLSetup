@@ -13,6 +13,8 @@ typedef vec4 matrixv4[4];
 
 void LogM4(m4 p);
 
+int w, h;
+
 void SetMatrix(m4* set, matrixv4 as);
 
 m4 Mul(m4 x, m4 y);

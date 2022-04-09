@@ -26,6 +26,7 @@ ShaderSources PharseShader(const LCstring FilePath)
     int size = sizeof(char*) * 1024;
     char* source = malloc(size);
 
+
     FILE* fp;
     fp = fopen(FilePath, "r");
 
@@ -68,7 +69,7 @@ ShaderSources PharseShader(const LCstring FilePath)
 
     }
     fclose(fp);
-    
+
     ShaderSources ss;
 
     ss.VertexSource = OS[0];
@@ -97,7 +98,7 @@ unsigned int CreateShader(const LCstring FilePath)
         if(!success)
         {
             glGetShaderInfoLog(vS, 512, NULL, infoLog);
-            printf("Vertex shader broken: %s", infoLog);
+            printf("Vertex shader broken: %s", vS);
         }
     };
 
@@ -133,7 +134,7 @@ unsigned int CreateShader(const LCstring FilePath)
         if(!success)
         {
             glGetProgramInfoLog(program, 512, NULL, infoLog);
-            printf("Program broken broken: %s", infoLog);
+            printf("Program broken broken: %s", program);
         }
     };
 

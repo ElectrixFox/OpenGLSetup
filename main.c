@@ -154,8 +154,8 @@ int main()
     View = M4_Identity();
     Projection = M4_Identity();
     
-    Image("Face.png", (vec3){0, 0, 0}, (vec3){1, 1, 1});
-    Square(1, (vec3){300, 300, 0}, (vec3){0.5, 0.5, 0.5});
+    Image("Face.png", (vec3){500, 500, 0}, (vec3){1, 1, 1});
+    Square(1, (vec3){500, 500, 0}, (vec3){0.5, 0.5, 0.5});
     Triangle(0.25f, (vec3){500, 500, 0}, (vec3){1, 1, 1});
 
 
@@ -169,7 +169,7 @@ int main()
     LogM4(Projection);
 
     m4 trns = M4_Identity();
-    Transform(&trns, (vec3){-500, -500, 0.0});
+    Transform(&trns, (vec3){-250.0, 0.0, 0.0});
     Scale(&Model, (vec3){1.0, 1.0, 1.0});
 
     MVP = Mul(Mul(Model, View), Projection);
