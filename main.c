@@ -7,6 +7,8 @@
 #include <LCString/LCString.h>
 #include <LCMaths/LCMaths.h>
 
+#include "RenderAssistant.h"
+
 #include "Shader.h"
 #include "Texture.h"
 #include "VertexBuffer.h"
@@ -16,8 +18,8 @@
 #include "Shapes.h"
 #include "Renderer.h"
 
-unsigned int as = 0;
 extern BuffersStuff bs;
+extern unsigned int as;
 
 float wid, high;
 int x_angle = 0;

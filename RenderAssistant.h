@@ -24,5 +24,5 @@ typedef struct ShapesData
 } ShapesData;
 
 extern ShapesData Shapes_Data;
-
+extern unsigned int as;
 #endif
