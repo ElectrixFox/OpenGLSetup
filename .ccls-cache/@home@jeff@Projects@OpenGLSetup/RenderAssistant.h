@@ -14,8 +14,6 @@ typedef struct BuffersStuff
     unsigned int* textures;
 } BuffersStuff;
 
-extern BuffersStuff bs;
-
 typedef struct ShapesData
 {
     vec3* Transforms;
@@ -23,6 +21,19 @@ typedef struct ShapesData
     vec3* Scales;
 } ShapesData;
 
-extern ShapesData Shapes_Data;
-extern unsigned int as;
+typedef struct
+{
+	unsigned int vbo;
+	unsigned int vao;
+	unsigned int ibo;
+	unsigned int shader;
+} Buffer;
+
+typedef struct
+{
+	unsigned int Size;
+	Buffer* buffers;
+} RenderInstance;
+
+void AddBuffer(Buffer buffer, RenderInstance* renderInstance);
 #endif

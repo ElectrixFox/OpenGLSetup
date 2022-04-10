@@ -19,7 +19,7 @@
 #include "Renderer.h"
 
 extern BuffersStuff bs;
-extern unsigned int as;
+unsigned int as = 0;
 
 float wid, high;
 int x_angle = 0;
@@ -30,11 +30,7 @@ int cr = 0;
 vec3 crt = {0};
 int crtc = 0;
 
-int kan = 0;
-
 int Width_x, Height_y;
-
-unsigned int stop = 0;
 
 m4 Projection;
 m4 View;
@@ -48,84 +44,6 @@ GLFWwindow* CreateWindow(int width, int height, char* title)
     glfwGetWindowSize(window, &Width_x, &Height_y);
 
     return window;
-}
-
-int Callback(GLFWwindow* window, int key, int scancode, int action, int mods)
-{
-    if(key == GLFW_KEY_SPACE)
-    {
-        stop = 1;
-    }
-    else if(key == GLFW_KEY_UP)
-    {
-        if(kan == 0)
-            x_angle++;
-        else if(kan == 1)
-            y_angle++;
-        else if(kan == 2)
-            z_angle++;
-    }
-    else if(key == GLFW_KEY_ENTER)
-    {
-        printf("\n x: %d y: %d z: %d\n", x_angle, y_angle, z_angle);
-        LogM4(View);
-        printf("\n");
-    }
-    else if(key == GLFW_KEY_DOWN)
-    {
-        if(kan == 0)
-            x_angle--;
-        else if(kan == 1)
-            y_angle--;
-        else if(kan == 2)
-            z_angle--;
-    }
-    else if(key == GLFW_KEY_X)
-    {
-        kan = 0;
-    }
-    else if(key == GLFW_KEY_Y)
-    {
-        kan = 1;
-    }
-    else if(key == GLFW_KEY_Z)
-    {
-        kan = 2;
-    }
-    else if(key == GLFW_KEY_0)
-    {
-        x_angle = 0;
-        y_angle = 0;
-        z_angle = 0;
-    }
-    else if(key == GLFW_KEY_W)
-    {
-        cr += 1;
-    }
-    else if(key == GLFW_KEY_S)
-    {
-        cr -= 1;
-    }
-    else if(key == GLFW_KEY_A)
-    {
-        crt[crtc] += 1;
-    }
-    else if(key == GLFW_KEY_D)
-    {
-        crt[crtc] -= 1;
-    }
-    else if(key == GLFW_KEY_1)
-    {
-        crtc = 0;
-    }
-    else if(key == GLFW_KEY_2)
-    {
-        crtc = 1;
-    }
-    else if(key == GLFW_KEY_3)
-    {
-        crtc = 2;
-    }
 }
 
 extern ShapesData Shapes_Data;
@@ -144,8 +62,6 @@ int main()
 
     GLFWwindow* window = CreateWindow(960, 540, "Hello World!");
 
-    glfwSetKeyCallback(window, Callback);
-
     glewInit();
 
     glEnable(GL_BLEND);
@@ -155,17 +71,26 @@ int main()
     m4 Model = M4_Identity();
     View = M4_Identity();
     Projection = M4_Identity();
-    
-    Image("Face.png", (vec3){0, 0, 0}, (vec3){1, 1, 1});
-    Square(1, (vec3){300, 300, 0}, (vec3){0.5, 0.5, 0.5});
-    Triangle(0.25f, (vec3){500, 500, 0}, (vec3){1, 1, 1});
 
-
+    //Buffer image = Image("Face.png", (vec3){0, 0, 0}, (vec3){1, 1, 1});
+    Buffer square = Square(1, (vec3){300, 300, 0}, (vec3){0.5, 0.5, 0.5});
+    //Buffer triangle = Triangle(0.25f, (vec3){500, 500, 0}, (vec3){1, 1, 1});
 
     m4 rot = M4_Identity();
     m4 rx = M4_Identity();
     m4 ry = M4_Identity();
     m4 rz = M4_Identity();
+
+    RenderInstance rI;
+
+    rI.buffers = malloc(sizeof(Buffer) * 128);
+    AddBuffer(square, &rI);
+    //AddBuffer(image, rI);
+    //AddBuffer(triangle, rI);
+
+    //rI->buffers[0] = square;
+    //rI->buffers[1] = image;
+    //rI->buffers[2] = triangle;
 
     printf("\n");
     LogM4(Projection);
@@ -178,16 +103,6 @@ int main()
 
     while(!glfwWindowShouldClose(window))
     {
-        if(stop == 1)
-            return 0;
-        
-        if(kan == 0)
-            rot = Rotation(rot, x_angle, (vec3){1.0f, 0.0f, 0.0f});
-        else if(kan == 1)
-            rot = Rotation(rot, y_angle, (vec3){0.0f, 1.0f, 0.0f});
-        else if(kan == 2)
-            rot = Rotation(rot, z_angle, (vec3){0.0f, 0.0f, 1.0f});
-        
         View = Mul(Rotation(View, cr, (vec3){1.0f, 0.0f, 0.0f}), LookAt((vec3){1, 0, 0}, (vec3){0, 1, 0}, (vec3){0, 0, 1}, crt));
 
 
@@ -195,9 +110,9 @@ int main()
 
         MVP = Mul(Mul(Model, View), Projection);
 
-        SetUniformM4(bs.shaders[0], "U_Transform", MVP);
+        //SetUniformM4(bs.shaders[0], "U_Transform", MVP);
 
-        Render(window);
+        Render(window, rI);
     }
 
     glfwTerminate();

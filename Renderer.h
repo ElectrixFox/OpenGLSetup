@@ -22,6 +22,6 @@ extern ShapesData Shapes_Data;
 extern m4 View;
 extern m4 Projection;
 
-void Render(GLFWwindow* window);
+void Render(GLFWwindow* window, RenderInstance renderInstance);
 
 #endif
