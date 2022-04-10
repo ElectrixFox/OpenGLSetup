@@ -8,8 +8,7 @@ void Render(GLFWwindow* window, RenderInstance renderInstance)
 
     int size = renderInstance.Size;
     Buffer* buffers = renderInstance.buffers;
-    printf("size = %d\n", size);
-    for (int i = 0; i < 1; i++)
+    for (int i = 0; i < size; i++)
     {
 	Buffer temp = buffers[i];
 	unsigned int ibo = temp.ibo, vbo = temp.vbo, vao = temp.vao, program = temp.shader;

@@ -31,9 +31,11 @@ typedef struct
 
 typedef struct
 {
-	unsigned int Size;
+	size_t Size;
 	Buffer* buffers;
 } RenderInstance;
+
+void InitRenderInstance(RenderInstance* renderInstance);
 
 void AddBuffer(Buffer buffer, RenderInstance* renderInstance);
 #endif

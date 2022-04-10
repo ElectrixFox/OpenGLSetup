@@ -1,16 +1,17 @@
 #pragma once
 #include "RenderAssistant.h"
 
-
-BuffersStuff bs;
-
-ShapesData Shapes_Data;
+void InitRenderInstance(RenderInstance* renderInstance)
+{
+	renderInstance->Size = 0;
+	renderInstance->buffers = malloc(sizeof(Buffer) * 128);
+}
 
 void AddBuffer(Buffer buffer, RenderInstance* renderInstance)
 {
 	int size = (*renderInstance).Size;
 
 	printf("Buffering Size: %d\n", size);
-	renderInstance->buffers[0] = buffer;
+	renderInstance->buffers[size] = buffer;
 	renderInstance->Size = size + 1;
 }
