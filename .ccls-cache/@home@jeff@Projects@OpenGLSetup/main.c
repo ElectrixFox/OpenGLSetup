@@ -18,7 +18,6 @@
 #include "Shapes.h"
 #include "Renderer.h"
 
-extern BuffersStuff bs;
 unsigned int as = 0;
 
 float wid, high;
