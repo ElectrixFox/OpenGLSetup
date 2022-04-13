@@ -13,6 +13,8 @@
 #include "IndexBuffer.h"
 #include "RenderAssistant.h"
 
+#include "Transforms.h"
+
 // Creates a square.
 Buffer Square(float cR, vec3 trans, vec3 scale);
 

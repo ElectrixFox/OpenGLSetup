@@ -8,6 +8,7 @@
 
 typedef float vec4[4];
 typedef float vec3[3];
+typedef float vec2[2];
 typedef struct m4 { vec4 matrix[4]; } m4;
 typedef vec4 matrixv4[4];
 

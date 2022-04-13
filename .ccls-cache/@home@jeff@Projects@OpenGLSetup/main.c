@@ -18,9 +18,6 @@
 #include "Shapes.h"
 #include "Renderer.h"
 
-unsigned int as = 0;
-
-float wid, high;
 int x_angle = 0;
 int y_angle = 0;
 int z_angle = 0;
@@ -29,7 +26,7 @@ int cr = 0;
 vec3 crt = {0};
 int crtc = 0;
 
-int Width_x, Height_y;
+vec2 display;
 
 m4 Projection;
 m4 View;
@@ -37,10 +34,12 @@ m4 MVP;
 
 GLFWwindow* CreateWindow(int width, int height, char* title)
 {
+    int Width_x, Height_y;
     GLFWwindow* window = glfwCreateWindow(width, height, title, 0, 0);
     glfwMakeContextCurrent(window);
 
     glfwGetWindowSize(window, &Width_x, &Height_y);
+    display[0] = Width_x, display[1] = Height_y;
 
     return window;
 }
@@ -61,6 +60,8 @@ int main()
     View = M4_Identity();
     Projection = M4_Identity();
 
+    m4* transforms = malloc(sizeof(m4*) * 128);
+
     Buffer image = Image("Face.png", (vec3){0, 0, 0}, (vec3){1, 1, 1});
     Buffer square = Square(1, (vec3){300, 300, 0}, (vec3){0.5, 0.5, 0.5});
     Buffer triangle = Triangle(0.25f, (vec3){500, 500, 0}, (vec3){1, 1, 1});
@@ -77,6 +78,7 @@ int main()
     AddBuffer(image, &rI);
     AddBuffer(triangle, &rI);
 
+    // Here is where we need to test the new transforming
     printf("\n");
     LogM4(Projection);
 

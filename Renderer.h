@@ -15,10 +15,7 @@
 #include "RenderAssistant.h"
 #include "Shapes.h"
 
-extern BuffersStuff bs;
-
 extern unsigned int as;
-extern ShapesData Shapes_Data;
 extern m4 View;
 extern m4 Projection;
 

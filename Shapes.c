@@ -24,7 +24,7 @@ Buffer Square(float cR, vec3 trans, vec3 scale)
     SetUniform4f(program, "U_Colour", cR, 1.0f, 0.0f, 1.0f);
 
     m4 proj = M4_Identity();
-    Transform(&proj, trans);
+    TransformMatrix(&proj, trans);
     Scale(&proj, scale);
     SetUniformM4(program, "U_Transform", proj);
 
@@ -59,7 +59,7 @@ Buffer Triangle(float cR, vec3 trans, vec3 scale)
     SetUniform4f(program, "U_Colour", cR, 1.0f, 0.0f, 1.0f);
 
     m4 proj = M4_Identity();
-    Transform(&proj, trans);
+    TransformMatrix(&proj, trans);
     Scale(&proj, scale);
     SetUniformM4(program, "U_Transform", proj);
 
@@ -103,7 +103,7 @@ Buffer Image(const char* FilePath, vec3 trans, vec3 scale)
     SetUniform4f(program, "U_Colour", 1.0f, 0.5f, 0.2f, 1.0f);
 
     m4 proj = M4_Identity();
-    Transform(&proj, trans);
+    TransformMatrix(&proj, trans);
     Scale(&proj, scale);
     SetUniformM4(program, "U_Transform", proj);
 
