@@ -60,6 +60,8 @@ int main()
     View = M4_Identity();
     Projection = M4_Identity();
 
+    TransformObject* TransformObjects = malloc(sizeof(TransformObject) * 2);
+
     m4* transforms = malloc(sizeof(m4*) * 128);
 
     Buffer image = Image("Face.png", (vec3){0, 0, 0}, (vec3){1, 1, 1});
@@ -78,25 +80,31 @@ int main()
     AddBuffer(image, &rI);
     AddBuffer(triangle, &rI);
 
-    // Here is where we need to test the new transforming
+    // Here is where we need to test the new transforming.
+    // To-Do: Re-write the rotation because it is a little complex atm.
+
     printf("\n");
     LogM4(Projection);
 
     m4 trns = M4_Identity();
-    Transform(&trns, (vec3){-500, -500, 0.0});
-    Scale(&Model, (vec3){1.0, 1.0, 1.0});
-
-    MVP = Mul(Mul(Model, View), Projection);
+    //Transform(&trns, (vec3){-500, -500, 0.0});
+    //Scale(&Model, (vec3){1.0, 1.0, 1.0});
+    
+    TransformMatrix(&trns, (vec3){1, 1, 1});
+    RotateMaxtrix(&trns, (vec3){0, 0, 90});
+    //MVP = Mul(Mul(Model, View), Projection);
+//    trns = Rotation(trns, 90, (vec3){0, 0, 1});
 
     while(!glfwWindowShouldClose(window))
     {
-        View = Mul(Rotation(View, cr, (vec3){1.0f, 0.0f, 0.0f}), LookAt((vec3){1, 0, 0}, (vec3){0, 1, 0}, (vec3){0, 0, 1}, crt));
+        //View = Mul(Rotation(View, cr, (vec3){1.0f, 0.0f, 0.0f}), LookAt((vec3){1, 0, 0}, (vec3){0, 1, 0}, (vec3){0, 0, 1}, crt));
 
 
-        SetMatrix(&Model, Mul(trns, rot).matrix);
+        //SetMatrix(&Model, Mul(trns, rot).matrix);
 
-        MVP = Mul(Mul(Model, View), Projection);
-
+        //MVP = Mul(Mul(Model, View), Projection);
+	
+	SetUniformM4(rI.buffers[1].shader, "U_Transform", trns);
         Render(window, rI);
     }
 

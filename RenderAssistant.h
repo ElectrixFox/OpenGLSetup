@@ -19,7 +19,12 @@ typedef struct
 	Buffer* buffers;
 } RenderInstance;
 
-
+typedef struct
+{
+	vec2 position;
+	vec3 rotation;
+	vec3 scale;
+} TransformObject;
 
 void InitRenderInstance(RenderInstance* renderInstance);
 
