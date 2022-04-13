@@ -10,4 +10,7 @@ void TransformMatrix(m4* transform_matrix, vec3 newTransform);
 // Rotate the matrix.
 void RotateMaxtrix(m4* rotation_matrix, vec3 Rotation);
 
+// Scales the matrix
+void ScaleMatrix(m4* scale_matrix, vec3 scale);
+
 #endif

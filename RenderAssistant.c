@@ -15,3 +15,8 @@ void AddBuffer(Buffer buffer, RenderInstance* renderInstance)
 	renderInstance->buffers[size] = buffer;
 	renderInstance->Size = size + 1;
 }
+
+void InitResourceManager(ResourceManager* resourceManager)
+{
+	resourceManager->TransformObjects = malloc(sizeof(TransformObject) * 128);
+}

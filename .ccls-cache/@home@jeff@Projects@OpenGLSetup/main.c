@@ -76,24 +76,17 @@ int main()
     RenderInstance rI;
     InitRenderInstance(&rI);
 
+    ResourceManager rM;
+    InitResourceManager(&rM);
+
     AddBuffer(square, &rI);
     AddBuffer(image, &rI);
     AddBuffer(triangle, &rI);
 
     // Here is where we need to test the new transforming.
     // To-Do: Re-write the rotation because it is a little complex atm.
-
-    printf("\n");
-    LogM4(Projection);
-
     m4 trns = M4_Identity();
-    //Transform(&trns, (vec3){-500, -500, 0.0});
-    //Scale(&Model, (vec3){1.0, 1.0, 1.0});
-    
     TransformMatrix(&trns, (vec3){1, 1, 1});
-    RotateMaxtrix(&trns, (vec3){0, 0, 90});
-    //MVP = Mul(Mul(Model, View), Projection);
-//    trns = Rotation(trns, 90, (vec3){0, 0, 1});
 
     while(!glfwWindowShouldClose(window))
     {

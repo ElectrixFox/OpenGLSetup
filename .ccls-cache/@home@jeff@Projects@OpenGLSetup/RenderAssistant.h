@@ -26,8 +26,16 @@ typedef struct
 	vec3 scale;
 } TransformObject;
 
+typedef struct
+{
+	TransformObject* TransformObjects; // 32 bytes
+
+} ResourceManager;
+
 void InitRenderInstance(RenderInstance* renderInstance);
 
 void AddBuffer(Buffer buffer, RenderInstance* renderInstance);
+
+void InitResourceManager(ResourceManager* resourceManager);
 
 #endif
