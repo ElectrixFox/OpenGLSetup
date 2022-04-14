@@ -35,3 +35,14 @@ void ViewMatrix(m4* view_matrix, vec3 cam_Pos)
 
 	//View = Mul(Rotation(View, cr, (vec3){1.0f, 0.0f, 0.0f}), LookAt((vec3){1, 0, 0}, (vec3){0, 1, 0}, (vec3){0, 0, 1}, crt));
 }
+
+m4 InitialiseObjectTransforms(vec2 position, vec3 scale, vec3 rotation)
+{
+	m4 model = M4_Identity();
+
+	TransformMatrix(&model, (vec3){position[0], position[1], 0});
+	RotateMaxtrix(&model, rotation);
+	ScaleMatrix(&model, scale);
+
+	return model;
+}

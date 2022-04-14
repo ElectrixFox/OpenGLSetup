@@ -12,10 +12,10 @@ void Render(GLFWwindow* window, RenderInstance renderInstance, ResourceManager r
 
     for (int i = 0; i < size; i++)
     {
-	vec2 posi = {transobjs[i].position[0], transobjs[i].position[1]};
 	m4 model = M4_Identity();
-	TransformMatrix(&model, posi);
-	printf("Position = %0.f, %0.f\n", posi[0], posi[1]);
+
+	// Change this so that it takes in 3 separate vectors not the objects as it could be more efficient and readable.
+	model = InitialiseObjectTransforms(transobjs[i].position, transobjs[i].scale, transobjs[i].rotation);
 	m4 MVP = Mul(model, VP);
 
 	Buffer temp = buffers[i];

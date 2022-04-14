@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include "Include/LCMaths/LCMaths.h"
 
+#define DEFAULT_VEC3 {1, 1, 1}
 typedef struct
 {
 	unsigned int vbo;
@@ -31,6 +32,12 @@ typedef struct
 	size_t Size;
 	TransformObject* TransformObjects; // 32 bytes
 } ResourceManager;
+
+typedef struct
+{
+	TransformObject transformObject;
+	Buffer buffer;
+} MeshObject;
 
 void InitRenderInstance(RenderInstance* renderInstance);
 

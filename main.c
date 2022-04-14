@@ -74,6 +74,8 @@ int main()
 
     m4* transforms = malloc(sizeof(m4*) * 128);
 
+    MeshObject* meshObjects = malloc(sizeof(meshObjects) * 128);
+
     Buffer image = Image("Face.png", (vec3){0, 0, 0}, (vec3){1, 1, 1});
     Buffer square = Square(1, (vec3){300, 300, 0}, (vec3){0.5, 0.5, 0.5});
     Buffer triangle = Triangle(0.25f, (vec3){500, 500, 0}, (vec3){1, 1, 1});
@@ -88,7 +90,10 @@ int main()
     AddBuffer(image, &rI);
     AddBuffer(triangle, &rI);
 
-    TransformObject img = {.position = {0}}, sqr = {.position = {300, 300}}, tri = {.position = {500, 500}};
+    TransformObject img = {.position = {0}, .scale = DEFAULT_VEC3, .rotation = {0}};
+    TransformObject sqr = {.position = {300, 300}, .scale = DEFAULT_VEC3, .rotation = {0}};
+    TransformObject tri = {.position = {500, 500}, .scale = DEFAULT_VEC3, .rotation = {0}};
+
     AddResource(sqr, &rM);
     AddResource(img, &rM);
     AddResource(tri, &rM);
