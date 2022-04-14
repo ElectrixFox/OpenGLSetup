@@ -6,19 +6,18 @@ void Render(GLFWwindow* window, MeshManager meshManager)
     glClear(GL_COLOR_BUFFER_BIT);
     glClearColor(0.25f, 0.5f, 0.35f, 1.0f);
 
-    int size = renderInstance.Size;
-    Buffer* buffers = renderInstance.buffers;
-    TransformObject* transobjs = resourceManager.TransformObjects;
+    int size = meshManager.Size;
 
     for (int i = 0; i < size; i++)
     {
+	MeshObject mesh = meshManager.meshObjects[i];
 	m4 model = M4_Identity();
 
 	// Change this so that it takes in 3 separate vectors not the objects as it could be more efficient and readable.
-	model = InitialiseObjectTransforms(transobjs[i].position, transobjs[i].scale, transobjs[i].rotation);
+	model = InitialiseObjectTransforms(mesh.transformObject.position, mesh.transformObject.scale, mesh.transformObject.rotation);
 	m4 MVP = Mul(model, VP);
 
-	Buffer temp = buffers[i];
+	Buffer temp = mesh.buffer;
 	unsigned int ibo = temp.ibo, vbo = temp.vbo, vao = temp.vao, program = temp.shader;
 
 	glUseProgram(program);

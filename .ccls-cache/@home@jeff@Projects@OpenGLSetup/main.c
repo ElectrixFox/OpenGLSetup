@@ -77,31 +77,14 @@ int main()
     MeshObject square = Square(1, (vec3){300, 300, 0}, (vec3){1, 1, 1});
     MeshObject triangle = Triangle(0.25f, (vec3){500, 500, 0}, (vec3){1, 1, 1});
 
-    RenderInstance rI;
-    InitRenderInstance(&rI);
-
-    ResourceManager rM;
-    InitResourceManager(&rM);
-
-    AddBuffer(square.buffer, &rI);
-    AddBuffer(image.buffer, &rI);
-    AddBuffer(triangle.buffer, &rI);
-
     MeshManager mM;
     InitMeshManager(&mM);
 
     AddMesh(square, &mM);
     AddMesh(image, &mM);
     AddMesh(triangle, &mM);
-//    TransformObject img = {.position = {0}, .scale = DEFAULT_VEC3, .rotation = {0}};
-//    TransformObject sqr = {.position = {300, 300}, .scale = DEFAULT_VEC3, .rotation = {0}};
-//    TransformObject tri = {.position = {500, 500}, .scale = DEFAULT_VEC3, .rotation = {0}};
 
-    AddResource(square.transformObject, &rM);
-    AddResource(image.transformObject, &rM);
-    AddResource(triangle.transformObject, &rM);
 
-    // Here is where we need to test the new transforming.
     // To-Do: Re-write the rotation because it is a little complex atm.
     m4 trns = M4_Identity();
     TransformMatrix(&trns, (vec3){1, 1, 1});
@@ -110,10 +93,10 @@ int main()
     {
 	vec3 funnel = {pos[0], pos[1], pos[2]};
 	Camera(&View, funnel);
-//      MVP = Mul(Mul(Model, View), Projection);
-//	SetUniformM4(rI.buffers[1].shader, "U_Transform", MVP);
+
 	VP = Mul(View, Projection);
-        Render(window, rI, rM);
+
+        Render(window, mM);
     }
 
     glfwTerminate();
