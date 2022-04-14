@@ -20,6 +20,8 @@ void Render(GLFWwindow* window, MeshManager meshManager)
 	Buffer temp = mesh.buffer;
 	unsigned int ibo = temp.ibo, vbo = temp.vbo, vao = temp.vao, program = temp.shader;
 
+	glBindTexture(GL_TEXTURE_2D, temp.texture);
+
 	glUseProgram(program);
 	SetUniformM4(program, "U_Transform", MVP);
 

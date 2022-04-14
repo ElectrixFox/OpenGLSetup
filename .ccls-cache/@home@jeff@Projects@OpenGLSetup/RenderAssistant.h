@@ -12,6 +12,7 @@ typedef struct
 	unsigned int vao;
 	unsigned int ibo;
 	unsigned int shader;
+	unsigned short int texture;
 } Buffer;
 
 typedef struct

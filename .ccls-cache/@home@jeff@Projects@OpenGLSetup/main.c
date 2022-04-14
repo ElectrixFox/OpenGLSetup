@@ -65,15 +65,11 @@ int main()
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     MVP = M4_Identity();
-    m4 Model = M4_Identity();
     View = M4_Identity();
     Projection = M4_Identity();
 
-    TransformObject* TransformObjects = malloc(sizeof(TransformObject) * 2);
-
-    m4* transforms = malloc(sizeof(m4*) * 128);
-
     MeshObject image = Image("Face.png", (vec3){0, 0, 0}, (vec3){1, 1, 1});
+    MeshObject image2 = Image("Boris.png", (vec3){-300, -100, 0}, (vec3){1, 1, 1});
     MeshObject square = Square(1, (vec3){300, 300, 0}, (vec3){1, 1, 1});
     MeshObject triangle = Triangle(0.25f, (vec3){500, 500, 0}, (vec3){1, 1, 1});
 
@@ -83,6 +79,7 @@ int main()
     AddMesh(square, &mM);
     AddMesh(image, &mM);
     AddMesh(triangle, &mM);
+    AddMesh(image2, &mM);
 
 
     // To-Do: Re-write the rotation because it is a little complex atm.
