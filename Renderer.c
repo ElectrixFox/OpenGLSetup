@@ -1,7 +1,7 @@
 #include "Renderer.h"
 #include <stdio.h>
 
-void Render(GLFWwindow* window, RenderInstance renderInstance, ResourceManager resourceManager)
+void Render(GLFWwindow* window, MeshManager meshManager)
 {
     glClear(GL_COLOR_BUFFER_BIT);
     glClearColor(0.25f, 0.5f, 0.35f, 1.0f);

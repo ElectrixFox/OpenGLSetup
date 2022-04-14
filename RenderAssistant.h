@@ -39,11 +39,18 @@ typedef struct
 	Buffer buffer;
 } MeshObject;
 
-void InitRenderInstance(RenderInstance* renderInstance);
+typedef struct
+{
+	size_t Size;
+	MeshObject* meshObjects;
+} MeshManager;
 
+void InitRenderInstance(RenderInstance* renderInstance);
 void AddBuffer(Buffer buffer, RenderInstance* renderInstance);
 
 void InitResourceManager(ResourceManager* resourceManager);
-
 void AddResource(TransformObject resource, ResourceManager* resourceManager);
+
+void InitMeshManager(MeshManager* meshManager);
+void AddMesh(MeshObject meshObject, MeshManager* meshManager);
 #endif

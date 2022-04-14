@@ -21,6 +21,6 @@ extern m4 Projection;
 
 extern m4 VP;
 
-void Render(GLFWwindow* window, RenderInstance renderInstance, ResourceManager resourceManager);
+void Render(GLFWwindow* window, MeshManager meshManager);
 
 #endif

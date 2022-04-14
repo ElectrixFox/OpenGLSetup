@@ -16,13 +16,13 @@
 #include "Transforms.h"
 
 // Creates a square.
-Buffer Square(float cR, vec3 trans, vec3 scale);
+MeshObject Square(float cR, vec3 trans, vec3 scale);
 
 // Creates a triangle.
-Buffer Triangle(float cR, vec3 trans, vec3 scale);
+MeshObject Triangle(float cR, vec3 trans, vec3 scale);
 
 // Square with face.
-Buffer Image(const char* FilePath, vec3 trans, vec3 scale);
+MeshObject Image(const char* FilePath, vec3 trans, vec3 scale);
 
 void SetArray(vec3* array, vec3 item, int index);
 

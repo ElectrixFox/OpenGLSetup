@@ -29,10 +29,9 @@ vec3 pos;
 
 void Callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-	if(key == GLFW_KEY_RIGHT && action == GLFW_PRESS)
+	if(key == GLFW_KEY_RIGHT && (action == GLFW_PRESS || action == GLFW_REPEAT))
 	{
 		pos[0] = pos[0] + 1;
-		printf("(%0.f, %0.f)\n", pos[0], pos[1]);
 	}
 }
 
@@ -74,11 +73,9 @@ int main()
 
     m4* transforms = malloc(sizeof(m4*) * 128);
 
-    MeshObject* meshObjects = malloc(sizeof(meshObjects) * 128);
-
-    Buffer image = Image("Face.png", (vec3){0, 0, 0}, (vec3){1, 1, 1});
-    Buffer square = Square(1, (vec3){300, 300, 0}, (vec3){0.5, 0.5, 0.5});
-    Buffer triangle = Triangle(0.25f, (vec3){500, 500, 0}, (vec3){1, 1, 1});
+    MeshObject image = Image("Face.png", (vec3){0, 0, 0}, (vec3){1, 1, 1});
+    MeshObject square = Square(1, (vec3){300, 300, 0}, (vec3){1, 1, 1});
+    MeshObject triangle = Triangle(0.25f, (vec3){500, 500, 0}, (vec3){1, 1, 1});
 
     RenderInstance rI;
     InitRenderInstance(&rI);
@@ -86,17 +83,23 @@ int main()
     ResourceManager rM;
     InitResourceManager(&rM);
 
-    AddBuffer(square, &rI);
-    AddBuffer(image, &rI);
-    AddBuffer(triangle, &rI);
+    AddBuffer(square.buffer, &rI);
+    AddBuffer(image.buffer, &rI);
+    AddBuffer(triangle.buffer, &rI);
 
-    TransformObject img = {.position = {0}, .scale = DEFAULT_VEC3, .rotation = {0}};
-    TransformObject sqr = {.position = {300, 300}, .scale = DEFAULT_VEC3, .rotation = {0}};
-    TransformObject tri = {.position = {500, 500}, .scale = DEFAULT_VEC3, .rotation = {0}};
+    MeshManager mM;
+    InitMeshManager(&mM);
 
-    AddResource(sqr, &rM);
-    AddResource(img, &rM);
-    AddResource(tri, &rM);
+    AddMesh(square, &mM);
+    AddMesh(image, &mM);
+    AddMesh(triangle, &mM);
+//    TransformObject img = {.position = {0}, .scale = DEFAULT_VEC3, .rotation = {0}};
+//    TransformObject sqr = {.position = {300, 300}, .scale = DEFAULT_VEC3, .rotation = {0}};
+//    TransformObject tri = {.position = {500, 500}, .scale = DEFAULT_VEC3, .rotation = {0}};
+
+    AddResource(square.transformObject, &rM);
+    AddResource(image.transformObject, &rM);
+    AddResource(triangle.transformObject, &rM);
 
     // Here is where we need to test the new transforming.
     // To-Do: Re-write the rotation because it is a little complex atm.

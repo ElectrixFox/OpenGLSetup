@@ -31,3 +31,18 @@ void AddResource(TransformObject resource, ResourceManager* resourceManager)
 	resourceManager->TransformObjects[size] = resource;
 	resourceManager->Size = size + 1;
 }
+
+void InitMeshManager(MeshManager* meshManager)
+{
+	meshManager->Size = 0;
+	meshManager->meshObjects = malloc(sizeof(MeshObject) * 128);
+}
+
+void AddMesh(MeshObject meshObject, MeshManager* meshManager)
+{
+	int size = meshManager->Size;
+
+	printf("Mesh Size: %d\n", size);
+	meshManager->meshObjects[size] = meshObject;
+	meshManager->Size = size + 1;
+}
