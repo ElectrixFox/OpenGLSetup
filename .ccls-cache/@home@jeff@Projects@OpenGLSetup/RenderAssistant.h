@@ -5,24 +5,52 @@
 #include <stdlib.h>
 #include "Include/LCMaths/LCMaths.h"
 
-typedef struct BuffersStuff
+#define DEFAULT_VEC3 {1, 1, 1}
+typedef struct
 {
-    unsigned int* vbos;
-    unsigned int* vaos;
-    unsigned int* ibos;
-    unsigned int* shaders;
-    unsigned int* textures;
-} BuffersStuff;
+	unsigned int vbo;
+	unsigned int vao;
+	unsigned int ibo;
+	unsigned int shader;
+} Buffer;
 
-extern BuffersStuff bs;
-
-typedef struct ShapesData
+typedef struct
 {
-    vec3* Transforms;
-    vec3* Rotations;
-    vec3* Scales;
-} ShapesData;
+	size_t Size;
+	Buffer* buffers;
+} RenderInstance;
 
-extern ShapesData Shapes_Data;
-extern unsigned int as;
+typedef struct
+{
+	vec2 position;
+	vec3 rotation;
+	vec3 scale;
+} TransformObject;
+
+typedef struct
+{
+	size_t Size;
+	TransformObject* TransformObjects; // 32 bytes
+} ResourceManager;
+
+typedef struct
+{
+	TransformObject transformObject;
+	Buffer buffer;
+} MeshObject;
+
+typedef struct
+{
+	size_t Size;
+	MeshObject* meshObjects;
+} MeshManager;
+
+void InitRenderInstance(RenderInstance* renderInstance);
+void AddBuffer(Buffer buffer, RenderInstance* renderInstance);
+
+void InitResourceManager(ResourceManager* resourceManager);
+void AddResource(TransformObject resource, ResourceManager* resourceManager);
+
+void InitMeshManager(MeshManager* meshManager);
+void AddMesh(MeshObject meshObject, MeshManager* meshManager);
 #endif

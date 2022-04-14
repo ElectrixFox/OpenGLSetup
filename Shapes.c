@@ -1,9 +1,8 @@
 #include "Shapes.h"
 
-void Square(float cR, vec3 trans, vec3 scale)
+MeshObject Square(float cR, vec3 trans, vec3 scale)
 {
-    printf("\nSquare %d", as);
-
+    MeshObject mesh = {0};
     float vertices[] =
     {
         0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
@@ -18,29 +17,32 @@ void Square(float cR, vec3 trans, vec3 scale)
         1, 2, 3
     };
 
-    bs.shaders[as] = CreateShader("shader.shader");
+    unsigned int program, vbo, vao, ibo;
+    program = CreateShader("shader.shader");
 
-    SetUniformM4(bs.shaders[as], "U_Transform", M4_Identity());
+    SetUniformM4(program, "U_Transform", M4_Identity());
 
-    SetUniform4f(bs.shaders[as], "U_Colour", cR, 1.0f, 0.0f, 1.0f);
+    SetUniform4f(program, "U_Colour", cR, 1.0f, 0.0f, 1.0f);
 
-    m4 proj = M4_Identity();
-    Transform(&proj, trans);
-    Scale(&proj, scale);
-    SetUniformM4(bs.shaders[as], "U_Transform", proj);
+    vao = CreateVertexArray();
+    vbo = CreateVertexBuffer(vertices, sizeof vertices);
+    ibo = CreateIndexBuffer(indecies, sizeof indecies);
 
-    bs.vaos[as] = CreateVertexArray();
-    bs.vbos[as] = CreateVertexBuffer(vertices, sizeof vertices);
-    bs.ibos[as] = CreateIndexBuffer(indecies, sizeof indecies);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bs.ibos[as]);
-    as++;
+    Buffer buffer = {vbo, vao, ibo, program};
+    TransformObject to = {.position = {trans[0], trans[1]}, {0}, {scale[0], scale[1], scale[3]}};
+
+    printf("ibo = %d, vbo = %d, vao = %d, program = %d\n", ibo, vbo, vao, program);
+
+    mesh.buffer = buffer;
+    mesh.transformObject = to;
+
+    return mesh;
 }
 
-void Triangle(float cR, vec3 trans, vec3 scale)
+MeshObject Triangle(float cR, vec3 trans, vec3 scale)
 {
-    printf("\nTriangle %d", as);
-
     float vertices[] =
     {
        -0.5f, -0.5f, 0.0f, 1.0f, 1.0f,
@@ -53,37 +55,36 @@ void Triangle(float cR, vec3 trans, vec3 scale)
         0, 1, 2,
     };
 
-    bs.shaders[as] = CreateShader("shader.shader");
+    unsigned int program, vbo, vao, ibo;
+    program = CreateShader("shader.shader");
 
-    SetUniformM4(bs.shaders[as], "U_Transform", M4_Identity());
+    SetUniformM4(program, "U_Transform", M4_Identity());
 
-    SetUniform4f(bs.shaders[as], "U_Colour", cR, 1.0f, 0.0f, 1.0f);
+    SetUniform4f(program, "U_Colour", cR, 1.0f, 0.0f, 1.0f);
 
-    m4 proj = M4_Identity();
-    Transform(&proj, trans);
-    Scale(&proj, scale);
-    SetUniformM4(bs.shaders[as], "U_Transform", proj);
+    vao = CreateVertexArray();
+    vbo = CreateVertexBuffer(vertices, sizeof vertices);
+    ibo = CreateIndexBuffer(indecies, sizeof indecies);
 
-    bs.vaos[as] = CreateVertexArray();
-    bs.vbos[as] = CreateVertexBuffer(vertices, sizeof vertices);
-    bs.ibos[as] = CreateIndexBuffer(indecies, sizeof indecies);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+    printf("ibo = %d, vbo = %d, vao = %d, program = %d\n", ibo, vbo, vao, program);
 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bs.ibos[as]);
-    as++;
+    Buffer buffer = (Buffer){vbo, vao, ibo, program};
+    TransformObject transformObject = {{trans[0], trans[1]}, {0}, {scale[0], scale[1], scale[2]}};
+    MeshObject mesh = {0};
+
+    mesh.buffer = buffer;
+    mesh.transformObject = transformObject;
+
+    return mesh;
 }
 
-void Image(const char* FilePath, vec3 trans, vec3 scale)
+MeshObject Image(const char* FilePath, vec3 trans, vec3 scale)
 {
-    int temp = as;
-    printf("as is: %d\n", as);
-    SetArray(&Shapes_Data.Transforms, trans, as);
-    SetArray(&Shapes_Data.Scales, scale, as);
-    SetArray(&Shapes_Data.Rotations, (vec3){0, 0, 0}, temp);
+    unsigned int program, vbo, vao, ibo;
+    program = CreateShader("texShader.shader");
 
-    printf("\nImage %d", as);
-
-    bs.shaders[as] = CreateShader("texShader.shader");
-
+    unsigned int texture;
     float vertices[] =
     {
         0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
@@ -98,24 +99,34 @@ void Image(const char* FilePath, vec3 trans, vec3 scale)
         1, 2, 3
     };
 
-    bs.vaos[as] = CreateVertexArray();
-    bs.vbos[as] = CreateVertexBufferDepth(vertices, sizeof vertices, 0, 3, 5, 0);
+    vao = CreateVertexArray();
+    vbo = CreateVertexBufferDepth(vertices, sizeof vertices, 0, 3, 5, 0);
     AddAttribute(1, 2, 5, 3);
 
-    bs.textures[as] = CreateTexture(FilePath);
-    bs.ibos[as] = CreateIndexBuffer(indecies, sizeof indecies);
+    texture = CreateTexture(FilePath);
+    ibo = CreateIndexBuffer(indecies, sizeof indecies);
 
-    SetUniform4f(bs.shaders[as], "U_Colour", 1.0f, 0.5f, 0.2f, 1.0f);
+    SetUniform4f(program, "U_Colour", 1.0f, 0.5f, 0.2f, 1.0f);
 
     m4 proj = M4_Identity();
-    Transform(&proj, trans);
+    TransformMatrix(&proj, trans);
     Scale(&proj, scale);
-    SetUniformM4(bs.shaders[as], "U_Transform", proj);
+    SetUniformM4(program, "U_Transform", proj);
 
-    SetUniform1i(bs.shaders[as], "U_Texture", 0);
+    SetUniform1i(program, "U_Texture", 0);
 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bs.ibos[as]);
-    as++;
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+
+    printf("ibo = %d, vbo = %d, vao = %d, program = %d\n", ibo, vbo, vao, program);
+
+    Buffer buffer = (Buffer){vbo, vao, ibo, program};
+    TransformObject transformObject = {{trans[0], trans[1]}, {0}, {scale[0], scale[1], scale[2]}};
+    MeshObject mesh = {0};
+
+    mesh.buffer = buffer;
+    mesh.transformObject = transformObject;
+
+    return mesh;
 }
 
 void SetArray(vec3* array, vec3 item, int index)

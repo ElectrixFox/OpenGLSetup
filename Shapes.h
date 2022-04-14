@@ -13,21 +13,16 @@
 #include "IndexBuffer.h"
 #include "RenderAssistant.h"
 
-extern BuffersStuff bs;
-extern unsigned int as;
-
-extern m4 Projection;
-
-extern ShapesData Shapes_Data;
+#include "Transforms.h"
 
 // Creates a square.
-void Square(float cR, vec3 trans, vec3 scale);
+MeshObject Square(float cR, vec3 trans, vec3 scale);
 
 // Creates a triangle.
-void Triangle(float cR, vec3 trans, vec3 scale);
+MeshObject Triangle(float cR, vec3 trans, vec3 scale);
 
 // Square with face.
-void Image(const char* FilePath, vec3 trans, vec3 scale);
+MeshObject Image(const char* FilePath, vec3 trans, vec3 scale);
 
 void SetArray(vec3* array, vec3 item, int index);
 
