@@ -18,5 +18,16 @@ void AddBuffer(Buffer buffer, RenderInstance* renderInstance)
 
 void InitResourceManager(ResourceManager* resourceManager)
 {
+	resourceManager->Size = 0;
 	resourceManager->TransformObjects = malloc(sizeof(TransformObject) * 128);
+}
+
+
+void AddResource(TransformObject resource, ResourceManager* resourceManager)
+{
+	int size = resourceManager->Size;
+
+	printf("Transform Size: %d\n", size);
+	resourceManager->TransformObjects[size] = resource;
+	resourceManager->Size = size + 1;
 }

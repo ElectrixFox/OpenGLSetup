@@ -28,8 +28,8 @@ typedef struct
 
 typedef struct
 {
+	size_t Size;
 	TransformObject* TransformObjects; // 32 bytes
-
 } ResourceManager;
 
 void InitRenderInstance(RenderInstance* renderInstance);
@@ -38,4 +38,5 @@ void AddBuffer(Buffer buffer, RenderInstance* renderInstance);
 
 void InitResourceManager(ResourceManager* resourceManager);
 
+void AddResource(TransformObject resource, ResourceManager* resourceManager);
 #endif

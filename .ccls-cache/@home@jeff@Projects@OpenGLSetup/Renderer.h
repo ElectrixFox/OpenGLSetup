@@ -19,6 +19,8 @@ extern unsigned int as;
 extern m4 View;
 extern m4 Projection;
 
-void Render(GLFWwindow* window, RenderInstance renderInstance);
+extern m4 VP;
+
+void Render(GLFWwindow* window, RenderInstance renderInstance, ResourceManager resourceManager);
 
 #endif

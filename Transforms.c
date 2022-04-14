@@ -25,3 +25,13 @@ void ScaleMatrix(m4* scale_matrix, vec3 scale)
 {
 	Scale(scale_matrix, scale);
 }
+
+void ViewMatrix(m4* view_matrix, vec3 cam_Pos)
+{
+	m4 View = M4_Identity();
+
+	TransformMatrix(&View, cam_Pos);
+	SetMatrix(view_matrix, View.matrix);
+
+	//View = Mul(Rotation(View, cr, (vec3){1.0f, 0.0f, 0.0f}), LookAt((vec3){1, 0, 0}, (vec3){0, 1, 0}, (vec3){0, 0, 1}, crt));
+}

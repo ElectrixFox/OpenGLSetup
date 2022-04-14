@@ -18,19 +18,23 @@
 #include "Shapes.h"
 #include "Renderer.h"
 
-int x_angle = 0;
-int y_angle = 0;
-int z_angle = 0;
-
-int cr = 0;
-vec3 crt = {0};
-int crtc = 0;
-
 vec2 display;
 
 m4 Projection;
 m4 View;
 m4 MVP;
+m4 VP;
+
+vec3 pos;
+
+void Callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+	if(key == GLFW_KEY_RIGHT && action == GLFW_PRESS)
+	{
+		pos[0] = pos[0] + 1;
+		printf("(%0.f, %0.f)\n", pos[0], pos[1]);
+	}
+}
 
 GLFWwindow* CreateWindow(int width, int height, char* title)
 {
@@ -41,7 +45,13 @@ GLFWwindow* CreateWindow(int width, int height, char* title)
     glfwGetWindowSize(window, &Width_x, &Height_y);
     display[0] = Width_x, display[1] = Height_y;
 
+    glfwSetKeyCallback(window, Callback);
     return window;
+}
+
+void Camera(m4* cam, vec3 position)
+{
+	ViewMatrix(cam, position);
 }
 
 int main()
@@ -68,11 +78,6 @@ int main()
     Buffer square = Square(1, (vec3){300, 300, 0}, (vec3){0.5, 0.5, 0.5});
     Buffer triangle = Triangle(0.25f, (vec3){500, 500, 0}, (vec3){1, 1, 1});
 
-    m4 rot = M4_Identity();
-    m4 rx = M4_Identity();
-    m4 ry = M4_Identity();
-    m4 rz = M4_Identity();
-
     RenderInstance rI;
     InitRenderInstance(&rI);
 
@@ -83,6 +88,11 @@ int main()
     AddBuffer(image, &rI);
     AddBuffer(triangle, &rI);
 
+    TransformObject img = {.position = {0}}, sqr = {.position = {300, 300}}, tri = {.position = {500, 500}};
+    AddResource(sqr, &rM);
+    AddResource(img, &rM);
+    AddResource(tri, &rM);
+
     // Here is where we need to test the new transforming.
     // To-Do: Re-write the rotation because it is a little complex atm.
     m4 trns = M4_Identity();
@@ -90,15 +100,12 @@ int main()
 
     while(!glfwWindowShouldClose(window))
     {
-        //View = Mul(Rotation(View, cr, (vec3){1.0f, 0.0f, 0.0f}), LookAt((vec3){1, 0, 0}, (vec3){0, 1, 0}, (vec3){0, 0, 1}, crt));
-
-
-        //SetMatrix(&Model, Mul(trns, rot).matrix);
-
-        //MVP = Mul(Mul(Model, View), Projection);
-	
-	SetUniformM4(rI.buffers[1].shader, "U_Transform", trns);
-        Render(window, rI);
+	vec3 funnel = {pos[0], pos[1], pos[2]};
+	Camera(&View, funnel);
+//      MVP = Mul(Mul(Model, View), Projection);
+//	SetUniformM4(rI.buffers[1].shader, "U_Transform", MVP);
+	VP = Mul(View, Projection);
+        Render(window, rI, rM);
     }
 
     glfwTerminate();
