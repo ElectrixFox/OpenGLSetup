@@ -18,6 +18,8 @@
 #include "Shapes.h"
 #include "Renderer.h"
 
+#include "Framebuffer.h"
+
 vec2 display;
 
 m4 Projection;
@@ -63,6 +65,8 @@ int main()
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    unsigned int fbo = CreateFramebuffer();
 
     MVP = M4_Identity();
     View = M4_Identity();
