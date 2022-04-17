@@ -3,8 +3,8 @@
 
 void Render(GLFWwindow* window, MeshManager meshManager)
 {
-    glClear(GL_COLOR_BUFFER_BIT);
     glClearColor(0.25f, 0.5f, 0.35f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     int size = meshManager.Size;
 
@@ -31,6 +31,4 @@ void Render(GLFWwindow* window, MeshManager meshManager)
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     }
 
-    glfwSwapBuffers(window);
-    glfwPollEvents();
 }
