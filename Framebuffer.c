@@ -36,3 +36,39 @@ unsigned int Renderbuffer()
 //	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 	return rbo;
 }
+
+RenderManager InitialiseFrameBuffer()
+{
+
+    float vertices[] =
+    {
+        -1.0f,  1.0f,  0.0f, 1.0f,
+        -1.0f, -1.0f,  0.0f, 0.0f,
+         1.0f, -1.0f,  1.0f, 0.0f,
+
+        -1.0f,  1.0f,  0.0f, 1.0f,
+         1.0f, -1.0f,  1.0f, 0.0f,
+         1.0f,  1.0f,  1.0f, 1.0f
+    };
+
+    unsigned int FboShader = CreateShader("FrameBuffer.shader");
+    unsigned int Quadvao = CreateVertexArray();
+    unsigned int Quadvbo = CreateVertexBufferDepth(vertices, sizeof vertices, 0, 2, 4, 0);
+    AddAttribute(1, 2, 4, 2);
+    glUseProgram(FboShader);
+    SetUniform1i(FboShader, "screenTexture", 0);
+
+    
+    unsigned char fbo = CreateFramebuffer();
+    unsigned int screen_texture = TextureAttachment();
+    unsigned char rbo = Renderbuffer();
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+    RenderManager rm;
+    rm.FrameBuffer = fbo;
+    rm.fbo.shader = FboShader;
+    rm.fbo.vao = Quadvao;
+    rm.fbo.texture = screen_texture;
+
+    return rm;
+}

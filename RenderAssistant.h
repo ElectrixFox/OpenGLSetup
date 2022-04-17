@@ -8,46 +8,54 @@
 #define DEFAULT_VEC3 {1, 1, 1}
 typedef struct
 {
-	unsigned int vbo;
-	unsigned int vao;
-	unsigned int ibo;
-	unsigned int shader;
-	unsigned short int texture;
+	unsigned int vbo;		// 4 bytes
+	unsigned int vao;		// 4 bytes
+	unsigned int ibo;		// 4 bytes
+	unsigned int shader;		// 4 bytes
+	unsigned short int texture;	// 2 bytes 
 } Buffer;
 
 typedef struct
 {
-	size_t Size;
-	Buffer* buffers;
-} RenderInstance;
-
-typedef struct
-{
-	vec2 position;
-	vec3 rotation;
-	vec3 scale;
+	vec2 position;		// 8 bytes
+	vec3 rotation;		// 12 bytes
+	vec3 scale;		// 12 bytes
 } TransformObject;
 
 typedef struct
 {
-	size_t Size;
-	TransformObject* TransformObjects; // 32 bytes
+	short int Size;			// 2 bytes
+	TransformObject* TransformObjects;	// 32 bytes
 } ResourceManager;
 
 typedef struct
 {
-	TransformObject transformObject;
-	Buffer buffer;
+	TransformObject transformObject;	// 32 bytes
+	Buffer buffer;				// 18 bytes
 } MeshObject;
 
 typedef struct
 {
-	size_t Size;
-	MeshObject* meshObjects;
+	short int Size;			// 2 bytes
+	MeshObject* meshObjects;	// 50 bytes
 } MeshManager;
 
-void InitRenderInstance(RenderInstance* renderInstance);
-void AddBuffer(Buffer buffer, RenderInstance* renderInstance);
+typedef struct
+{
+	unsigned short int vao;
+	unsigned short int shader; 
+	unsigned short int texture;
+} fboStruct;
+
+typedef struct
+{
+	char FrameBuffer;	// 2 bytes
+	fboStruct fbo;		// 6 bytes	
+} RenderManager;
+
+
+void InitRenderManager(RenderManager* renderManager);
+void AddBuffer(Buffer buffer, RenderManager* renderManager);
 
 void InitResourceManager(ResourceManager* resourceManager);
 void AddResource(TransformObject resource, ResourceManager* resourceManager);

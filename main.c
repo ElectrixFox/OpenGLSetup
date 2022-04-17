@@ -67,7 +67,7 @@ int main()
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_DEPTH_TEST);
 
-
+    RenderManager rM;
 
     MVP = M4_Identity();
     View = M4_Identity();
@@ -86,28 +86,8 @@ int main()
     AddMesh(triangle, &mM);
     AddMesh(image2, &mM);
 
-    float vertices[] =
-    {
-        -1.0f,  1.0f,  0.0f, 1.0f,
-        -1.0f, -1.0f,  0.0f, 0.0f,
-         1.0f, -1.0f,  1.0f, 0.0f,
-
-        -1.0f,  1.0f,  0.0f, 1.0f,
-         1.0f, -1.0f,  1.0f, 0.0f,
-         1.0f,  1.0f,  1.0f, 1.0f
-    };
-
-    unsigned int FboShader = CreateShader("FrameBuffer.shader");
-    unsigned int Quadvao = CreateVertexArray();
-    unsigned int Quadvbo = CreateVertexBufferDepth(vertices, sizeof vertices, 0, 2, 4, 0);
-    AddAttribute(1, 2, 4, 2);
-    glUseProgram(FboShader);
-    SetUniform1i(FboShader, "screenTexture", 0);
-
-    unsigned int fbo = CreateFramebuffer();
-    unsigned int textureAttachment = TextureAttachment();
-    unsigned int rbo = Renderbuffer();
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);  
+    // To-Do: Change this so that it uses a separate struct that is attached to the render manager so that it is easier to control.
+    rM = InitialiseFrameBuffer();
 
     // To-Do: Re-write the rotation because it is a little complex atm.
     m4 trns = M4_Identity();
@@ -120,22 +100,7 @@ int main()
 
 	VP = Mul(View, Projection);
 
-
-	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
-	glEnable(GL_DEPTH_TEST);
-        Render(window, mM);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glDisable(GL_DEPTH_TEST);
-	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT);
-
-	glUseProgram(FboShader);
-	glBindVertexArray(Quadvao);
-	glBindTexture(GL_TEXTURE_2D, textureAttachment);
-	glDrawArrays(GL_TRIANGLES, 0, 6);
-
-	glfwSwapBuffers(window);
-	glfwPollEvents();
+        Render(window, mM, rM);
     }
 
     glfwTerminate();
