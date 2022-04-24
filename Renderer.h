@@ -21,7 +21,10 @@ extern m4 Projection;
 
 extern m4 VP;
 
+void InitRenderLoop(GLFWwindow* window);
 
-void Render(GLFWwindow* window, MeshManager meshManager, RenderManager renderManager);
+void Render(unsigned int vbo, unsigned int vao, unsigned int ibo, unsigned int shader, unsigned short int texture);
+
+void EndRenderLoop(GLFWwindow* window);
 
 #endif

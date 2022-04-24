@@ -115,7 +115,7 @@ unsigned int CreateShader(const LCstring FilePath)
         if(!success)
         {
             glGetShaderInfoLog(fS, 512, NULL, infoLog);
-            printf("Fragment shader broken: %s", fS);
+            printf("Fragment shader broken: %s", infoLog);
         }
     };
 

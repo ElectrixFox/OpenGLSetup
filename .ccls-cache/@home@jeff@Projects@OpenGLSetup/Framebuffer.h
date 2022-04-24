@@ -21,6 +21,4 @@ unsigned int CreateFramebuffer();
 
 unsigned int TextureAttachment();
 unsigned int Renderbuffer();
-
-RenderManager InitialiseFrameBuffer();
 #endif

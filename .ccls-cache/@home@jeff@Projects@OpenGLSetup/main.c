@@ -67,40 +67,80 @@ int main()
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_DEPTH_TEST);
 
-    RenderManager rM;
-
     MVP = M4_Identity();
     View = M4_Identity();
     Projection = M4_Identity();
 
-    MeshObject image = Image("Face.png", (vec3){0, 0, 0}, (vec3){1, 1, 1});
-    MeshObject image2 = Image("Boris.png", (vec3){-300, -100, 0}, (vec3){1, 1, 1});
-    MeshObject square = Square(1, (vec3){300, 300, 0}, (vec3){1, 1, 1});
-    MeshObject triangle = Triangle(0.25f, (vec3){500, 500, 0}, (vec3){1, 1, 1});
+    float vertex[] =
+    {
+        0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
+        0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+       -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
+       -0.5f,  0.5f, 0.0f, 0.0f, 1.0f
+    };
 
-    MeshManager mM;
-    InitMeshManager(&mM);
+    unsigned int index[] =
+    {
+        0, 1, 3,
+        1, 2, 3
+    };
 
-    AddMesh(square, &mM);
-    AddMesh(image, &mM);
-    AddMesh(triangle, &mM);
-    AddMesh(image2, &mM);
+    float vertices[] =
+    {
+        -1.0f,  1.0f,  0.0f, 1.0f,
+        -1.0f, -1.0f,  0.0f, 0.0f,
+         1.0f, -1.0f,  1.0f, 0.0f,
 
-    // To-Do: Change this so that it uses a separate struct that is attached to the render manager so that it is easier to control.
-    rM = InitialiseFrameBuffer();
+        -1.0f,  1.0f,  0.0f, 1.0f,
+         1.0f, -1.0f,  1.0f, 0.0f,
+         1.0f,  1.0f,  1.0f, 1.0f
+    };
 
-    // To-Do: Re-write the rotation because it is a little complex atm.
+    unsigned int shader = CreateShader("shader.shader");
+    SetUniformM4(shader, "U_Transform", M4_Identity());
+    SetUniform4f(shader, "U_Colour", 1.0, 0.0, 0.0, 1.0);
+
+    unsigned int vao = CreateVertexArray();
+    unsigned int vbo = CreateVertexBuffer(vertex, sizeof(vertex));
+    unsigned int ibo = CreateIndexBuffer(index, sizeof index);
+
+    unsigned int FboShader = CreateShader("FrameBuffer.shader");
+    unsigned int Quadvao = CreateVertexArray();
+    unsigned int Quadvbo = CreateVertexBufferDepth(vertices, sizeof vertices, 0, 2, 4, 0);
+    AddAttribute(1, 2, 4, 2);
+    glUseProgram(FboShader);
+    SetUniform1i(FboShader, "screenTexture", 0);
+
+    unsigned char fbo = CreateFramebuffer();
+    unsigned int screen_texture = TextureAttachment();
+    unsigned char rbo = Renderbuffer();
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
     m4 trns = M4_Identity();
     TransformMatrix(&trns, (vec3){1, 1, 1});
 
     while(!glfwWindowShouldClose(window))
     {
+        // Bind frame buffer here
+        glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+        InitRenderLoop(window);
+
         vec3 funnel = {pos[0], pos[1], pos[2]};
         Camera(&View, funnel);
 
         VP = Mul(View, Projection);
 
-        Render(window, mM, rM);
+        Render(vbo, vao, ibo, shader, 0);
+        // Bind and draw the FBO here
+
+        // End the render loop here
+        EndRenderLoop(window);
+
+        Render(0, Quadvao, 0, FboShader, screen_texture);
+
+        // Poll all the events and swap buffers here.
+        glfwSwapBuffers(window);
+        glfwPollEvents();
     }
 
     glfwTerminate();
