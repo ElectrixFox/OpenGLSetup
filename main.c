@@ -95,10 +95,10 @@ int main()
 
     while(!glfwWindowShouldClose(window))
     {
-	vec3 funnel = {pos[0], pos[1], pos[2]};
-	Camera(&View, funnel);
+        vec3 funnel = {pos[0], pos[1], pos[2]};
+        Camera(&View, funnel);
 
-	VP = Mul(View, Projection);
+        VP = Mul(View, Projection);
 
         Render(window, mM, rM);
     }
