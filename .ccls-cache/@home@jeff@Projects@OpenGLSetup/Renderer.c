@@ -11,6 +11,8 @@ void InitRenderLoop(GLFWwindow* window)
 
 void Render(unsigned int vbo, unsigned int vao, unsigned int ibo, unsigned int shader, unsigned short int texture)
 { 
+    extern m4 View, Projection, VP;
+
     m4 model = M4_Identity();
 
     m4 MVP = Mul(model, VP);
