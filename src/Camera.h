@@ -2,7 +2,7 @@
 #define CAMERA_H
 
 #pragma once
-#include "Include/LCMaths/LCMaths.h"
+#include "PlatformBindings.h"
 
 void Camera(m4* cam, vec3 position);
 void UpdateCamera();

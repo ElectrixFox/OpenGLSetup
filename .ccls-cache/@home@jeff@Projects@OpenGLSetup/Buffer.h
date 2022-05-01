@@ -2,8 +2,7 @@
 #define BUFFER_H
 
 #pragma once
-#include "Include/GLEW/glew.h"
-#include "Include/GLFW/glfw3.h"
+#include "PlatformBindings.h"
 
 typedef struct
 {

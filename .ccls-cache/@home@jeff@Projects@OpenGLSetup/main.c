@@ -43,9 +43,6 @@ int main()
     FrameBufferObject fbo = initFrameBuffer();
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-    m4 trns = M4_Identity();
-    TransformMatrix(&trns, (vec3){1, 1, 1});
-
     while(!glfwWindowShouldClose(window))
     {
         // Bind frame buffer here

@@ -1,5 +1,5 @@
 CXX = gcc
-CXXFLAGS = -g -Wall -I. -IInclude -Isrc
+CXXFLAGS = -g -Wall -I. -I3rdParty -Isrc
 LIBS = -LLibs -lGLEW -lglfw3 -lGL -lpthread -lLCStr -lLCMaths -lm
 
 APPNAME = main

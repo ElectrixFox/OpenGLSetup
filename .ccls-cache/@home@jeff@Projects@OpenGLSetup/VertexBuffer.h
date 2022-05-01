@@ -3,8 +3,7 @@
 
 #pragma once
 #include <LCString/LCString.h>
-#include <GLEW/glew.h>
-#include <GLFW/glfw3.h>
+#include "PlatformBindings.h"
 
 // The vertices of the object and the sizeof them (their length (sizeof(verticies))).
 unsigned int CreateVertexBuffer(float* vertices, int size);

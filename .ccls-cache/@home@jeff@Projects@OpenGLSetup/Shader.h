@@ -5,8 +5,7 @@
 #include "Include/LCString/LCString.h"
 #include "Include/LCMaths/LCMaths.h"
 
-#include "Include/GLEW/glew.h"
-#include "Include/GLFW/glfw3.h"
+#include "PlatformBindings.h"
 
 typedef struct ShaderSources
 {

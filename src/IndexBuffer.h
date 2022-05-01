@@ -2,8 +2,7 @@
 #define INDEXBUFFER_H
 
 #pragma once
-#include <GLEW/glew.h>
-#include <GLFW/glfw3.h>
+#include "PlatformBindings.h"
 
 unsigned int CreateIndexBuffer(unsigned int* indecies, int size);
 

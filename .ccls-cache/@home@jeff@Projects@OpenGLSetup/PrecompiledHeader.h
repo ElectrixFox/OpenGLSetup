@@ -4,8 +4,7 @@
 #pragma once
 #include <stdio.h>
 #include <stdlib.h>
-#include "Include/GLEW/glew.h"
-#include "Include/GLFW/glfw3.h"
+#include "PlatformBindings.h"
 
 #include <LCString/LCString.h>
 #include <LCMaths/LCMaths.h>

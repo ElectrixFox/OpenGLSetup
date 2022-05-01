@@ -2,11 +2,7 @@
 #define SHADER_H
 
 #pragma once
-#include "Include/LCString/LCString.h"
-#include "Include/LCMaths/LCMaths.h"
-
-#include "Include/GLEW/glew.h"
-#include "Include/GLFW/glfw3.h"
+#include "PlatformBindings.h"
 
 typedef struct ShaderSources
 {
@@ -15,7 +11,10 @@ typedef struct ShaderSources
 } ShaderSources;
 
 ShaderSources PharseShader(const LCstring FilePath);
+ShaderSources PharseShaderFromStrings(const char* shadersource);
+
 unsigned int CreateShader(const LCstring FilePath);
+unsigned int CreateShaderFromChar(const char* shadersource);
 
 void SetUniform4f(unsigned int program, LCstring name, float v1, float v2, float v3, float v4);
 void SetUniform1d(unsigned int program, LCstring name, int value);

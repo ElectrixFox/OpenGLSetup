@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "Include/LCMaths/LCMaths.h"
+#include "PlatformBindings.h"
 
 #define DEFAULT_VEC3 {1, 1, 1}
 
