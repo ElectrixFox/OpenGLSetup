@@ -40,6 +40,19 @@ int main()
     unsigned int vbo = CreateVertexBuffer(vertex, sizeof(vertex));
     unsigned int ibo = CreateIndexBuffer(index, sizeof index);
 
+    extern m4 model;
+    model = M4_Identity();
+
+    TransformMatrix(&model, (vec3){-500.0f, -200.0f, 1.0f});
+
+    unsigned int shader1 = CreateShader("res/shader.shader");
+    SetUniformM4(shader1, "U_Transform", M4_Identity());
+    SetUniform4f(shader1, "U_Colour", 1.0, 0.5, 0.0, 1.0);
+
+    unsigned int vao1 = CreateVertexArray();
+    unsigned int vbo1 = CreateVertexBuffer(vertex, sizeof(vertex));
+    unsigned int ibo1 = CreateIndexBuffer(index, sizeof index);
+
     FrameBufferObject fbo = initFrameBuffer();
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
@@ -53,7 +66,11 @@ int main()
         UpdateCamera();
 
         // Draw all of the objects here
+        TransformMatrix(&model, (vec3){0.0f, 0.0f, 1.0f});
         Render(vbo, vao, ibo, shader, 0);
+
+        TransformMatrix(&model, (vec3){-500.0f, -200.0f, 1.0f});
+        Render(vbo1, vao1, ibo1, shader1, 0);
 
         // End the render loop here
         EndRenderLoop(window);

@@ -14,7 +14,6 @@ void Camera(m4* cam, vec3 position)
 
 void UpdateCamera()
 {
-    extern m4 View;
     VP = Mul(View, Projection);
 
     vec3 funnel = {pos[0], pos[1], pos[2]};

@@ -1,0 +1,52 @@
+#include "Queue.h"
+
+// The "item" (int) array:
+int items[SIZE];
+
+// The indexes of the items that are at the front and rear of the array
+int front = -1, rear = -1;
+
+int isEmpty()
+{
+    if(front == -1) return 1;
+    return 0;
+}
+
+int isFull()
+{
+    if(rear == SIZE - 1) return 1;
+    return 0;
+}
+
+void enQueue(int item)
+{
+    // Sets the front as valid
+    if(front == -1) front = 0;
+
+    if(!isFull())
+    {
+        // To be honest in effect this finds a fraction of the queue size to set the bottom of the queue
+        rear = (rear + 1) % SIZE;
+
+        // Sets the backmost value in the array (basically the arrays highest index) as the input item
+        items[rear] = item;
+
+    }
+    else
+    {
+        front = rear = -1;
+    }
+}
+
+int deQueue()
+{
+    if(isEmpty()) return 0;
+
+    int it = items[front];
+    front = (front + 1) % SIZE;
+
+    if(front > rear)
+        front = rear = -1;
+
+    return it;
+}
