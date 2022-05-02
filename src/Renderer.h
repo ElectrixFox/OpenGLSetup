@@ -18,6 +18,8 @@
 #include "IndexBuffer.h"
 #include "Framebuffer.h"
 
+void InitialiseGraphics();
+
 void InitRenderLoop(GLFWwindow* window);
 
 void Render(unsigned int vbo, unsigned int vao, unsigned int ibo, unsigned int shader, unsigned short int texture);

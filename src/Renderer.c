@@ -3,6 +3,14 @@
 
 m4 model;
 
+void InitialiseGraphics()
+{
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_DEPTH_TEST);
+    glewInit();
+}
+
 void InitRenderLoop(GLFWwindow* window)
 {
 	glEnable(GL_DEPTH_TEST);

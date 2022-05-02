@@ -6,15 +6,8 @@
 
 int main()
 {
-    glfwInit();
-
     GLFWwindow* window = CreateWindow(960, 540, "Hello World!");
-
-    glewInit();
-
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glEnable(GL_DEPTH_TEST);
+    InitialiseGraphics();
 
     initMatricies();
 
@@ -54,7 +47,6 @@ int main()
     unsigned int ibo1 = CreateIndexBuffer(index, sizeof index);
 
     FrameBufferObject fbo = initFrameBuffer();
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
     while(!glfwWindowShouldClose(window))
     {
