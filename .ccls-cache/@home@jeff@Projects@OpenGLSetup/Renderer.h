@@ -5,6 +5,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "RenderAssistant.h"
+#include "WindowControls.h"
+#include "Camera.h"
+
 #include "Shader.h"
 #include "Texture.h"
 
@@ -12,16 +16,12 @@
 #include "VertexArray.h"
 
 #include "IndexBuffer.h"
-#include "RenderAssistant.h"
-#include "Shapes.h"
+#include "Framebuffer.h"
 
-extern unsigned int as;
-extern m4 View;
-extern m4 Projection;
+void InitRenderLoop(GLFWwindow* window);
 
-extern m4 VP;
+void Render(unsigned int vbo, unsigned int vao, unsigned int ibo, unsigned int shader, unsigned short int texture);
 
-
-void Render(GLFWwindow* window, MeshManager meshManager, RenderManager renderManager);
+void EndRenderLoop(GLFWwindow* window);
 
 #endif

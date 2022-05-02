@@ -1,106 +1,78 @@
 #pragma once
 #include <stdio.h>
 #include <stdlib.h>
-#include <GLEW/glew.h>
-#include <GLFW/glfw3.h>
 
-#include <LCString/LCString.h>
-#include <LCMaths/LCMaths.h>
-
-#include "RenderAssistant.h"
-
-#include "Shader.h"
-#include "Texture.h"
-#include "VertexBuffer.h"
-#include "VertexArray.h"
-#include "IndexBuffer.h"
-
-#include "Shapes.h"
-#include "Renderer.h"
-
-#include "Framebuffer.h"
-
-vec2 display;
-
-m4 Projection;
-m4 View;
-m4 MVP;
-m4 VP;
-
-vec3 pos;
-
-void Callback(GLFWwindow* window, int key, int scancode, int action, int mods)
-{
-	if(key == GLFW_KEY_RIGHT && (action == GLFW_PRESS || action == GLFW_REPEAT))
-	{
-		pos[0] = pos[0] + 1;
-	}
-}
-
-GLFWwindow* CreateWindow(int width, int height, char* title)
-{
-    int Width_x, Height_y;
-    GLFWwindow* window = glfwCreateWindow(width, height, title, 0, 0);
-    glfwMakeContextCurrent(window);
-
-    glfwGetWindowSize(window, &Width_x, &Height_y);
-    display[0] = Width_x, display[1] = Height_y;
-
-    glfwSetKeyCallback(window, Callback);
-    return window;
-}
-
-void Camera(m4* cam, vec3 position)
-{
-	ViewMatrix(cam, position);
-}
+#include "src/Renderer.h"
 
 int main()
 {
-    glfwInit();
-
     GLFWwindow* window = CreateWindow(960, 540, "Hello World!");
+    InitialiseGraphics();
 
-    glewInit();
+    initMatricies();
 
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glEnable(GL_DEPTH_TEST);
+    float vertex[] =
+    {
+        0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
+        0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+       -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
+       -0.5f,  0.5f, 0.0f, 0.0f, 1.0f
+    };
 
-    RenderManager rM;
+    unsigned int index[] =
+    {
+        0, 1, 3,
+        1, 2, 3
+    };
 
-    MVP = M4_Identity();
-    View = M4_Identity();
-    Projection = M4_Identity();
+    unsigned int shader = CreateShader("res/shader.shader");
+    SetUniformM4(shader, "U_Transform", M4_Identity());
+    SetUniform4f(shader, "U_Colour", 1.0, 0.0, 0.0, 1.0);
 
-    MeshObject image = Image("Face.png", (vec3){0, 0, 0}, (vec3){1, 1, 1});
-    MeshObject image2 = Image("Boris.png", (vec3){-300, -100, 0}, (vec3){1, 1, 1});
-    MeshObject square = Square(1, (vec3){300, 300, 0}, (vec3){1, 1, 1});
-    MeshObject triangle = Triangle(0.25f, (vec3){500, 500, 0}, (vec3){1, 1, 1});
+    unsigned int vao = CreateVertexArray();
+    unsigned int vbo = CreateVertexBuffer(vertex, sizeof(vertex));
+    unsigned int ibo = CreateIndexBuffer(index, sizeof index);
 
-    MeshManager mM;
-    InitMeshManager(&mM);
+    extern m4 model;
+    model = M4_Identity();
 
-    AddMesh(square, &mM);
-    AddMesh(image, &mM);
-    AddMesh(triangle, &mM);
-    AddMesh(image2, &mM);
+    TransformMatrix(&model, (vec3){-500.0f, -200.0f, 1.0f});
 
-    // To-Do: Change this so that it uses a separate struct that is attached to the render manager so that it is easier to control.
-    rM = InitialiseFrameBuffer();
+    unsigned int shader1 = CreateShader("res/shader.shader");
+    SetUniformM4(shader1, "U_Transform", M4_Identity());
+    SetUniform4f(shader1, "U_Colour", 1.0, 0.5, 0.0, 1.0);
 
-    // To-Do: Re-write the rotation because it is a little complex atm.
-    m4 trns = M4_Identity();
-    TransformMatrix(&trns, (vec3){1, 1, 1});
+    unsigned int vao1 = CreateVertexArray();
+    unsigned int vbo1 = CreateVertexBuffer(vertex, sizeof(vertex));
+    unsigned int ibo1 = CreateIndexBuffer(index, sizeof index);
+
+    FrameBufferObject fbo = initFrameBuffer();
 
     while(!glfwWindowShouldClose(window))
     {
-	vec3 funnel = {pos[0], pos[1], pos[2]};
-	Camera(&View, funnel);
+        // Bind frame buffer here
+        glBindFramebuffer(GL_FRAMEBUFFER, fbo.fbo);
+        InitRenderLoop(window);
 
-	VP = Mul(View, Projection);
+        // Updates the camera
+        UpdateCamera();
 
-        Render(window, mM, rM);
+        // Draw all of the objects here
+        TransformMatrix(&model, (vec3){0.0f, 0.0f, 1.0f});
+        Render(vbo, vao, ibo, shader, 0);
+
+        TransformMatrix(&model, (vec3){-500.0f, -200.0f, 1.0f});
+        Render(vbo1, vao1, ibo1, shader1, 0);
+
+        // End the render loop here
+        EndRenderLoop(window);
+
+        // Bind and draw the FBO here
+        DrawFBO(fbo.vao, fbo.shader, fbo.screen_texture);
+
+        // Poll all the events and swap buffers here
+        glfwSwapBuffers(window);
+        glfwPollEvents();
     }
 
     glfwTerminate();

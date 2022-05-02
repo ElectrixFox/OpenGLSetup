@@ -33,11 +33,11 @@ unsigned int Renderbuffer()
 
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 960, 540);
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo);
-//	glBindRenderbuffer(GL_RENDERBUFFER, 0);
+
 	return rbo;
 }
 
-RenderManager InitialiseFrameBuffer()
+void SetupFramBuffer()
 {
 
     float vertices[] =
@@ -64,11 +64,4 @@ RenderManager InitialiseFrameBuffer()
     unsigned char rbo = Renderbuffer();
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-    RenderManager rm;
-    rm.FrameBuffer = fbo;
-    rm.fbo.shader = FboShader;
-    rm.fbo.vao = Quadvao;
-    rm.fbo.texture = screen_texture;
-
-    return rm;
 }

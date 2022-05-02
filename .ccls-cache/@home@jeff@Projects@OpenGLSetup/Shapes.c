@@ -1,8 +1,7 @@
 #include "Shapes.h"
 
-MeshObject Square(float cR, vec3 trans, vec3 scale)
+void Square(float cR, vec3 trans, vec3 scale)
 {
-    MeshObject mesh = {0};
     float vertices[] =
     {
         0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
@@ -30,18 +29,13 @@ MeshObject Square(float cR, vec3 trans, vec3 scale)
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
 
-    Buffer buffer = {vbo, vao, ibo, program, 0};
+    ObjectBuffers buffer = {vbo, vao, ibo, program, 0};
     TransformObject to = {.position = {trans[0], trans[1]}, {0}, {scale[0], scale[1], scale[3]}};
 
     printf("ibo = %d, vbo = %d, vao = %d, program = %d\n", ibo, vbo, vao, program);
-
-    mesh.buffer = buffer;
-    mesh.transformObject = to;
-
-    return mesh;
 }
 
-MeshObject Triangle(float cR, vec3 trans, vec3 scale)
+void Triangle(float cR, vec3 trans, vec3 scale)
 {
     float vertices[] =
     {
@@ -69,17 +63,11 @@ MeshObject Triangle(float cR, vec3 trans, vec3 scale)
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
     printf("ibo = %d, vbo = %d, vao = %d, program = %d\n", ibo, vbo, vao, program);
 
-    Buffer buffer = (Buffer){vbo, vao, ibo, program, 0};
+    ObjectBuffers buffer = {vbo, vao, ibo, program, 0};
     TransformObject transformObject = {{trans[0], trans[1]}, {0}, {scale[0], scale[1], scale[2]}};
-    MeshObject mesh = {0};
-
-    mesh.buffer = buffer;
-    mesh.transformObject = transformObject;
-
-    return mesh;
 }
 
-MeshObject Image(const char* FilePath, vec3 trans, vec3 scale)
+void Image(const char* FilePath, vec3 trans, vec3 scale)
 {
     unsigned int program, vbo, vao, ibo;
     program = CreateShader("texShader.shader");
@@ -114,14 +102,8 @@ MeshObject Image(const char* FilePath, vec3 trans, vec3 scale)
 
     printf("ibo = %d, vbo = %d, vao = %d, program = %d, texture = %d\n", ibo, vbo, vao, program, texture);
 
-    Buffer buffer = (Buffer){vbo, vao, ibo, program, texture};
+    ObjectBuffers buffer = {vbo, vao, ibo, program, texture};
     TransformObject transformObject = {{trans[0], trans[1]}, {0}, {scale[0], scale[1], scale[2]}};
-    MeshObject mesh = {0};
-
-    mesh.buffer = buffer;
-    mesh.transformObject = transformObject;
-
-    return mesh;
 }
 
 void SetArray(vec3* array, vec3 item, int index)

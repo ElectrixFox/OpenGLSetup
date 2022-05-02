@@ -38,7 +38,7 @@
 #define _GLIBCXX_RELEASE 11
 
 // The datestamp of the C++ library in compressed ISO date format.
-#define __GLIBCXX__ 20220127
+#define __GLIBCXX__ 20220421
 
 // Macros for various attributes.
 //   _GLIBCXX_PURE
@@ -1096,6 +1096,9 @@ namespace std
 /* Define if readlink is available in <unistd.h>. */
 #define _GLIBCXX_HAVE_READLINK 1
 
+/* Define to 1 if you have the `secure_getenv' function. */
+#define _GLIBCXX_HAVE_SECURE_GETENV 1
+
 /* Define to 1 if you have the `setenv' function. */
 #define _GLIBCXX_HAVE_SETENV 1
 
@@ -1498,7 +1501,7 @@ namespace std
 
 /* Define to the sub-directory in which libtool stores uninstalled libraries.
    */
-#define LT_OBJDIR ".libs/"
+#define _GLIBCXX_LT_OBJDIR ".libs/"
 
 /* Name of package */
 /* #undef _GLIBCXX_PACKAGE */
@@ -1537,7 +1540,7 @@ namespace std
 /* #undef SIZEOF_VOID_P */
 
 /* Define to 1 if you have the ANSI C header files. */
-#define STDC_HEADERS 1
+#define _GLIBCXX_STDC_HEADERS 1
 
 /* Version number of package */
 /* #undef _GLIBCXX_VERSION */
@@ -2180,7 +2183,7 @@ namespace std
 #define _GLIBCXX_RELEASE 11
 
 // The datestamp of the C++ library in compressed ISO date format.
-#define __GLIBCXX__ 20220127
+#define __GLIBCXX__ 20220421
 
 // Macros for various attributes.
 //   _GLIBCXX_PURE
@@ -3238,6 +3241,9 @@ namespace std
 /* Define if readlink is available in <unistd.h>. */
 #define _GLIBCXX_HAVE_READLINK 1
 
+/* Define to 1 if you have the `secure_getenv' function. */
+#define _GLIBCXX_HAVE_SECURE_GETENV 1
+
 /* Define to 1 if you have the `setenv' function. */
 #define _GLIBCXX_HAVE_SETENV 1
 
@@ -3640,7 +3646,7 @@ namespace std
 
 /* Define to the sub-directory in which libtool stores uninstalled libraries.
    */
-#define LT_OBJDIR ".libs/"
+#define _GLIBCXX_LT_OBJDIR ".libs/"
 
 /* Name of package */
 /* #undef _GLIBCXX_PACKAGE */
@@ -3679,7 +3685,7 @@ namespace std
 /* #undef SIZEOF_VOID_P */
 
 /* Define to 1 if you have the ANSI C header files. */
-#define STDC_HEADERS 1
+#define _GLIBCXX_STDC_HEADERS 1
 
 /* Version number of package */
 /* #undef _GLIBCXX_VERSION */

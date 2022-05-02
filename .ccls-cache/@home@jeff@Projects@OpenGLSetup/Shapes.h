@@ -12,17 +12,18 @@
 
 #include "IndexBuffer.h"
 #include "RenderAssistant.h"
+#include "Buffer.h"
 
 #include "Transforms.h"
 
 // Creates a square.
-MeshObject Square(float cR, vec3 trans, vec3 scale);
+void Square(float cR, vec3 trans, vec3 scale);
 
 // Creates a triangle.
-MeshObject Triangle(float cR, vec3 trans, vec3 scale);
+void Triangle(float cR, vec3 trans, vec3 scale);
 
 // Square with face.
-MeshObject Image(const char* FilePath, vec3 trans, vec3 scale);
+void Image(const char* FilePath, vec3 trans, vec3 scale);
 
 void SetArray(vec3* array, vec3 item, int index);
 

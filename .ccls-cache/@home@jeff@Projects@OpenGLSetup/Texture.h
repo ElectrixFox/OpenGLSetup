@@ -3,8 +3,7 @@
 
 #pragma once
 #include "Include/LCString/LCString.h"
-#include "Include/GLEW/glew.h"
-#include "Include/GLFW/glfw3.h"
+#include "PlatformBindings.h"
 
 unsigned int CreateTexture(const LCstring FilePath);
 
