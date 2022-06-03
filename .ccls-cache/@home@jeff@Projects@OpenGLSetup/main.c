@@ -33,6 +33,17 @@ int main()
     unsigned int vbo = CreateVertexBuffer(vertex, sizeof(vertex));
     unsigned int ibo = CreateIndexBuffer(index, sizeof index);
 
+    unsigned int shader2 = CreateShader("res/texShader.shader");
+    unsigned short int texture = CreateTexture("res/Boris.png");
+    SetUniformM4(shader, "U_Transform", M4_Identity());
+    SetUniform4f(shader, "U_Colour", 1.0, 0.0, 0.0, 1.0);
+
+    SetUniform1i(shader, "U_Texture", 0);
+
+    unsigned int vao2 = CreateVertexArray();
+    unsigned int vbo2 = CreateVertexBufferDepth(vertex, sizeof(vertex), 0, 3, 5, 0);
+    AddAttribute(1, 2, 5, 3);
+
     extern m4 model;
     model = M4_Identity();
 
@@ -63,6 +74,9 @@ int main()
 
         TransformMatrix(&model, (vec3){-500.0f, -200.0f, 1.0f});
         Render(vbo1, vao1, ibo1, shader1, 0);
+
+        TransformMatrix(&model, (vec3){500.0f, 200.0f, 1.0f});
+        Render(vbo2, vao2, ibo, shader2, texture);
 
         // End the render loop here
         EndRenderLoop(window);

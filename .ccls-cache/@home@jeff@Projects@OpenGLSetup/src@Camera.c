@@ -4,7 +4,6 @@ vec3 pos;
 
 m4 Projection;
 m4 View;
-m4 MVP;
 m4 VP;
 
 void Camera(m4* cam, vec3 position)
@@ -36,7 +35,6 @@ void TranslateCamera(vec3 translation)
 
 void initMatricies()
 {
-    MVP = M4_Identity();
     View = M4_Identity();
     Projection = M4_Identity();
 }

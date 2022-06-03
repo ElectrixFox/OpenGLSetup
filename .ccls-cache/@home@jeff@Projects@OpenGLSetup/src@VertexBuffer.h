@@ -15,7 +15,7 @@ unsigned int CreateVertexBuffer(float* vertices, int size);
 * @param R_len How many items are in a full row.
 * @param Start How many items are before it. 
 */
-unsigned int CreateVertexBufferDepth(float* vertices, int size, int index, int m_len, int R_len, int Start);
+unsigned int CreateVertexBufferDepth(float* vertices, int size, int index, int Attribute_len, int Row_len, int nItemsBefore);
 
 /**
 * @param index The index of the attribute in the layout. 
@@ -23,6 +23,6 @@ unsigned int CreateVertexBufferDepth(float* vertices, int size, int index, int m
 * @param R_len How many items are in a full row.
 * @param Start How many items are before it.
 */ 
-void AddAttribute(int index, int m_len, int R_len, int Start);
+void AddAttribute(int index, int Attribute_len, int Row_len, int nItemsBefore);
 
 #endif
