@@ -3,6 +3,7 @@
 #include <stdlib.h>
 
 #include "src/Renderer.h"
+#include "src/Transforms.h"
 
 int main()
 {
@@ -24,6 +25,8 @@ int main()
         0, 1, 3,
         1, 2, 3
     };
+
+    InitTransforms();
 
     unsigned int shader = CreateShader("res/shader.shader");
     SetUniformM4(shader, "U_Transform", M4_Identity());
@@ -47,7 +50,11 @@ int main()
     extern m4 model;
     model = M4_Identity();
 
-    TransformMatrix(&model, (vec3){-500.0f, -200.0f, 1.0f});
+    PushBack((vec2){0.0f, 0.0f});
+    PushBack((vec2){-500.0f, -200.0f});
+    PushBack((vec2){500.0f, 200.0f});
+
+    //TransformMatrix(&model, (vec3){-500.0f, -200.0f, 1.0f});
 
     unsigned int shader1 = CreateShader("res/shader.shader");
     SetUniformM4(shader1, "U_Transform", M4_Identity());
@@ -69,13 +76,16 @@ int main()
         UpdateCamera();
 
         // Draw all of the objects here
-        TransformMatrix(&model, (vec3){0.0f, 0.0f, 1.0f});
+        //TransformMatrix(&model, (vec3){0.0f, 0.0f, 1.0f});
+        TransformMatrix(&model, PopOff());
         Render(vbo, vao, ibo, shader, 0);
 
-        TransformMatrix(&model, (vec3){-500.0f, -200.0f, 1.0f});
+        //TransformMatrix(&model, (vec3){-500.0f, -200.0f, 1.0f});
+        TransformMatrix(&model, PopOff());
         Render(vbo1, vao1, ibo1, shader1, 0);
 
-        TransformMatrix(&model, (vec3){500.0f, 200.0f, 1.0f});
+        //TransformMatrix(&model, (vec3){500.0f, 200.0f, 1.0f});
+        TransformMatrix(&model, PopOff());
         Render(vbo2, vao2, ibo, shader2, texture);
 
         // End the render loop here

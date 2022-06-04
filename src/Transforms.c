@@ -1,5 +1,49 @@
 #include "Transforms.h"
 
+vec2* Transforms;
+
+struct Queue
+{
+    int Head;
+    int Tail;
+    int size;
+};
+
+static struct Queue trns;
+
+void InitTransforms()
+{
+    Transforms = malloc(sizeof(vec2) * 128);
+
+    trns.Tail = 0;
+    trns.Head = -1;
+    trns.size = 0;
+}
+
+void PushBack(vec2 Transform)
+{
+    Transforms = realloc(Transforms, sizeof(vec3) * (trns.size + 1));
+    trns.size++;
+
+    if(trns.Tail == trns.size) trns.Head = 0; 
+
+    memcpy(Transforms[trns.Tail], Transform, sizeof(vec2));
+    trns.Tail = (trns.Tail + 1) % trns.size;
+}
+
+float* PopOff()
+{
+    if(trns.Head == trns.size) trns.Head = 0;
+
+    float* transform = malloc(sizeof(float) * 3);
+    memcpy(transform, Transforms[trns.Head], sizeof(vec2));
+    trns.Head = (trns.Head + 1) % trns.size;
+
+    transform[2] = 1.0f;
+
+    return transform;
+}
+
 // To-Do: Change all of these so that they come straight from here and not the maths library.
 void TransformMatrix(m4* transform_matrix, vec3 newTransform)
 {
