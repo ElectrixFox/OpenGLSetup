@@ -1,0 +1,5 @@
+To start there is a function that links to a hash table that contains arrays of the items (SoA) which the hash table is used to access them at the hashed locations.
+Using the hash function to assign them a value allows for them to be edited using a key that the user defines.
+The hash entities are all freed at the end when they are coppied accross to the queue before the rendering.
+
+End product is a queue with all of the needed data for rendering inside it which has been submitted in the end of the editing process.

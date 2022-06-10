@@ -3,7 +3,9 @@
 #include <stdlib.h>
 
 #include "src/Renderer.h"
+
 #include "src/Transforms.h"
+#include "src/HashTable.h"
 
 int main()
 {
@@ -54,8 +56,6 @@ int main()
     PushBack((vec2){-500.0f, -200.0f});
     PushBack((vec2){500.0f, 200.0f});
 
-    //TransformMatrix(&model, (vec3){-500.0f, -200.0f, 1.0f});
-
     unsigned int shader1 = CreateShader("res/shader.shader");
     SetUniformM4(shader1, "U_Transform", M4_Identity());
     SetUniform4f(shader1, "U_Colour", 1.0, 0.5, 0.0, 1.0);
@@ -76,15 +76,12 @@ int main()
         UpdateCamera();
 
         // Draw all of the objects here
-        //TransformMatrix(&model, (vec3){0.0f, 0.0f, 1.0f});
         TransformMatrix(&model, PopOff());
         Render(vbo, vao, ibo, shader, 0);
 
-        //TransformMatrix(&model, (vec3){-500.0f, -200.0f, 1.0f});
         TransformMatrix(&model, PopOff());
         Render(vbo1, vao1, ibo1, shader1, 0);
 
-        //TransformMatrix(&model, (vec3){500.0f, 200.0f, 1.0f});
         TransformMatrix(&model, PopOff());
         Render(vbo2, vao2, ibo, shader2, texture);
 
