@@ -13,15 +13,14 @@
 
 struct ShaderSources
 {
-    const char* VertexSource;
-    const char* FragmentSource;
+    const std::string VertexSource;
+    const std::string FragmentSource;
 };
 
 ShaderSources PharseShader(const LCstring FilePath);
-ShaderSources PharseShaderFromStrings(const char* shadersource);
 
 unsigned int CreateShader(const LCstring FilePath);
-unsigned int CreateShaderFromChar(const char* shadersource);
+unsigned int CreateShader(const char* VertexSource, const char* FragmentSource);
 
 void SetUniform4f(unsigned int program, LCstring name, float v1, float v2, float v3, float v4);
 void SetUniform1d(unsigned int program, LCstring name, int value);

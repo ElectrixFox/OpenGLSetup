@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -g -Wall -I. -I3rdParty -I3rdParty/GLFW -Isrc
+CXXFLAGS = -g -Wall -I. -I3rdParty -Isrc -I3rdParty/LCMaths
 LIBS = -LLibs -lGLEW -lglfw3 -lGL -lpthread -lm
 
 APPNAME = main
@@ -7,6 +7,7 @@ APPNAME = main
 SRCFILES := $(notdir $(wildcard src/*.cpp))
 SRCFILES += $(notdir $(wildcard *.cpp))
 OBJS := $(addprefix obj/, $(patsubst %.cpp, %.o, $(SRCFILES)))
+OBJS += obj/LCMaths.o
 
 obj/%.o: src/%.cpp
 	$(CXX) $(CXXFLAGS) -c -o $@ $^

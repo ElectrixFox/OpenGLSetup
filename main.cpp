@@ -30,7 +30,7 @@ int main()
 
     InitTransforms();
 
-    /* unsigned int shader = CreateShader("res/shader.shader");
+    unsigned int shader = CreateShader("res/shader.shader");
     SetUniformM4(shader, "U_Transform", M4_Identity());
     SetUniform4f(shader, "U_Colour", 1.0, 0.0, 0.0, 1.0);
 
@@ -66,7 +66,7 @@ int main()
 
     unsigned int vao1 = CreateVertexArray();
     unsigned int vbo1 = CreateVertexBuffer(vertex, sizeof(vertex));
-    unsigned int ibo1 = CreateIndexBuffer(index, sizeof index); */
+    unsigned int ibo1 = CreateIndexBuffer(index, sizeof index);
 
     FrameBufferObject fbo = initFrameBuffer();
 
@@ -80,14 +80,14 @@ int main()
         UpdateCamera();
 
         // Draw all of the objects here
-        /* TransformMatrix(&model, PopOff());
+        TransformMatrix(&model, PopOff());
         Render(vbo, vao, ibo, shader, 0);
 
         TransformMatrix(&model, PopOff());
         Render(vbo1, vao1, ibo1, shader1, 0);
 
         TransformMatrix(&model, PopOff());
-        Render(vbo2, vao2, ibo, shader2, texture); */
+        Render(vbo2, vao2, ibo, shader2, texture);
 
         // End the render loop here
         EndRenderLoop(window);

@@ -1,8 +1,8 @@
 #ifndef RENDER_ASSISTANT
 #define RENDER_ASSISTANT
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 #include "PlatformBindings.h"
 
 #define DEFAULT_VEC3 {1, 1, 1}

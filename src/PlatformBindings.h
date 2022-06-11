@@ -2,7 +2,7 @@
 #define PLATFORM_BINDINGS_H
 
 #pragma once
-#include "GLEW/glew.h"
+#include "GL/glew.h"
 #include "glfw3.h"
 
 #include "../3rdParty/LCMaths/LCMaths.h"

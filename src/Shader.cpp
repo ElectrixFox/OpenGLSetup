@@ -23,7 +23,6 @@ const char* FragmentshaderSource =
 
 ShaderSources PharseShader(const LCstring FilePath)
 {
-    ShaderSources ssz;
     using namespace std;
 
     ifstream file;
@@ -47,10 +46,6 @@ ShaderSources PharseShader(const LCstring FilePath)
             {
                 i = 1;
             }
-            else
-            {
-
-            }
         }
         else
         {
@@ -58,56 +53,18 @@ ShaderSources PharseShader(const LCstring FilePath)
         }
 
     }
-    memcpy(&ssz.VertexSource, ss[0].str().c_str(), sizeof(ss[0]));
-    memcpy(&ssz.FragmentSource, ss[1].str().c_str(), sizeof(ss[1]));
+    
+    file.close();
 
-    return ssz;
+    return {ss[0].str(), ss[1].str()};
 }
-
-/* ShaderSources PharseShaderFromStrings(const char* shadersource)
-{
-    using namespace std;
-
-    ifstream file;
-    file.open(shadersource);
-
-    string line;
-
-    stringstream ss[2];
-
-    while(getline(file, line))
-    {
-        static int i = 0;
-
-        if(line.find("#shader") != string::npos)
-        {
-            if(line.find("#shader Vertex") != string::npos)
-            {
-                i = 0;
-            }
-            else if(line.find("#shader Fragment") != string::npos)
-            {
-                i = 1;
-            }
-            else
-            {
-
-            }
-        }
-        else
-        {
-            ss[i] << line << '\n';
-        }
-
-    }
-}; */
 
 unsigned int CreateShader(const LCstring FilePath)
 {
     ShaderSources ss = PharseShader(FilePath);
 
-    const char* VSS = ss.VertexSource;
-    const char* FSS = ss.FragmentSource;
+    const char* VSS = ss.VertexSource.c_str();
+    const char* FSS = ss.FragmentSource.c_str();
 
     unsigned int vS;
     vS = glCreateShader(GL_VERTEX_SHADER);
@@ -169,12 +126,10 @@ unsigned int CreateShader(const LCstring FilePath)
     return program;
 };
 
-unsigned int CreateShaderFromChar(const char* shadersource)
+unsigned int CreateShader(const char* VertexSource, const char* FragmentSource)
 {
-    ShaderSources ss = PharseShaderFromStrings(shadersource);
-
-    const char* VSS = ss.VertexSource;
-    const char* FSS = ss.FragmentSource;
+    const char* VSS = VertexSource;
+    const char* FSS = FragmentSource;
 
     unsigned int vS;
     vS = glCreateShader(GL_VERTEX_SHADER);

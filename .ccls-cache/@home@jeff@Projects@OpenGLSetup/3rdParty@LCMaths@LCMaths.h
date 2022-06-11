@@ -2,9 +2,12 @@
 #define LCMATHS_H
 
 #pragma once
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cmath>
+
+#define M_PI 3.14159265358979323846
+
 
 typedef float vec4[4];
 typedef float vec3[3];

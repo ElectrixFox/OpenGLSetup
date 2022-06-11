@@ -42,10 +42,9 @@ unsigned int Renderbuffer()
 
 void SetupFramBuffer()
 {
-    const char* shaderSources =
+    const char* VertexShader =
     {
-        "#shader Vertex\n"
-        "#version 330 core\n"
+         "#version 330 core\n"
         "layout (location = 0) in vec2 aPos;\n"
         "layout (location = 1) in vec2 aTexCoords;\n"
         "\n"
@@ -56,8 +55,10 @@ void SetupFramBuffer()
         "    gl_Position = vec4(aPos.x, aPos.y, 0.0, 1.0); \n"
         "    TexCoords = aTexCoords;\n"
         "}\n"
-        "\n"
-        "#shader Fragment\n"
+    };
+
+    const char* FragmentShader =
+    {
         "#version 330 core\n"
         "out vec4 FragColour;\n"
         "  \n"
@@ -82,7 +83,7 @@ void SetupFramBuffer()
          1.0f,  1.0f,  1.0f, 1.0f
     };
 
-    unsigned int FboShader = CreateShaderFromChar(shaderSources);
+    unsigned int FboShader = CreateShader(VertexShader, FragmentShader);
     unsigned int Quadvao = CreateVertexArray();
     unsigned int Quadvbo = CreateVertexBufferDepth(vertices, sizeof vertices, 0, 2, 4, 0);
     AddAttribute(1, 2, 4, 2);
