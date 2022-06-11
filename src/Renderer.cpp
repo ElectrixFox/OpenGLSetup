@@ -1,5 +1,5 @@
 #include "Renderer.h"
-#include <stdio.h>
+#include <cstdio>
 
 m4 model;
 

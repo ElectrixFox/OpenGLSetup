@@ -3,6 +3,7 @@
 
 #pragma once
 #include "PlatformBindings.h"
+#include "Transforms.h"
 
 void Camera(m4* cam, vec3 position);
 void UpdateCamera();

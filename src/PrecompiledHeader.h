@@ -2,8 +2,8 @@
 #define PRECOMPILED_HEADER_H
 
 #pragma once
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 #include "PlatformBindings.h"
 
 #include <LCString/LCString.h>
@@ -17,9 +17,7 @@
 #include "VertexArray.h"
 #include "IndexBuffer.h"
 
-#include "Shapes.h"
 #include "Renderer.h"
-
 #include "Framebuffer.h"
 
 #endif

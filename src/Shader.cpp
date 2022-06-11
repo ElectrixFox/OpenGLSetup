@@ -23,35 +23,27 @@ const char* FragmentshaderSource =
 
 ShaderSources PharseShader(const LCstring FilePath)
 {
-    int size = sizeof(char*) * 1024;
-    char* source = malloc(size);
+    ShaderSources ssz;
+    using namespace std;
 
-    FILE* fp;
-    fp = fopen(FilePath, "r");
+    ifstream file;
+    file.open(FilePath);
 
-    fscanf(fp, "s", &source);
+    string line;
 
-    char* line = NULL;
+    stringstream ss[2];
 
-    char* OS[2];
-    OS[0] = malloc(sizeof(char*) * 1024);
-    OS[1] = malloc(sizeof(char*) * 1024);
-
-    memset(OS[0], 0, 1024);
-    memset(OS[1], 0, 1024);
-
-    size_t line_buffsize = 0;
-    while(getline(&line, &line_buffsize, fp) != -1)
+    while(getline(file, line))
     {
         static int i = 0;
 
-        if(Find("#shader", line) != -1)
+        if(line.find("#shader") != string::npos)
         {
-            if(Find("#shader Vertex", line) != -1)
+            if(line.find("#shader Vertex") != string::npos)
             {
                 i = 0;
             }
-            else if(Find("#shader Fragment", line) != -1)
+            else if(line.find("#shader Fragment") != string::npos)
             {
                 i = 1;
             }
@@ -62,49 +54,38 @@ ShaderSources PharseShader(const LCstring FilePath)
         }
         else
         {
-            Append(line, &OS[i]);
+            ss[i] << line << '\n';
         }
 
-
     }
-    fclose(fp);
-    
-    ShaderSources ss;
+    memcpy(&ssz.VertexSource, ss[0].str().c_str(), sizeof(ss[0]));
+    memcpy(&ssz.FragmentSource, ss[1].str().c_str(), sizeof(ss[1]));
 
-    ss.VertexSource = OS[0];
-    ss.FragmentSource = OS[1];
-    
-    return ss;
+    return ssz;
 }
 
-ShaderSources PharseShaderFromStrings(const char* shadersource)
+/* ShaderSources PharseShaderFromStrings(const char* shadersource)
 {
-    int size = sizeof(char*) * 1024;
-    char* source = malloc(size);
+    using namespace std;
 
-    fscanf(shadersource, "s", &source);
+    ifstream file;
+    file.open(shadersource);
 
-    char* line = NULL;
+    string line;
 
-    char* OS[2];
-    OS[0] = malloc(sizeof(char*) * 1024);
-    OS[1] = malloc(sizeof(char*) * 1024);
+    stringstream ss[2];
 
-    memset(OS[0], 0, 1024);
-    memset(OS[1], 0, 1024);
-
-    size_t line_buffsize = 0;
-    while(getline(&line, &line_buffsize, &source) != -1)
+    while(getline(file, line))
     {
         static int i = 0;
 
-        if(Find("#shader", line) != -1)
+        if(line.find("#shader") != string::npos)
         {
-            if(Find("#shader Vertex", line) != -1)
+            if(line.find("#shader Vertex") != string::npos)
             {
                 i = 0;
             }
-            else if(Find("#shader Fragment", line) != -1)
+            else if(line.find("#shader Fragment") != string::npos)
             {
                 i = 1;
             }
@@ -115,11 +96,11 @@ ShaderSources PharseShaderFromStrings(const char* shadersource)
         }
         else
         {
-            Append(line, &OS[i]);
+            ss[i] << line << '\n';
         }
 
     }
-};
+}; */
 
 unsigned int CreateShader(const LCstring FilePath)
 {
@@ -141,7 +122,7 @@ unsigned int CreateShader(const LCstring FilePath)
         if(!success)
         {
             glGetShaderInfoLog(vS, 512, NULL, infoLog);
-            printf("Vertex shader broken: %s", infoLog);
+            std::cout << "Vertex shader broken: " << infoLog << std::endl;
         }
     };
 
@@ -159,7 +140,7 @@ unsigned int CreateShader(const LCstring FilePath)
         if(!success)
         {
             glGetShaderInfoLog(fS, 512, NULL, infoLog);
-            printf("Fragment shader broken: %s", infoLog);
+            std::cout << "Fragment shader broken: " << infoLog << std::endl;
         }
     };
 
@@ -177,7 +158,7 @@ unsigned int CreateShader(const LCstring FilePath)
         if(!success)
         {
             glGetProgramInfoLog(program, 512, NULL, infoLog);
-            printf("Program broken broken: %s", infoLog);
+            std::cout << "Program broken broken: " << infoLog << std::endl;
         }
     };
 
@@ -208,7 +189,7 @@ unsigned int CreateShaderFromChar(const char* shadersource)
         if(!success)
         {
             glGetShaderInfoLog(vS, 512, NULL, infoLog);
-            printf("Vertex shader broken: %s", infoLog);
+            std::cout << "Vertex shader broken: " << infoLog << std::endl;
         }
     };
 
@@ -226,7 +207,7 @@ unsigned int CreateShaderFromChar(const char* shadersource)
         if(!success)
         {
             glGetShaderInfoLog(fS, 512, NULL, infoLog);
-            printf("Fragment shader broken: %s", infoLog);
+            std::cout << "Fragment shader broken: " << infoLog << std::endl;
         }
     };
 
@@ -244,7 +225,7 @@ unsigned int CreateShaderFromChar(const char* shadersource)
         if(!success)
         {
             glGetProgramInfoLog(program, 512, NULL, infoLog);
-            printf("Program broken broken: %s", infoLog);
+            std::cout << "Program broken broken: " << infoLog << std::endl;
         }
     };
 
@@ -303,7 +284,7 @@ void EasierUpdateProjection(unsigned int program, char* name, m4* mvp, m4 transf
     mvp->matrix[0][3]  /= x;
     mvp->matrix[1][3] /= y;
 
-    SetMatrix(mvp->matrix, Mul(transform, scale).matrix);
-    SetMatrix(mvp->matrix, Mul(*mvp, rotation).matrix);
+    SetMatrix(mvp, Mul(transform, scale).matrix);
+    SetMatrix(mvp, Mul(*mvp, rotation).matrix);
     UpdateProjection(program, "U_Transform", *mvp);
 }

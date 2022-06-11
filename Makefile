@@ -1,21 +1,24 @@
-CXX = gcc
-CXXFLAGS = -g -Wall -I. -I3rdParty -Isrc
-LIBS = -LLibs -lGLEW -lglfw3 -lGL -lpthread -lLCStr -lLCMaths -lm
+CXX = g++
+CXXFLAGS = -g -Wall -I. -I3rdParty -I3rdParty/GLFW -Isrc
+LIBS = -LLibs -lGLEW -lglfw3 -lGL -lpthread -lm
 
 APPNAME = main
 
-SRCFILES := $(notdir $(wildcard src/*.c))
-SRCFILES += $(notdir $(wildcard *.c))
-OBJS := $(addprefix obj/, $(patsubst %.c, %.o, $(SRCFILES)))
+SRCFILES := $(notdir $(wildcard src/*.cpp))
+SRCFILES += $(notdir $(wildcard *.cpp))
+OBJS := $(addprefix obj/, $(patsubst %.cpp, %.o, $(SRCFILES)))
 
-obj/%.o: src/%.c
+obj/%.o: src/%.cpp
 	$(CXX) $(CXXFLAGS) -c -o $@ $^
 
-obj/%.o: %.c
+obj/%.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c -o $@ $^
 
 all: $(OBJS)
 	$(CXX) $(CXXFLAGS) $^ -o $(APPNAME) $(LIBS)
+
+maths: 3rdParty/LCMaths/LCMaths.cpp
+	$(CXX) $(CXXFLAGS) -c -o obj/LCMaths.o $^
 
 clean:
 	rm obj/*.o

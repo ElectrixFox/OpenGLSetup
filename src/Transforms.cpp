@@ -13,7 +13,7 @@ static struct Queue trns;
 
 void InitTransforms()
 {
-    Transforms = malloc(sizeof(vec2) * 128);
+    Transforms = (vec2*)malloc(sizeof(vec2) * 128);
 
     trns.Tail = 0;
     trns.Head = -1;
@@ -22,7 +22,7 @@ void InitTransforms()
 
 void PushBack(vec2 Transform)
 {
-    Transforms = realloc(Transforms, sizeof(vec3) * (trns.size + 1));
+    Transforms = (vec2*)realloc(Transforms, sizeof(vec3) * (trns.size + 1));
     trns.size++;
 
     if(trns.Tail == trns.size) trns.Head = 0; 
@@ -35,7 +35,7 @@ float* PopOff()
 {
     if(trns.Head == trns.size) trns.Head = 0;
 
-    float* transform = malloc(sizeof(float) * 3);
+    float* transform = (float*)malloc(sizeof(float) * 3);
     memcpy(transform, Transforms[trns.Head], sizeof(vec2));
     trns.Head = (trns.Head + 1) % trns.size;
 
@@ -84,7 +84,8 @@ m4 InitialiseObjectTransforms(vec2 position, vec3 scale, vec3 rotation)
 {
 	m4 model = M4_Identity();
 
-	TransformMatrix(&model, (vec3){position[0], position[1], 0});
+	vec3 v = {position[0], position[1], 0};
+	TransformMatrix(&model, v);
 	RotateMaxtrix(&model, rotation);
 	ScaleMatrix(&model, scale);
 

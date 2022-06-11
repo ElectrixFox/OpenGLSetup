@@ -3,12 +3,19 @@
 
 #pragma once
 #include "PlatformBindings.h"
+#include <iostream>
+#include <istream>
 
-typedef struct ShaderSources
+#include <string>
+
+#include <sstream>
+#include <fstream>
+
+struct ShaderSources
 {
     const char* VertexSource;
     const char* FragmentSource;
-} ShaderSources;
+};
 
 ShaderSources PharseShader(const LCstring FilePath);
 ShaderSources PharseShaderFromStrings(const char* shadersource);
