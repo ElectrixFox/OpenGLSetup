@@ -2,8 +2,8 @@
 #define RENDERER_H
 
 #pragma once
-#include <cstdio>
-#include <cstdlib>
+#include <stdio.h>
+#include <stdlib.h>
 
 #include "RenderAssistant.h"
 #include "WindowControls.h"
@@ -21,7 +21,7 @@
 void InitialiseGraphics();
 void InitRenderLoop(GLFWwindow* window);
 
-void Render(unsigned int vbo, unsigned int vao, unsigned int ibo, unsigned int shader, unsigned short int texture);
+void Render(unsigned int vbo, unsigned int vao, unsigned int ibo, unsigned int shader, unsigned short int texture, m4 proj);
 
 void EndRenderLoop(GLFWwindow* window);
 

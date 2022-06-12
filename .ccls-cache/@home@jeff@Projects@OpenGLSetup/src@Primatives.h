@@ -11,10 +11,20 @@
 
 #include "Queue.h"
 
-void AddItem(unsigned int vao, unsigned int ibo, unsigned int shader, unsigned short int texture);
-unsigned int* GetItem();
+struct RenderItem
+{ 
+    unsigned int vao; 
+    unsigned int ibo; 
+    unsigned int shader;
+    unsigned short int texture; 
+};
+
+void initItems();
+
+void AddItem(unsigned int vao, unsigned int ibo, unsigned int shader, unsigned short int texture = 0);
+RenderItem GetItem();
 
 void CreateSquare();
-
+void CreateSquare(std::string Texture_FilePath);
 
 #endif 

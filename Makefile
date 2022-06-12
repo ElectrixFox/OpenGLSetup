@@ -1,6 +1,7 @@
 CXX = g++
 CXXFLAGS = -g -Wall -I. -I3rdParty -Isrc -I3rdParty/LCMaths
 LIBS = -LLibs -lGLEW -lglfw3 -lGL -lpthread -lm
+
 WLIBS = -LLibs/DLLs -lopengl32 -lglew32 -lglfw3 -lpthread -lm
 
 APPNAME = main
@@ -17,7 +18,7 @@ obj/%.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c -o $@ $^
 
 all: $(OBJS)
-	$(CXX) $(CXXFLAGS) $^ -o $(APPNAME) $(WLIBS)
+	$(CXX) $(CXXFLAGS) $^ -o $(APPNAME) $(LIBS)
 
 maths: 3rdParty/LCMaths/LCMaths.cpp
 	$(CXX) $(CXXFLAGS) -c -o obj/LCMaths.o $^

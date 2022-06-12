@@ -2,17 +2,30 @@
 #define LCMATHS_H
 
 #pragma once
-#include <cstdio>
-#include <cstdlib>
+#include <stdio.h>
+#include <stdlib.h>
 #include <cmath>
+
+#include <iostream>
 
 #define M_PI 3.14159265358979323846
 
+typedef struct 
+{
+    float x, y, z, w;
 
-typedef float vec4[4];
-typedef float vec3[3];
-typedef float vec2[2];
-typedef struct m4 { vec4 matrix[4]; } m4;
+    float& operator [](int i) { switch (i) { case 0: return x;  case 1: return y;  case 2: return z;  case 3: return w; } };
+} vec4;
+
+typedef struct { float x; float y; float z; float& operator [](int i) { switch (i) { case 0: return x;  case 1: return y;  case 2: return z; } }; } vec3;
+typedef struct { float x; float y;  float& operator [](int i) { switch (i) { case 0: return x;  case 1: return y;}} } vec2;
+
+typedef struct 
+{ 
+    vec4 matrix[4];
+    vec4& operator [](int i) { return matrix[i]; }
+} m4;
+
 typedef vec4 matrixv4[4];
 
 void LogM4(m4 p);

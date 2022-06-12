@@ -7,6 +7,8 @@
 #include "src/Transforms.h"
 #include "src/HashTable.h"
 
+#include "src/Primatives.h"
+
 #include <vector>
 
 int main()
@@ -59,18 +61,13 @@ int main()
     unsigned int vbo1 = CreateVertexBuffer(vertex, sizeof(vertex));
     unsigned int ibo1 = CreateIndexBuffer(index, sizeof index);
 
-    //extern m4 model;
-    //model = M4_Identity();
-
     vec2 p1 = {0.0f, 0.0f};
-    vec2 p = {0.0f, 0.0f};
     vec2 p2 = {-500.0f, -200.0f};
     vec2 p3 = {500.0f, 200.0f};
-
     PushBack(p1);
     PushBack(p2);
     PushBack(p3);
-
+    
     FrameBufferObject fbo = initFrameBuffer();
     
     using namespace std;
@@ -84,34 +81,31 @@ int main()
     TransformMatrix(&p2m, PopOff());
     TransformMatrix(&p3m, PopOff());
 	
-    std::cout << "matr: " << '\n';
-    LogM4(p1m);
-    std::cout << '\n';
-
     matricies.push_back(p1m);
     matricies.push_back(p2m);
     matricies.push_back(p3m);
 
-	std::cout << "matr: " << '\n';
-    LogM4(p1m);
+    initItems();
+    CreateSquare();
+
+    RenderItem item = GetItem();
+    cout << "Item: " << item.vao << '\n';
 
     while(!glfwWindowShouldClose(window))
     {
         // Bind frame buffer here
         glBindFramebuffer(GL_FRAMEBUFFER, fbo.fbo);
         InitRenderLoop(window);
-
         // Updates the camera
         UpdateCamera();
 
         // Draw all of the objects here
-        //TransformMatrix(&model, PopOff());
+        //Render(0, item[0], item[1], item[2], item[3], matricies[0]);
+
         Render(vbo, vao, ibo, shader, 0, matricies[0]);
 
-        //TransformMatrix(&model, PopOff());
         Render(vbo1, vao1, ibo1, shader1, 0, matricies[1]);
 
-        //TransformMatrix(&model, PopOff());
         Render(vbo2, vao2, ibo, shader2, texture, matricies[2]);
 
         // End the render loop here
