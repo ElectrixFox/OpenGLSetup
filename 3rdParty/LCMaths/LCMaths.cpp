@@ -18,7 +18,7 @@ m4 Mul(m4 x, m4 y)
             for (int k = 0; k < 4; k++) {
                 num += x.matrix[i][k] * y.matrix[k][j];
             }
-            result.matrix[i][j] = num;
+            result[i][j] = num;
         }
     }
 

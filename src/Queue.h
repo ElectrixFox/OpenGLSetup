@@ -1,8 +1,8 @@
 #ifndef QUEUE_H
 #define QUEUE_H
 
-#include <cstdio>
-#include <cstdlib>
+#include <stdio.h>
+#include <stdlib.h>
 
 typedef struct
 {

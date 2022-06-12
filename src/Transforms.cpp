@@ -22,30 +22,27 @@ void InitTransforms()
 
 void PushBack(vec2 Transform)
 {
-    Transforms = (vec2*)realloc(Transforms, sizeof(vec3) * (trns.size + 1));
     trns.size++;
+    Transforms = (vec2*)realloc(Transforms, sizeof(vec2) * (trns.size + 1));
 
     if(trns.Tail == trns.size) trns.Head = 0; 
 
-    memcpy(Transforms[trns.Tail], Transform, sizeof(vec2));
+    Transforms[trns.Tail] = Transform;
     trns.Tail = (trns.Tail + 1) % trns.size;
 }
 
-float* PopOff()
+vec2& PopOff()
 {
     if(trns.Head == trns.size) trns.Head = 0;
 
-    float* transform = (float*)malloc(sizeof(float) * 3);
-    memcpy(transform, Transforms[trns.Head], sizeof(vec2));
+    vec2& transform = Transforms[trns.Head];
     trns.Head = (trns.Head + 1) % trns.size;
-
-    transform[2] = 1.0f;
 
     return transform;
 }
 
 // To-Do: Change all of these so that they come straight from here and not the maths library.
-void TransformMatrix(m4* transform_matrix, vec3 newTransform)
+void TransformMatrix(m4* transform_matrix, vec2 newTransform)
 {
 	// Gets the vec2 from the main.c file which has the display size on it.
 	extern vec2 display;
@@ -74,7 +71,7 @@ void ViewMatrix(m4* view_matrix, vec3 cam_Pos)
 {
 	m4 View = M4_Identity();
 
-	TransformMatrix(&View, cam_Pos);
+	TransformMatrix(&View, {cam_Pos[0], cam_Pos[1]});
 	SetMatrix(view_matrix, View.matrix);
 
 	//View = Mul(Rotation(View, cr, (vec3){1.0f, 0.0f, 0.0f}), LookAt((vec3){1, 0, 0}, (vec3){0, 1, 0}, (vec3){0, 0, 1}, crt));
@@ -84,8 +81,7 @@ m4 InitialiseObjectTransforms(vec2 position, vec3 scale, vec3 rotation)
 {
 	m4 model = M4_Identity();
 
-	vec3 v = {position[0], position[1], 0};
-	TransformMatrix(&model, v);
+	TransformMatrix(&model, position);
 	RotateMaxtrix(&model, rotation);
 	ScaleMatrix(&model, scale);
 

@@ -1,7 +1,5 @@
 #include "Renderer.h"
-#include <cstdio>
-
-m4 model;
+#include <stdio.h>
 
 void InitialiseGraphics()
 {
@@ -19,11 +17,11 @@ void InitRenderLoop(GLFWwindow* window)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void Render(unsigned int vbo, unsigned int vao, unsigned int ibo, unsigned int shader, unsigned short int texture)
+void Render(unsigned int vbo, unsigned int vao, unsigned int ibo, unsigned int shader, unsigned short int texture, m4 proj)
 { 
     extern m4 View, Projection, VP;
 
-    m4 MVP = Mul(model, VP);
+    m4 MVP = Mul(proj, VP);
 
     glBindTexture(GL_TEXTURE_2D, texture);
 

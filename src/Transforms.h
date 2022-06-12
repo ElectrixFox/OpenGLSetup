@@ -3,16 +3,17 @@
 
 #pragma once
 #include "PlatformBindings.h"
+#include <iostream>
 
 void InitTransforms();
 
 // Adds new transform to the array
 void PushBack(vec2 Transform);
 
-float* PopOff();
+vec2& PopOff();
 
 // Need to take in an input for the currect transform matrix and output one.
-void TransformMatrix(m4* transform_matrix, vec3 newTransform);
+void TransformMatrix(m4* transform_matrix, vec2 newTransform);
 
 // Rotate the matrix.
 void RotateMaxtrix(m4* rotation_matrix, vec3 Rotation);
