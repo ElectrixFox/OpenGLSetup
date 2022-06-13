@@ -61,7 +61,7 @@ int main()
     unsigned int vbo1 = CreateVertexBuffer(vertex, sizeof(vertex));
     unsigned int ibo1 = CreateIndexBuffer(index, sizeof index);
 
-    vec2 p1 = {0.0f, 0.0f};
+    vec2 p1 = {0, 0};
     vec2 p2 = {-500.0f, -200.0f};
     vec2 p3 = {500.0f, 200.0f};
     PushBack(p1);
@@ -77,19 +77,19 @@ int main()
     m4 p2m = M4_Identity();
     m4 p3m = M4_Identity();
 
-    TransformMatrix(&p1m, PopOff());
-    TransformMatrix(&p2m, PopOff());
-    TransformMatrix(&p3m, PopOff());
+    TransformMatrix(p1m, PopOff());
+    TransformMatrix(p2m, PopOff());
+    TransformMatrix(p3m, PopOff());
 	
     matricies.push_back(p1m);
     matricies.push_back(p2m);
     matricies.push_back(p3m);
 
     initItems();
+
     CreateSquare();
 
     RenderItem item = GetItem();
-    cout << "Item: " << item.vao << '\n';
 
     while(!glfwWindowShouldClose(window))
     {
@@ -100,7 +100,7 @@ int main()
         UpdateCamera();
 
         // Draw all of the objects here
-        //Render(0, item[0], item[1], item[2], item[3], matricies[0]);
+        Render(0, item.vao, item.ibo, item.shader, item.texture, matricies[0]);
 
         Render(vbo, vao, ibo, shader, 0, matricies[0]);
 

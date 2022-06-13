@@ -1,8 +1,12 @@
 CXX = g++
 CXXFLAGS = -g -Wall -I. -I3rdParty -Isrc -I3rdParty/LCMaths
-LIBS = -LLibs -lGLEW -lglfw3 -lGL -lpthread -lm
+LIBS = -lpthread -lm
 
-WLIBS = -LLibs/DLLs -lopengl32 -lglew32 -lglfw3 -lpthread -lm
+ifeq ($(OS), Windows_NT)
+	LIBS += -LLibs/DLLs -lopengl32 -lglew32 -lglfw3
+else
+	LIBS += -LLibs -lGLEW -lglfw3 -lGL
+endif
 
 APPNAME = main
 

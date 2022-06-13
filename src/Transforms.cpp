@@ -42,17 +42,32 @@ vec2& PopOff()
 }
 
 // To-Do: Change all of these so that they come straight from here and not the maths library.
-void TransformMatrix(m4* transform_matrix, vec2 newTransform)
+void TransformMatrix(m4& transform_matrix, const vec2 newTransform)
 {
 	// Gets the vec2 from the main.c file which has the display size on it.
 	extern vec2 display;
-	int x = display[0], y = display[1];
+	int x = display[0];
+	int y = display[1];
+	
+	static int i = 0;
+	vec2 trns = newTransform;
+	
+	if(i < 1)
+	{
+		std::cout << trns.x << '\n';
+	}
 
-	newTransform[0] /= x;
-	newTransform[1] /= y;
+	trns[0] /= x;
+	trns[1] /= y;
 
-	transform_matrix->matrix[0][3] = newTransform[0];
-	transform_matrix->matrix[1][3] = newTransform[1];
+	if(i < 1)
+	{
+		std::cout << trns[0] << '\n';
+		i++;
+	}
+
+	transform_matrix.matrix[0][3] = trns[0];
+	transform_matrix.matrix[1][3] = trns[1];
 }
 
 void RotateMaxtrix(m4* rotation_matrix, vec3 Rotation)
@@ -71,7 +86,7 @@ void ViewMatrix(m4* view_matrix, vec3 cam_Pos)
 {
 	m4 View = M4_Identity();
 
-	TransformMatrix(&View, {cam_Pos[0], cam_Pos[1]});
+	TransformMatrix(View, {cam_Pos[0], cam_Pos[1]});
 	SetMatrix(view_matrix, View.matrix);
 
 	//View = Mul(Rotation(View, cr, (vec3){1.0f, 0.0f, 0.0f}), LookAt((vec3){1, 0, 0}, (vec3){0, 1, 0}, (vec3){0, 0, 1}, crt));
@@ -81,7 +96,7 @@ m4 InitialiseObjectTransforms(vec2 position, vec3 scale, vec3 rotation)
 {
 	m4 model = M4_Identity();
 
-	TransformMatrix(&model, position);
+	TransformMatrix(model, position);
 	RotateMaxtrix(&model, rotation);
 	ScaleMatrix(&model, scale);
 
