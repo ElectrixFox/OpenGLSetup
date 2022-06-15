@@ -58,7 +58,7 @@ end:
     return renderdata;
 }
 
-RenderItem CreateSquare()
+/* Render_Component CreateSquare()
 {
     float vertex[] =
     {
@@ -91,4 +91,4 @@ RenderItem CreateSquare()
 void CreateSquare(string Texture_FilePath)
 {
 
-}
+} */

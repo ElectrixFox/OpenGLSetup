@@ -1,6 +1,8 @@
 #ifndef PRIMATIVES_H
 #define PRIMATIVES_H
 
+#pragma once
+
 #include "Shader.h"
 #include "IndexBuffer.h"
 
@@ -27,7 +29,7 @@ void AddItem(RenderItem& item);
 
 RenderItem GetItem();
 
-RenderItem CreateSquare();
-void CreateSquare(std::string Texture_FilePath);
+//Render_Component CreateSquare();
+//void CreateSquare(std::string Texture_FilePath);
 
 #endif 

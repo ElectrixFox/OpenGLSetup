@@ -4,9 +4,9 @@ vec2* Transforms;
 
 struct Queue
 {
-	int bottom;
     int current;
     int size;
+	int bottom;
 };
 
 static struct Queue trns;
