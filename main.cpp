@@ -100,13 +100,13 @@ int main()
         UpdateCamera();
 
         // Draw all of the objects here
+        Render(vbo2, vao2, ibo, shader2, texture, matricies[2]);
         Render(0, item.vao, item.ibo, item.shader, item.texture, matricies[0]);
 
         Render(vbo, vao, ibo, shader, 0, matricies[0]);
 
         Render(vbo1, vao1, ibo1, shader1, 0, matricies[1]);
 
-        Render(vbo2, vao2, ibo, shader2, texture, matricies[2]);
 
         // End the render loop here
         EndRenderLoop(window);
