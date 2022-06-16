@@ -20,28 +20,11 @@ unsigned int Hash(Render_Components rendercomponents)
     return ID;
 }
 
-/* std::unique_ptr<Render_Component> getAsset(Render_Components rendercomponents, Render_Entity renderentity)
-{
-    std::unique_ptr<Render_Component> re((Render_Component*)malloc(sizeof(Render_Component)));
-    
-    re.get()->vao = rendercomponents.vaos[renderentity.ID];
-    re.get()->ibo = rendercomponents.ibos[renderentity.ID];
-    re.get()->shader = rendercomponents.shaders[renderentity.ID];
-    re.get()->texture = rendercomponents.textures[renderentity.ID];
-
-    return re;
-} */
-
 Render_Component getAsset(Render_Components rendercomponents, Render_Entity renderentity)
 {
     Render_Component re = { rendercomponents.vaos[renderentity.ID], rendercomponents.ibos[renderentity.ID], rendercomponents.shaders[renderentity.ID], rendercomponents.textures[renderentity.ID]};
 
     return re;
-}
-
-unsigned int& getIbo(Render_Components rendercomponents, Render_Entity renderentity)
-{    
-    return rendercomponents.ibos[renderentity.ID];
 }
 
 
@@ -61,14 +44,18 @@ void addAsset(unsigned int vao, unsigned int ibo, unsigned int shader, unsigned 
 
 }
 
-void Draw(Render_Components rendercomponents, Render_Entity renderentity)
+void Draw(Render_Components rendercomponents, Render_Entity renderentity, m4 proj)
 {
     Render_Component re = getAsset(rendercomponents, renderentity);
 
     glBindTexture(GL_TEXTURE_2D, re.texture);
 
+    extern m4 View, Projection, VP;
+
+    m4 MVP = Mul(proj, VP);
+
     glUseProgram(re.shader);
-    //SetUniformM4(re.shader, "U_Transform", MVP);
+    SetUniformM4(re.shader, "U_Transform", MVP);
 
     glBindVertexArray(re.vao);
 
@@ -86,7 +73,7 @@ void Draw(Render_Components rendercomponents)
 
 }
 
-Render_Component* CreateNewSquare()
+void CreateNewSquare(Render_Component& rendercomponent)
 {
     float vertex[] =
     {
@@ -111,8 +98,11 @@ Render_Component* CreateNewSquare()
     unsigned int vbo = CreateVertexBuffer(vertex, 20);
     unsigned int ibo = CreateIndexBuffer(index, 6);
 
-    //Render_Component* re = (Render_Component*)malloc(sizeof(Render_Component));
-    //*re = {vao, ibo, shader, 0};
-    
-    //return re;
+    unsigned int texture;
+
+    rendercomponent.ibo = ibo;
+    rendercomponent.vao = vao;
+    rendercomponent.shader = shader;
+    rendercomponent.texture = 0;
+
 }

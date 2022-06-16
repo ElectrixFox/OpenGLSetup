@@ -3,9 +3,7 @@
 #include <stdlib.h>
 
 #include "src/Renderer.h"
-
 #include "src/Transforms.h"
-#include "src/HashTable.h"
 
 #include "src/Primatives.h"
 #include "src/RenderComponent.h"
@@ -66,7 +64,7 @@ int main()
     unsigned int ibo1 = CreateIndexBuffer(index, sizeof index); */
 
     PushBack({0, 0});
-    //PushBack({-500.0f, -200.0f});
+    PushBack({-500.0f, -200.0f});
     //PushBack({500.0f, 200.0f});
     
     FrameBufferObject fbo = initFrameBuffer();
@@ -75,19 +73,32 @@ int main()
     vector<m4> matricies;
 
     m4 p1m = M4_Identity();
-    //m4 p2m = M4_Identity();
+    m4 p2m = M4_Identity();
     //m4 p3m = M4_Identity();
 
     TransformMatrix(p1m, PopOff());
-    //TransformMatrix(p2m, PopOff());
+    TransformMatrix(p2m, PopOff());
     //TransformMatrix(p3m, PopOff());
 	
     matricies.push_back(p1m);
-    //matricies.push_back(p2m);
+    matricies.push_back(p2m);
     //matricies.push_back(p3m);
 
     Render_Entity r_entity;
     addRenderComponent(renderComponents, r_entity);
+    Render_Component rc = getAsset(renderComponents, r_entity);
+
+    CreateNewSquare(rc);
+
+    cout << "Ibo: " << rc.ibo << '\n' << "Vao: " << rc.vao << '\n' << "Shader: " << rc.shader << '\n' << "Texture: " << rc.texture << '\n';
+
+    Render_Entity n_entity;
+    addRenderComponent(renderComponents, n_entity);
+    Render_Component rcp = getAsset(renderComponents, n_entity);
+
+    CreateNewSquare(rcp);
+
+    cout << "Ibo: " << rcp.ibo << '\n' << "Vao: " << rcp.vao << '\n' << "Shader: " << rcp.shader << '\n' << "Texture: " << rcp.texture << '\n';
 
     while(!glfwWindowShouldClose(window))
     {
@@ -97,7 +108,8 @@ int main()
         // Updates the camera
         UpdateCamera();
 
-        //Draw(renderComponents, r_entity);
+        Draw(renderComponents, r_entity, matricies[0]);
+        Draw(renderComponents, n_entity, matricies[1]);
 
         // Draw all of the objects here
         //Render(vbo2, vao2, ibo, shader2, texture, matricies[2]);

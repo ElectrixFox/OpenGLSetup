@@ -50,10 +50,7 @@ void InitComponents(Render_Components& rendercomponents);
 unsigned int Hash(Render_Components rendercomponents);
 
 // Get from hash table
-//std::unique_ptr<Render_Component> getAsset(Render_Components rendercomponents, Render_Entity renderentity);
 Render_Component getAsset(Render_Components rendercomponents, Render_Entity renderentity);
-
-unsigned int& getIbo(Render_Components rendercomponents, Render_Entity renderentity);
 
 // Add to the table
 void addRenderComponent(Render_Components& rendercomponents, Render_Entity& renderentity);
@@ -61,12 +58,12 @@ void addAsset(Render_Component rendercomponent);
 void addAsset(unsigned int vao, unsigned int ibo, unsigned int shader, unsigned int texture = 0);
 
 // Draw function (Draw for an individual asset)
-void Draw(Render_Components rendercomponents, Render_Entity renderentity);
+void Draw(Render_Components rendercomponents, Render_Entity renderentity, m4 proj);
 
 // Batch draw function (Should be mainly used)
 void Draw(Render_Components rendercomponents);
 
-Render_Component* CreateNewSquare();
+void CreateNewSquare(Render_Component& rendercomponent);
 
 // Get render component function
 
