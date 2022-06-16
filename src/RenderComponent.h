@@ -13,7 +13,7 @@
 #include <memory>
 
 
-#define PRESENT 167902105;
+#define PRESENT 1//167902105;
 
 // Entity
 typedef struct 
@@ -32,10 +32,10 @@ struct Render_Components
 
 typedef struct
 {
-    unsigned int vao; 
-    unsigned int ibo; 
-    unsigned int shader;
-    unsigned int texture; 
+    unsigned int& vao; 
+    unsigned int& ibo; 
+    unsigned int& shader;
+    unsigned int& texture; 
 } Render_Component;
 
 
@@ -50,7 +50,10 @@ void InitComponents(Render_Components& rendercomponents);
 unsigned int Hash(Render_Components rendercomponents);
 
 // Get from hash table
-Render_Component& getAsset(Render_Components rendercomponents, Render_Entity renderentity);
+//std::unique_ptr<Render_Component> getAsset(Render_Components rendercomponents, Render_Entity renderentity);
+Render_Component getAsset(Render_Components rendercomponents, Render_Entity renderentity);
+
+unsigned int& getIbo(Render_Components rendercomponents, Render_Entity renderentity);
 
 // Add to the table
 void addRenderComponent(Render_Components& rendercomponents, Render_Entity& renderentity);
@@ -63,7 +66,7 @@ void Draw(Render_Components rendercomponents, Render_Entity renderentity);
 // Batch draw function (Should be mainly used)
 void Draw(Render_Components rendercomponents);
 
-std::unique_ptr<Render_Component> CreateNewSquare();
+Render_Component* CreateNewSquare();
 
 // Get render component function
 

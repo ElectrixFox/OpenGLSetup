@@ -88,8 +88,6 @@ int main()
 
     Render_Entity r_entity;
     addRenderComponent(renderComponents, r_entity);
-    Render_Component& rc = getAsset(renderComponents, r_entity);
-    rc.ibo = 1;
 
     while(!glfwWindowShouldClose(window))
     {

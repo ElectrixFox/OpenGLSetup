@@ -20,10 +20,28 @@ unsigned int Hash(Render_Components rendercomponents)
     return ID;
 }
 
-Render_Component& getAsset(Render_Components rendercomponents, Render_Entity renderentity)
+/* std::unique_ptr<Render_Component> getAsset(Render_Components rendercomponents, Render_Entity renderentity)
 {
-    Render_Component re = { rendercomponents.vaos[renderentity.ID], rendercomponents.ibos[renderentity.ID], rendercomponents.shaders[renderentity.ID], rendercomponents.textures[renderentity.ID] };
+    std::unique_ptr<Render_Component> re((Render_Component*)malloc(sizeof(Render_Component)));
+    
+    re.get()->vao = rendercomponents.vaos[renderentity.ID];
+    re.get()->ibo = rendercomponents.ibos[renderentity.ID];
+    re.get()->shader = rendercomponents.shaders[renderentity.ID];
+    re.get()->texture = rendercomponents.textures[renderentity.ID];
+
     return re;
+} */
+
+Render_Component getAsset(Render_Components rendercomponents, Render_Entity renderentity)
+{
+    Render_Component re = { rendercomponents.vaos[renderentity.ID], rendercomponents.ibos[renderentity.ID], rendercomponents.shaders[renderentity.ID], rendercomponents.textures[renderentity.ID]};
+
+    return re;
+}
+
+unsigned int& getIbo(Render_Components rendercomponents, Render_Entity renderentity)
+{    
+    return rendercomponents.ibos[renderentity.ID];
 }
 
 
@@ -68,7 +86,7 @@ void Draw(Render_Components rendercomponents)
 
 }
 
-std::unique_ptr<Render_Component> CreateNewSquare()
+Render_Component* CreateNewSquare()
 {
     float vertex[] =
     {
@@ -93,9 +111,8 @@ std::unique_ptr<Render_Component> CreateNewSquare()
     unsigned int vbo = CreateVertexBuffer(vertex, 20);
     unsigned int ibo = CreateIndexBuffer(index, 6);
 
-    Render_Component re = {vao, ibo, shader, 0};
-    std::unique_ptr<Render_Component> renderc = std::make_unique<Render_Component>();
-    *renderc = re;
+    //Render_Component* re = (Render_Component*)malloc(sizeof(Render_Component));
+    //*re = {vao, ibo, shader, 0};
     
-    return renderc;
+    //return re;
 }
