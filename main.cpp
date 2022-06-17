@@ -90,21 +90,18 @@ int main()
 
     CreateNewSquare(rc);
 
-    cout << "Ibo: " << rc.ibo << '\n' << "Vao: " << rc.vao << '\n' << "Shader: " << rc.shader << '\n' << "Texture: " << rc.texture << '\n';
-
     Render_Entity n_entity;
     addRenderComponent(renderComponents, n_entity);
     Render_Component rcp = getAsset(renderComponents, n_entity);
 
     CreateNewSquare(rcp);
 
-    cout << "Ibo: " << rcp.ibo << '\n' << "Vao: " << rcp.vao << '\n' << "Shader: " << rcp.shader << '\n' << "Texture: " << rcp.texture << '\n';
-
     while(!glfwWindowShouldClose(window))
     {
         // Bind frame buffer here
         glBindFramebuffer(GL_FRAMEBUFFER, fbo.fbo);
         InitRenderLoop(window);
+
         // Updates the camera
         UpdateCamera();
 

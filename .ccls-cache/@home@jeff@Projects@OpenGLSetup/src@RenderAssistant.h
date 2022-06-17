@@ -22,6 +22,7 @@ typedef struct
  * So if it is like this then it can cycle through all the ibo's predictably therefore prefetching the data.
 */
 
+/*
 typedef struct
 {
     m4 model;               // 64 bytes
@@ -30,5 +31,6 @@ typedef struct
     unsigned int shader;    // 4 bytes
     unsigned int texture;   // 4 bytes
 } RenderItem;
+*/
 
 #endif

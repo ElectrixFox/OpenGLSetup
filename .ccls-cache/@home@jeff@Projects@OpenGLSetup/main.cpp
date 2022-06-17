@@ -3,11 +3,10 @@
 #include <stdlib.h>
 
 #include "src/Renderer.h"
-
 #include "src/Transforms.h"
-#include "src/HashTable.h"
 
 #include "src/Primatives.h"
+#include "src/RenderComponent.h"
 
 #include <vector>
 
@@ -32,9 +31,12 @@ int main()
         1, 2, 3
     };
 
+    Render_Components renderComponents;
+    InitComponents(renderComponents);
+
     InitTransforms();
 
-    unsigned int shader = CreateShader("res/shader.shader");
+    /* unsigned int shader = CreateShader("res/shader.shader");
     SetUniformM4(shader, "U_Transform", M4_Identity());
     SetUniform4f(shader, "U_Colour", 1.0, 0.0, 0.0, 1.0);
 
@@ -59,14 +61,11 @@ int main()
 
     unsigned int vao1 = CreateVertexArray();
     unsigned int vbo1 = CreateVertexBuffer(vertex, sizeof(vertex));
-    unsigned int ibo1 = CreateIndexBuffer(index, sizeof index);
+    unsigned int ibo1 = CreateIndexBuffer(index, sizeof index); */
 
-    vec2 p1 = {0.0f, 0.0f};
-    vec2 p2 = {-500.0f, -200.0f};
-    vec2 p3 = {500.0f, 200.0f};
-    PushBack(p1);
-    PushBack(p2);
-    PushBack(p3);
+    PushBack({0, 0});
+    PushBack({-500.0f, -200.0f});
+    //PushBack({500.0f, 200.0f});
     
     FrameBufferObject fbo = initFrameBuffer();
     
@@ -75,38 +74,46 @@ int main()
 
     m4 p1m = M4_Identity();
     m4 p2m = M4_Identity();
-    m4 p3m = M4_Identity();
+    //m4 p3m = M4_Identity();
 
-    TransformMatrix(&p1m, PopOff());
-    TransformMatrix(&p2m, PopOff());
-    TransformMatrix(&p3m, PopOff());
+    TransformMatrix(p1m, PopOff());
+    TransformMatrix(p2m, PopOff());
+    //TransformMatrix(p3m, PopOff());
 	
     matricies.push_back(p1m);
     matricies.push_back(p2m);
-    matricies.push_back(p3m);
+    //matricies.push_back(p3m);
 
-    initItems();
-    CreateSquare();
+    Render_Entity r_entity;
+    addRenderComponent(renderComponents, r_entity);
+    Render_Component rc = getAsset(renderComponents, r_entity);
 
-    RenderItem item = GetItem();
-    cout << "Item: " << item.vao << '\n';
+    CreateNewSquare(rc);
+
+    Render_Entity n_entity;
+    addRenderComponent(renderComponents, n_entity);
+    Render_Component rcp = getAsset(renderComponents, n_entity);
+
+    CreateNewSquare(rcp);
 
     while(!glfwWindowShouldClose(window))
     {
         // Bind frame buffer here
         glBindFramebuffer(GL_FRAMEBUFFER, fbo.fbo);
         InitRenderLoop(window);
+
         // Updates the camera
         UpdateCamera();
 
+        Draw(renderComponents, r_entity, matricies[0]);
+        Draw(renderComponents, n_entity, matricies[1]);
+
         // Draw all of the objects here
-        //Render(0, item[0], item[1], item[2], item[3], matricies[0]);
+        //Render(vbo2, vao2, ibo, shader2, texture, matricies[2]);
+        //Render(0, item.vao, item.ibo, item.shader, item.texture, matricies[0]);
+        //Render(vbo, vao, ibo, shader, 0, matricies[0]);
+        //Render(vbo1, vao1, ibo1, shader1, 0, matricies[1]);
 
-        Render(vbo, vao, ibo, shader, 0, matricies[0]);
-
-        Render(vbo1, vao1, ibo1, shader1, 0, matricies[1]);
-
-        Render(vbo2, vao2, ibo, shader2, texture, matricies[2]);
 
         // End the render loop here
         EndRenderLoop(window);

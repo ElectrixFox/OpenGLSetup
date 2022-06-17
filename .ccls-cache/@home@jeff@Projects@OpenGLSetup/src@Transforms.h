@@ -13,7 +13,7 @@ void PushBack(vec2 Transform);
 vec2& PopOff();
 
 // Need to take in an input for the currect transform matrix and output one.
-void TransformMatrix(m4* transform_matrix, vec2 newTransform);
+void TransformMatrix(m4& transform_matrix, const vec2 newTransform);
 
 // Rotate the matrix.
 void RotateMaxtrix(m4* rotation_matrix, vec3 Rotation);
