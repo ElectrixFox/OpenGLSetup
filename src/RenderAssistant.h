@@ -14,6 +14,21 @@ typedef struct
 	vec3 scale;		    // 12 bytes
 } TransformObject;
 
+
+// Entity
+typedef struct
+{
+    unsigned int ID;
+} Entity;
+
+
+#define NEW_COMPONENT_MANAGER(x) struct x##_Manager \
+{ \
+    x* x##s; \
+}; \
+ \
+typedef struct x##_Manager ##x;
+
 /* This will all be blocked together in memory. 
  * So if it is an array of the struct then the memory will be: 
  * | object 1 | object 2 | object 3 | object 4 | object 5 | etc...

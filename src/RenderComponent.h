@@ -1,7 +1,11 @@
 #ifndef RENDER_COMPONENT_H
 #define RENDER_COMPON_H
 
+#pragma once
+#include <memory>
+
 #include "PlatformBindings.h"
+#include "RenderAssistant.h"
 
 #include "Shader.h"
 #include "IndexBuffer.h"
@@ -10,7 +14,6 @@
 
 #include "VertexArray.h"
 #include "VertexBuffer.h"
-#include <memory>
 
 
 #define PRESENT 1//167902105;
@@ -50,15 +53,15 @@ void InitComponents(Render_Components& rendercomponents);
 unsigned int Hash(Render_Components rendercomponents);
 
 // Get from hash table
-Render_Component getAsset(Render_Components rendercomponents, Render_Entity renderentity);
+Render_Component getAsset(Render_Components rendercomponents, Entity entity);
 
 // Add to the table
-void addRenderComponent(Render_Components& rendercomponents, Render_Entity& renderentity);
+void addRenderComponent(Render_Components& rendercomponents, Entity& entity);
 void addAsset(Render_Component rendercomponent);
 void addAsset(unsigned int vao, unsigned int ibo, unsigned int shader, unsigned int texture = 0);
 
 // Draw function (Draw for an individual asset)
-void Draw(Render_Components rendercomponents, Render_Entity renderentity, m4 proj);
+void Draw(Render_Components rendercomponents, Entity entity, m4 proj);
 
 // Batch draw function (Should be mainly used)
 void Draw(Render_Components rendercomponents);

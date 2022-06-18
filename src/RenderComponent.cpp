@@ -20,18 +20,18 @@ unsigned int Hash(Render_Components rendercomponents)
     return ID;
 }
 
-Render_Component getAsset(Render_Components rendercomponents, Render_Entity renderentity)
+Render_Component getAsset(Render_Components rendercomponents, Entity entity)
 {
-    Render_Component re = { rendercomponents.vaos[renderentity.ID], rendercomponents.ibos[renderentity.ID], rendercomponents.shaders[renderentity.ID], rendercomponents.textures[renderentity.ID]};
+    Render_Component re = { rendercomponents.vaos[entity.ID], rendercomponents.ibos[entity.ID], rendercomponents.shaders[entity.ID], rendercomponents.textures[entity.ID]};
 
     return re;
 }
 
 
-void addRenderComponent(Render_Components& rendercomponents, Render_Entity& renderentity)
+void addRenderComponent(Render_Components& rendercomponents, Entity& entity)
 {
     unsigned int ID = Hash(rendercomponents);
-    renderentity.ID = ID;
+    entity.ID = ID;
 
     rendercomponents.vaos[ID] = PRESENT;
     rendercomponents.ibos[ID] = PRESENT;
@@ -44,9 +44,9 @@ void addAsset(unsigned int vao, unsigned int ibo, unsigned int shader, unsigned 
 
 }
 
-void Draw(Render_Components rendercomponents, Render_Entity renderentity, m4 proj)
+void Draw(Render_Components rendercomponents, Entity entity, m4 proj)
 {
-    Render_Component re = getAsset(rendercomponents, renderentity);
+    Render_Component re = getAsset(rendercomponents, entity);
 
     glBindTexture(GL_TEXTURE_2D, re.texture);
 

@@ -6,9 +6,33 @@
 #include "src/Transforms.h"
 
 #include "src/Primatives.h"
-#include "src/RenderComponent.h"
+#include "src/Component.h"
 
 #include <vector>
+
+void DrawEP(Entity entity, m4 proj)
+{
+    Render_Component re = ecs::get<Render_Component>(entity);
+
+    glBindTexture(GL_TEXTURE_2D, re.texture);
+
+    extern m4 View, Projection, VP;
+
+    m4 MVP = Mul(proj, VP);
+
+    glUseProgram(re.shader);
+    SetUniformM4(re.shader, "U_Transform", MVP);
+
+    glBindVertexArray(re.vao);
+
+    if(re.ibo != 0)
+    {
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, re.ibo);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    }
+
+    glDrawArrays(GL_TRIANGLES, 0, 6);
+};
 
 int main()
 {
@@ -16,6 +40,8 @@ int main()
     InitialiseGraphics();
 
     initMatricies();
+    extern Render_Component_Manager Render_component_manager;
+    Render_component_manager.Render_Components = (Render_Component*)malloc(sizeof(Render_Component) * 128);
 
     float vertex[] =
     {
@@ -84,7 +110,7 @@ int main()
     matricies.push_back(p2m);
     //matricies.push_back(p3m);
 
-    Render_Entity r_entity;
+    /* Render_Entity r_entity;
     addRenderComponent(renderComponents, r_entity);
     Render_Component rc = getAsset(renderComponents, r_entity);
 
@@ -93,6 +119,18 @@ int main()
     Render_Entity n_entity;
     addRenderComponent(renderComponents, n_entity);
     Render_Component rcp = getAsset(renderComponents, n_entity);
+
+    CreateNewSquare(rcp); */
+
+    Entity r_entity;
+    ecs::add<Render_Component>(r_entity);
+    Render_Component rc = ecs::get<Render_Component>(r_entity);
+
+    CreateNewSquare(rc);
+
+    Entity n_entity;
+    ecs::add<Render_Component>(n_entity);
+    Render_Component rcp = ecs::get<Render_Component>(n_entity);
 
     CreateNewSquare(rcp);
 
@@ -105,8 +143,8 @@ int main()
         // Updates the camera
         UpdateCamera();
 
-        Draw(renderComponents, r_entity, matricies[0]);
-        Draw(renderComponents, n_entity, matricies[1]);
+        DrawEP(r_entity, matricies[0]);
+        DrawEP(n_entity, matricies[1]);
 
         // Draw all of the objects here
         //Render(vbo2, vao2, ibo, shader2, texture, matricies[2]);
