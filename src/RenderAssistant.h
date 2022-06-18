@@ -29,6 +29,27 @@ typedef struct
  \
 typedef struct x##_Manager ##x;
 
+struct Render_Components
+{
+    unsigned int* vaos;
+    unsigned int* ibos;
+    unsigned int* shaders;
+    unsigned int* textures;
+};
+
+typedef struct
+{
+    unsigned int vao; 
+    unsigned int ibo; 
+    unsigned int shader;
+    unsigned int texture; 
+} Render_Component;
+
+
+
+// Need a hash table to assign all of the entity data acording to the entities key
+
+// Gets an avaliable hash for the new entity
 /* This will all be blocked together in memory. 
  * So if it is an array of the struct then the memory will be: 
  * | object 1 | object 2 | object 3 | object 4 | object 5 | etc...

@@ -9,23 +9,16 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "RenderComponent.h"
 #include "RenderAssistant.h"
 
 // Access for the tables and hashing
-unsigned int Hash(Entity& entity)
-{
-    unsigned int ID = rand() % 128;
-    entity.ID = ID;
-
-    return ID;
-};
-
 NEW_COMPONENT_MANAGER(Render_Component)
-
+    
 namespace ecs
 {
-    Render_Component_Manager Render_component_manager;
+    extern unsigned int Hash(Entity& entity);
+
+    extern Render_Component_Manager Render_component_manager;
 };
 
 namespace ecs
@@ -34,9 +27,9 @@ namespace ecs
     void add(Entity& entity) { };
 
     template<>
-    void add<Render_Component>(Entity& entity)
+    inline void add<Render_Component>(Entity& entity)
     {
-        unsigned int ID = Hash(entity);
+        unsigned int ID = ecs::Hash(entity);
         extern Render_Component_Manager Render_component_manager;
         
         Render_component_manager.Render_Components[ID].ibo = 0;
@@ -49,7 +42,7 @@ namespace ecs
     T& get(Entity entity) { };
 
     template<>
-    Render_Component& get<Render_Component>(Entity entity)
+    inline Render_Component& get<Render_Component>(Entity entity)
     {
         extern Render_Component_Manager Render_component_manager;
         return Render_component_manager.Render_Components[entity.ID];

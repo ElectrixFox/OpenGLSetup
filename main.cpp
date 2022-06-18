@@ -2,39 +2,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <vector>
+
 #include "src/Renderer.h"
 #include "src/Transforms.h"
 
 #include "src/Primatives.h"
 #include "src/Component.h"
 
-#include <vector>
+#include "src/RenderComponent.h"
 
 Render_Component_Manager& Render_component_manager = ecs::Render_component_manager;
-
-void DrawEP(Entity entity, m4 proj)
-{
-    Render_Component re = ecs::get<Render_Component>(entity);
-
-    glBindTexture(GL_TEXTURE_2D, re.texture);
-
-    extern m4 View, Projection, VP;
-
-    m4 MVP = Mul(proj, VP);
-
-    glUseProgram(re.shader);
-    SetUniformM4(re.shader, "U_Transform", MVP);
-
-    glBindVertexArray(re.vao);
-
-    if(re.ibo != 0)
-    {
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, re.ibo);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-    }
-
-    glDrawArrays(GL_TRIANGLES, 0, 6);
-};
 
 int main()
 {
@@ -42,7 +20,6 @@ int main()
     InitialiseGraphics();
 
     initMatricies();
-
     Render_component_manager.Render_Components = (Render_Component*)malloc(sizeof(Render_Component) * 128);
 
     float vertex[] =
@@ -58,9 +35,6 @@ int main()
         0, 1, 3,
         1, 2, 3
     };
-
-    Render_Components renderComponents;
-    InitComponents(renderComponents);
 
     InitTransforms();
 
@@ -112,18 +86,6 @@ int main()
     matricies.push_back(p2m);
     //matricies.push_back(p3m);
 
-    /* Render_Entity r_entity;
-    addRenderComponent(renderComponents, r_entity);
-    Render_Component rc = getAsset(renderComponents, r_entity);
-
-    CreateNewSquare(rc);
-
-    Render_Entity n_entity;
-    addRenderComponent(renderComponents, n_entity);
-    Render_Component rcp = getAsset(renderComponents, n_entity);
-
-    CreateNewSquare(rcp); */
-
     Entity r_entity;
     ecs::add<Render_Component>(r_entity);
     Render_Component& rc = ecs::get<Render_Component>(r_entity);
@@ -134,7 +96,7 @@ int main()
     ecs::add<Render_Component>(n_entity);
     Render_Component& rcp = ecs::get<Render_Component>(n_entity);
 
-    CreateNewSquare(rcp);
+    CreateNewSquare(rcp, "res/Boris.png");
 
     while(!glfwWindowShouldClose(window))
     {
@@ -145,8 +107,8 @@ int main()
         // Updates the camera
         UpdateCamera();
 
-        DrawEP(r_entity, matricies[0]);
-        DrawEP(n_entity, matricies[1]);
+        Draw(r_entity, matricies[0]);
+        Draw(n_entity, matricies[1]);
 
         // Draw all of the objects here
         //Render(vbo2, vao2, ibo, shader2, texture, matricies[2]);

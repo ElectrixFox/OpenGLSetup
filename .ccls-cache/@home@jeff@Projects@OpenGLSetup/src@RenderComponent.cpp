@@ -8,45 +8,9 @@ void InitComponents(Render_Components& rendercomponents)
     rendercomponents.textures = (unsigned int*)malloc(sizeof(unsigned int) * 1000);
 }
 
-unsigned int Hash(Render_Components rendercomponents)
+void Draw(Entity entity, m4 proj)
 {
-    unsigned int ID = rand() % 1000;
-
-    if(rendercomponents.vaos[ID] != 0)
-    {
-        Hash(rendercomponents);
-    }
-
-    return ID;
-}
-
-Render_Component getAsset(Render_Components rendercomponents, Entity entity)
-{
-    Render_Component re = { rendercomponents.vaos[entity.ID], rendercomponents.ibos[entity.ID], rendercomponents.shaders[entity.ID], rendercomponents.textures[entity.ID]};
-
-    return re;
-}
-
-
-void addRenderComponent(Render_Components& rendercomponents, Entity& entity)
-{
-    unsigned int ID = Hash(rendercomponents);
-    entity.ID = ID;
-
-    rendercomponents.vaos[ID] = PRESENT;
-    rendercomponents.ibos[ID] = PRESENT;
-    rendercomponents.shaders[ID] = PRESENT;
-    rendercomponents.textures[ID] = PRESENT;
-}
-
-void addAsset(unsigned int vao, unsigned int ibo, unsigned int shader, unsigned int texture)
-{
-
-}
-
-void Draw(Render_Components rendercomponents, Entity entity, m4 proj)
-{
-    Render_Component re = getAsset(rendercomponents, entity);
+    Render_Component re = ecs::get<Render_Component>(entity);
 
     glBindTexture(GL_TEXTURE_2D, re.texture);
 
@@ -66,11 +30,6 @@ void Draw(Render_Components rendercomponents, Entity entity, m4 proj)
     }
 
     glDrawArrays(GL_TRIANGLES, 0, 6);
-}
-
-void Draw(Render_Components rendercomponents)
-{
-
 }
 
 void CreateNewSquare(Render_Component& rendercomponent)
@@ -104,5 +63,42 @@ void CreateNewSquare(Render_Component& rendercomponent)
     rendercomponent.vao = vao;
     rendercomponent.shader = shader;
     rendercomponent.texture = 0;
+
+}
+
+void CreateNewSquare(Render_Component& rendercomponent, std::string Texture_FilePath)
+{
+    float vertex[] =
+    {
+        0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
+        0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+       -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
+       -0.5f,  0.5f, 0.0f, 0.0f, 1.0f
+    };
+
+    unsigned int index[] =
+    {
+        0, 1, 3,
+        1, 2, 3
+    };
+
+    unsigned int shader = CreateShader("res/texShader.shader");
+    unsigned short int texture = CreateTexture("res/Boris.png");
+    SetUniformM4(shader, "U_Transform", M4_Identity());
+    SetUniform4f(shader, "U_Colour", 1.0, 0.0, 0.0, 1.0);
+
+    SetUniform1i(shader, "U_Texture", 0);
+
+    unsigned int vao = CreateVertexArray();
+    unsigned int vbo = CreateVertexBufferDepth(vertex, sizeof(vertex), 0, 3, 5, 0);
+    unsigned int ibo = CreateIndexBuffer(index, 6);
+    AddAttribute(1, 2, 5, 3);
+
+
+
+    rendercomponent.ibo = ibo;
+    rendercomponent.vao = vao;
+    rendercomponent.shader = shader;
+    rendercomponent.texture = texture;
 
 }
