@@ -13,12 +13,14 @@
 
 // Access for the tables and hashing
 NEW_COMPONENT_MANAGER(Render_Component)
-    
+NEW_COMPONENT_MANAGER(Transform_Component)
+
 namespace ecs
 {
     extern unsigned int Hash(Entity& entity);
 
     extern Render_Component_Manager Render_component_manager;
+    extern Transform_Component_Manager Transform_component_manager;
 };
 
 namespace ecs
@@ -38,6 +40,17 @@ namespace ecs
         Render_component_manager.Render_Components[ID].texture = 0;
     };
 
+    template<>
+    inline void add<Transform_Component>(Entity& entity)
+    {
+        unsigned int ID = ecs::Hash(entity);
+        extern Transform_Component_Manager Transform_component_manager;
+
+        Transform_component_manager.Transform_Components[ID].position = DEFAULT_VEC2;
+        Transform_component_manager.Transform_Components[ID].rotation = DEFAULT_VEC3;
+        Transform_component_manager.Transform_Components[ID].scale = DEFAULT_VEC3;
+    };
+
     template<typename T>
     T& get(Entity entity) { };
 
@@ -46,6 +59,13 @@ namespace ecs
     {
         extern Render_Component_Manager Render_component_manager;
         return Render_component_manager.Render_Components[entity.ID];
+    };
+
+    template<>
+    inline Transform_Component& get<Transform_Component>(Entity entity)
+    {
+        extern Transform_Component_Manager Transform_component_manager;
+        return Transform_component_manager.Transform_Components[entity.ID];
     };
 };
 

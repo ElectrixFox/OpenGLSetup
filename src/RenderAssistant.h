@@ -5,7 +5,8 @@
 #include <cstdlib>
 #include "PlatformBindings.h"
 
-#define DEFAULT_VEC3 {1, 1, 1}
+#define DEFAULT_VEC3 {0, 0, 0}
+#define DEFAULT_VEC2 {0, 0}
 
 typedef struct
 {
@@ -46,6 +47,12 @@ typedef struct
 } Render_Component;
 
 
+typedef struct
+{
+	vec2 position;		// 8 bytes
+	vec3 rotation;		// 12 bytes
+	vec3 scale;		    // 12 bytes
+} Transform_Component;
 
 // Need a hash table to assign all of the entity data acording to the entities key
 
