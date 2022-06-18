@@ -25,11 +25,6 @@ NEW_COMPONENT_MANAGER(Render_Component)
 
 namespace ecs
 {
-    Render_Component_Manager Render_component_manager;
-};
-
-namespace ecs
-{
     template<typename T>
     void add(Entity& entity) { };
 

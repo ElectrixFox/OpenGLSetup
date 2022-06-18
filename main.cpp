@@ -10,6 +10,8 @@
 
 #include <vector>
 
+Render_Component_Manager& Render_component_manager = ecs::Render_component_manager;
+
 void DrawEP(Entity entity, m4 proj)
 {
     Render_Component re = ecs::get<Render_Component>(entity);
@@ -40,7 +42,7 @@ int main()
     InitialiseGraphics();
 
     initMatricies();
-    extern Render_Component_Manager Render_component_manager;
+
     Render_component_manager.Render_Components = (Render_Component*)malloc(sizeof(Render_Component) * 128);
 
     float vertex[] =
@@ -124,13 +126,13 @@ int main()
 
     Entity r_entity;
     ecs::add<Render_Component>(r_entity);
-    Render_Component rc = ecs::get<Render_Component>(r_entity);
+    Render_Component& rc = ecs::get<Render_Component>(r_entity);
 
     CreateNewSquare(rc);
 
     Entity n_entity;
     ecs::add<Render_Component>(n_entity);
-    Render_Component rcp = ecs::get<Render_Component>(n_entity);
+    Render_Component& rcp = ecs::get<Render_Component>(n_entity);
 
     CreateNewSquare(rcp);
 

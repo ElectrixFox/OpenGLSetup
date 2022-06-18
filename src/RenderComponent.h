@@ -35,10 +35,10 @@ struct Render_Components
 
 typedef struct
 {
-    unsigned int& vao; 
-    unsigned int& ibo; 
-    unsigned int& shader;
-    unsigned int& texture; 
+    unsigned int vao; 
+    unsigned int ibo; 
+    unsigned int shader;
+    unsigned int texture; 
 } Render_Component;
 
 

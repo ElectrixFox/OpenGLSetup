@@ -12,7 +12,7 @@ struct Render_Data
     unsigned short int* textures;
 };
 
-static struct Render_Data render_data;
+struct Render_Data render_data;
 
 void initItems()
 {
@@ -34,16 +34,23 @@ void AddItem(unsigned int vao, unsigned int ibo, unsigned int shader, unsigned s
     items.Tail = (items.Tail + 1) % items.size;
 };
 
+void AddItem(RenderItem& item)
+{
+    items.size++;
+
+    render_data.vaos[items.Tail] = item.vao;
+    render_data.ibos[items.Tail] = item.ibo;
+    render_data.shaders[items.Tail] = item.shader;
+    render_data.textures[items.Tail] = item.texture;
+
+    items.Tail = (items.Tail + 1) % items.size;
+};
+
 RenderItem GetItem()
 {
-    RenderItem renderdata;
+    RenderItem renderdata = {render_data.vaos[items.Head], render_data.ibos[items.Head], render_data.shaders[items.Head], render_data.textures[items.Head]};
 
     if(isEmpty(items)) goto end;
-
-    renderdata.vao = render_data.vaos[items.Head];
-    renderdata.ibo = render_data.ibos[items.Head];
-    renderdata.shader = render_data.shaders[items.Head];
-    renderdata.texture = render_data.textures[items.Head];
 
     items.Head = (items.Head + 1) % items.size;
 
@@ -51,7 +58,7 @@ end:
     return renderdata;
 }
 
-void CreateSquare()
+/* Render_Component CreateSquare()
 {
     float vertex[] =
     {
@@ -77,9 +84,11 @@ void CreateSquare()
     unsigned int ibo = CreateIndexBuffer(index, 6);
 
     AddItem(vao, ibo, shader);
+
+    return {vao, ibo, shader, 0};
 }
 
 void CreateSquare(string Texture_FilePath)
 {
 
-}
+} */
