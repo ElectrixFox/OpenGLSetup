@@ -16,11 +16,12 @@
 #include <iostream>
 #include <string>
 
+#include <memory>
+
 // C functions to maintain usage and ease of use
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
 #else
 // So that any C files don't use cpp headers
 #include <stdio.h>

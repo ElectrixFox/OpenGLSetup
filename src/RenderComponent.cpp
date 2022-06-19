@@ -8,29 +8,6 @@ void InitComponents(Render_Components& rendercomponents)
     rendercomponents.textures = (unsigned int*)malloc(sizeof(unsigned int) * 1000);
 }
 
-void Draw(Entity entity, m4 proj)
-{
-    Render_Component re = ecs::get<Render_Component>(entity);
-
-    glBindTexture(GL_TEXTURE_2D, re.texture);
-
-    extern m4 View, Projection, VP;
-
-    m4 MVP = Mul(proj, VP);
-
-    glUseProgram(re.shader);
-    SetUniformM4(re.shader, "U_Transform", MVP);
-
-    glBindVertexArray(re.vao);
-
-    if(re.ibo != 0)
-    {
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, re.ibo);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-    }
-
-    glDrawArrays(GL_TRIANGLES, 0, 6);
-}
 
 void CreateNewSquare(Render_Component& rendercomponent)
 {
@@ -102,3 +79,27 @@ void CreateNewSquare(Render_Component& rendercomponent, std::string Texture_File
     rendercomponent.texture = texture;
 
 }
+
+/*void Draw(Entity entity, m4 proj)
+{
+    Render_Component re = ecs::get<Render_Component>(entity);
+
+    glBindTexture(GL_TEXTURE_2D, re.texture);
+
+    extern m4 View, Projection, VP;
+
+    m4 MVP = Mul(proj, VP);
+
+    glUseProgram(re.shader);
+    SetUniformM4(re.shader, "U_Transform", MVP);
+
+    glBindVertexArray(re.vao);
+
+    if(re.ibo != 0)
+    {
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, re.ibo);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    }
+
+    glDrawArrays(GL_TRIANGLES, 0, 6);
+}*/

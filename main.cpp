@@ -12,8 +12,6 @@
 
 #include "src/RenderComponent.h"
 
-Render_Component_Manager& Render_component_manager = ecs::Render_component_manager;
-
 int main()
 {
     GLFWwindow* window = CreateWindow(960, 540, "Hello World!");

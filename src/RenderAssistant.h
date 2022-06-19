@@ -30,22 +30,14 @@ typedef struct
  \
 typedef struct x##_Manager ##x;
 
-struct Render_Components
-{
-    unsigned int* vaos;
-    unsigned int* ibos;
-    unsigned int* shaders;
-    unsigned int* textures;
-};
-
-typedef struct
+/*typedef struct
 {
     unsigned int vao; 
     unsigned int ibo; 
     unsigned int shader;
     unsigned int texture; 
 } Render_Component;
-
+*/
 
 typedef struct
 {
@@ -63,17 +55,6 @@ typedef struct
  * Howerver if it contains arrays then the memory will look like:
  * | model array | vao array | ibo array | shader array | texture array |
  * So if it is like this then it can cycle through all the ibo's predictably therefore prefetching the data.
-*/
-
-/*
-typedef struct
-{
-    m4 model;               // 64 bytes
-    unsigned int vao;       // 4 bytes
-    unsigned int ibo;       // 4 bytes
-    unsigned int shader;    // 4 bytes
-    unsigned int texture;   // 4 bytes
-} RenderItem;
 */
 
 #endif
