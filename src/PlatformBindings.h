@@ -22,11 +22,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
 #else
 // So that any C files don't use cpp headers
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
 #endif
 
 #include "../3rdParty/LCMaths/LCMaths.h"

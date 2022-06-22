@@ -19,13 +19,13 @@ void initMatricies();
 #define FRAME_BUFFER_OBJECT
 
 #pragma once
-#include "Shader.h"
-#include "Texture.h"
-#include "VertexBuffer.h"
-#include "VertexArray.h"
-#include "IndexBuffer.h"
+#include "Rendering/Shader.h"
+#include "Rendering/Texture.h"
+#include "Rendering/VertexBuffer.h"
+#include "Rendering/VertexArray.h"
+#include "Rendering/IndexBuffer.h"
 
-#include "Framebuffer.h"
+#include "Rendering/Framebuffer.h"
 
 typedef struct
 {

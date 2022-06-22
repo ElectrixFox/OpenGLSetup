@@ -11,13 +11,13 @@
 
 #include "RenderAssistant.h"
 
-#include "Shader.h"
-#include "Texture.h"
-#include "VertexBuffer.h"
-#include "VertexArray.h"
-#include "IndexBuffer.h"
+#include "Rendering/Shader.h"
+#include "Rendering/Texture.h"
+#include "Rendering/VertexBuffer.h"
+#include "Rendering/VertexArray.h"
+#include "Rendering/IndexBuffer.h"
 
-#include "Renderer.h"
-#include "Framebuffer.h"
+#include "Rendering/Renderer.h"
+#include "Rendering/Framebuffer.h"
 
 #endif

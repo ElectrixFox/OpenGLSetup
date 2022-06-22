@@ -5,9 +5,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "RenderAssistant.h"
-#include "WindowControls.h"
-#include "Camera.h"
+#include "../RenderAssistant.h"
+#include "../WindowControls.h"
+#include "../Camera.h"
 
 #include "Shader.h"
 #include "Texture.h"

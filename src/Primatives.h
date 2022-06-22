@@ -3,13 +3,13 @@
 
 #pragma once
 
-#include "Shader.h"
-#include "IndexBuffer.h"
+#include "Rendering/Shader.h"
+#include "Rendering/IndexBuffer.h"
 
-#include "Texture.h"
+#include "Rendering/Texture.h"
 
-#include "VertexArray.h"
-#include "VertexBuffer.h"
+#include "Rendering/VertexArray.h"
+#include "Rendering/VertexBuffer.h"
 
 #include <iostream>
 #include "Queue.h"

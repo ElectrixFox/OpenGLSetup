@@ -75,6 +75,8 @@
         "string_view": "cpp",
         "numbers": "cpp",
         "cinttypes": "cpp",
-        "queue": "cpp"
+        "queue": "cpp",
+        "framebuffer.h": "c",
+        "platformbindings.h": "c"
     }
 }

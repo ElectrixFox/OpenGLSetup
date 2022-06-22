@@ -8,44 +8,6 @@
 #define DEFAULT_VEC3 {0, 0, 0}
 #define DEFAULT_VEC2 {0, 0}
 
-typedef struct
-{
-	vec2 position;		// 8 bytes
-	vec3 rotation;		// 12 bytes
-	vec3 scale;		    // 12 bytes
-} TransformObject;
-
-
-// Entity
-typedef struct
-{
-    unsigned int ID;
-} Entity;
-
-
-#define NEW_COMPONENT_MANAGER(x) struct x##_Manager \
-{ \
-    x* x##s; \
-}; \
- \
-typedef struct x##_Manager ##x;
-
-/*typedef struct
-{
-    unsigned int vao; 
-    unsigned int ibo; 
-    unsigned int shader;
-    unsigned int texture; 
-} Render_Component;
-*/
-
-typedef struct
-{
-	vec2 position;		// 8 bytes
-	vec3 rotation;		// 12 bytes
-	vec3 scale;		    // 12 bytes
-} Transform_Component;
-
 // Need a hash table to assign all of the entity data acording to the entities key
 
 // Gets an avaliable hash for the new entity

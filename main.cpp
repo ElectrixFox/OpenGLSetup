@@ -4,13 +4,12 @@
 
 #include <vector>
 
-#include "src/Renderer.h"
+#include "src/Rendering/Renderer.h"
 #include "src/Transforms.h"
 
 #include "src/Primatives.h"
-#include "src/Component.h"
 
-#include "src/RenderComponent.h"
+#include "src/ecs.h"
 
 int main()
 {
@@ -18,7 +17,7 @@ int main()
     InitialiseGraphics();
 
     initMatricies();
-    Render_component_manager.Render_Components = (Render_Component*)malloc(sizeof(Render_Component) * 128);
+
 
     float vertex[] =
     {
@@ -64,8 +63,8 @@ int main()
     unsigned int ibo1 = CreateIndexBuffer(index, sizeof index); */
 
     PushBack({0, 0});
-    PushBack({-500.0f, -200.0f});
-    //PushBack({500.0f, 200.0f});
+    PushBack({-500.0f, 0.0f});
+    PushBack({500.0f, 0.0f});
     
     FrameBufferObject fbo = initFrameBuffer();
     
@@ -74,27 +73,27 @@ int main()
 
     m4 p1m = M4_Identity();
     m4 p2m = M4_Identity();
-    //m4 p3m = M4_Identity();
+    m4 p3m = M4_Identity();
 
     TransformMatrix(p1m, PopOff());
     TransformMatrix(p2m, PopOff());
-    //TransformMatrix(p3m, PopOff());
+    TransformMatrix(p3m, PopOff());
 	
     matricies.push_back(p1m);
     matricies.push_back(p2m);
-    //matricies.push_back(p3m);
+    matricies.push_back(p3m);
 
-    Entity r_entity;
-    ecs::add<Render_Component>(r_entity);
-    Render_Component& rc = ecs::get<Render_Component>(r_entity);
+    Entity entity;
+    entity.EntityID = 0;
+    World world;
 
-    CreateNewSquare(rc);
+    world.renderComponents.ibos = (unsigned int*)malloc(sizeof(unsigned int*) * 128);
+    world.renderComponents.ibos[0] = 20;
 
-    Entity n_entity;
-    ecs::add<Render_Component>(n_entity);
-    Render_Component& rcp = ecs::get<Render_Component>(n_entity);
+    RenderComponent re = ecs::get<RenderComponent>(world, entity);
 
-    CreateNewSquare(rcp, "res/Boris.png");
+    cout << re.ibo << '\n';
+
 
     while(!glfwWindowShouldClose(window))
     {
@@ -105,8 +104,8 @@ int main()
         // Updates the camera
         UpdateCamera();
 
-        Draw(r_entity, matricies[0]);
-        Draw(n_entity, matricies[1]);
+        //Draw(r_entity, matricies[0]);
+        //Draw(n_entity, matricies[1]);
 
         // Draw all of the objects here
         //Render(vbo2, vao2, ibo, shader2, texture, matricies[2]);

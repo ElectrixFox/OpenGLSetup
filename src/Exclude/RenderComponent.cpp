@@ -1,14 +1,7 @@
 #include "RenderComponent.h"
 
-void InitComponents(Render_Components& rendercomponents)
-{
-    rendercomponents.vaos = (unsigned int*)malloc(sizeof(unsigned int) * 1000);
-    rendercomponents.ibos = (unsigned int*)malloc(sizeof(unsigned int) * 1000);
-    rendercomponents.shaders = (unsigned int*)malloc(sizeof(unsigned int) * 1000);
-    rendercomponents.textures = (unsigned int*)malloc(sizeof(unsigned int) * 1000);
-}
 
-
+/*
 void CreateNewSquare(Render_Component& rendercomponent)
 {
     float vertex[] =
@@ -80,7 +73,7 @@ void CreateNewSquare(Render_Component& rendercomponent, std::string Texture_File
 
 }
 
-/*void Draw(Entity entity, m4 proj)
+void Draw(Entity entity, m4 proj)
 {
     Render_Component re = ecs::get<Render_Component>(entity);
 
