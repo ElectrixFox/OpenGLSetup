@@ -1,8 +1,8 @@
 #include "RenderComponent.h"
+#include "ecs.h"
 
 
-/*
-void CreateNewSquare(Render_Component& rendercomponent)
+void CreateNewSquare(RenderComponent& rendercomponent)
 {
     float vertex[] =
     {
@@ -27,16 +27,15 @@ void CreateNewSquare(Render_Component& rendercomponent)
     unsigned int vbo = CreateVertexBuffer(vertex, 20);
     unsigned int ibo = CreateIndexBuffer(index, 6);
 
-    unsigned int texture;
+    unsigned int texture = 0;
 
     rendercomponent.ibo = ibo;
     rendercomponent.vao = vao;
     rendercomponent.shader = shader;
-    rendercomponent.texture = 0;
-
+    rendercomponent.texture = texture;
 }
 
-void CreateNewSquare(Render_Component& rendercomponent, std::string Texture_FilePath)
+void CreateNewSquare(RenderComponent& rendercomponent, std::string Texture_FilePath)
 {
     float vertex[] =
     {
@@ -73,26 +72,27 @@ void CreateNewSquare(Render_Component& rendercomponent, std::string Texture_File
 
 }
 
-void Draw(Entity entity, m4 proj)
+/* void Draw(Entity entity, m4 proj)
 {
-    Render_Component re = ecs::get<Render_Component>(entity);
+    extern World world;
+    RenderComponent re = ecs::get<RenderComponent>(world, entity);
 
-    glBindTexture(GL_TEXTURE_2D, re.texture);
+    glBindTexture(GL_TEXTURE_2D, *re.texture);
 
     extern m4 View, Projection, VP;
 
     m4 MVP = Mul(proj, VP);
 
-    glUseProgram(re.shader);
-    SetUniformM4(re.shader, "U_Transform", MVP);
+    glUseProgram(*re.shader);
+    SetUniformM4(*re.shader, "U_Transform", MVP);
 
-    glBindVertexArray(re.vao);
+    glBindVertexArray(*re.vao);
 
-    if(re.ibo != 0)
+    if(*re.ibo != 0)
     {
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, re.ibo);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *re.ibo);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     }
 
     glDrawArrays(GL_TRIANGLES, 0, 6);
-}*/
+} */
