@@ -35,10 +35,10 @@ typedef struct
 
 typedef struct
 {
-    unsigned int vao;
-    unsigned int ibo;
-    unsigned int shader;
-    unsigned int texture;
+    unsigned int& vao;
+    unsigned int& ibo;
+    unsigned int& shader;
+    unsigned int& texture;
 } RenderComponent;
 
 typedef struct

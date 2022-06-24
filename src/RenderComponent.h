@@ -14,13 +14,13 @@
 #include "Rendering/VertexBuffer.h"
 
 #include "ecsTypes.h"
+#include <vector>
 
-#define PRESENT 1//167902105;
+#define PRESENT 167902105;
 
-// Component
+void CreateNewSquare(World& world, Entity entity);
+void CreateNewSquare(World& world, Entity entity, std::string Texture_FilePath);
 
-void CreateNewSquare(World& world, RenderComponent& rendercomponent);
-void CreateNewSquare(RenderComponent& rendercomponent, std::string Texture_FilePath);
-
+void Draw(RenderComponents res, std::vector<m4> projs, int n = 0);
 
 #endif

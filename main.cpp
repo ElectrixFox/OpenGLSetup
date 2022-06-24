@@ -89,26 +89,16 @@ int main()
     Entity entity;
     entity.EntityID = 0;
 
+    Entity entity2;
+    entity2.EntityID = 1;
+
     world.renderComponents.ibos = (unsigned int*)malloc(sizeof(unsigned int*) * 128);
     world.renderComponents.vaos = (unsigned int*)malloc(sizeof(unsigned int*) * 128);
     world.renderComponents.shaders = (unsigned int*)malloc(sizeof(unsigned int*) * 128);
     world.renderComponents.textures = (unsigned int*)malloc(sizeof(unsigned int*) * 128);
 
-    world.renderComponents.ibos[0] = 20;
-    world.renderComponents.vaos[0] = 20;
-    world.renderComponents.shaders[0] = 20;
-    world.renderComponents.textures[0] = 20;
-    
-
-    //RenderComponent re = ecs::get<RenderComponent>(world, entity);
-    //assert(0);
-
-    CreateNewSquare(world, ecs::get<RenderComponent>(world, entity));
-
-    RenderComponent& re = ecs::get<RenderComponent>(world, entity);
-
-    cout << re.ibo << '\n';
-
+    CreateNewSquare(world, entity);
+    CreateNewSquare(world, entity2, "res/Boris.png");
 
     while(!glfwWindowShouldClose(window))
     {
@@ -119,8 +109,7 @@ int main()
         // Updates the camera
         UpdateCamera();
 
-        //Draw(r_entity, matricies[0]);
-        //Draw(n_entity, matricies[1]);
+        Draw(world.renderComponents, matricies, 2);
 
         // Draw all of the objects here
         //Render(vbo2, vao2, ibo, shader2, texture, matricies[2]);
