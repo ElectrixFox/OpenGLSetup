@@ -5,6 +5,8 @@
 #include "PlatformBindings.h"
 #include "ecsTypes.h"
 
+#define ECL_GET(world, entity) { world.renderComponents[0][entity.EntityID], world.renderComponents[1][entity.EntityID], world.renderComponents[2][entity.EntityID], world.renderComponents[3][entity.EntityID] };
+
 namespace ecs
 {
     template<typename Component>
@@ -17,7 +19,17 @@ namespace ecs
     template<>
     inline RenderComponent& get<RenderComponent>(World world, Entity entity)
     {
-        RenderComponent re = { world.renderComponents.vaos[entity.EntityID], world.renderComponents.ibos[entity.EntityID], world.renderComponents.shaders[entity.EntityID], world.renderComponents.textures[entity.EntityID] };
+        //RenderComponent& re = { world.renderComponents.vaos[entity.EntityID], world.renderComponents.ibos[entity.EntityID], world.renderComponents.shaders[entity.EntityID], world.renderComponents.textures[entity.EntityID] };
+        //RenderComponent& re = { world.renderComponents[0][entity.EntityID], world.renderComponents[1][entity.EntityID], world.renderComponents[2][entity.EntityID], world.renderComponents[3][entity.EntityID] };
+
+/*       RenderComponent re;
+
+        re.ibo = world.renderComponents[0][0];
+        re.vao = world.renderComponents[1][0];
+        re.shader = world.renderComponents[2][0];
+        re.texture = world.renderComponents[3][0]; */
+
+        RenderComponent& re = ECL_GET(world, entity);
         return re;
     };
 };

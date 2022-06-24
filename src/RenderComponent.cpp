@@ -2,7 +2,7 @@
 #include "ecs.h"
 
 
-void CreateNewSquare(RenderComponent& rendercomponent)
+void CreateNewSquare(World& world, RenderComponent& rendercomponent)
 {
     float vertex[] =
     {
@@ -29,10 +29,13 @@ void CreateNewSquare(RenderComponent& rendercomponent)
 
     unsigned int texture = 0;
 
-    rendercomponent.ibo = ibo;
-    rendercomponent.vao = vao;
-    rendercomponent.shader = shader;
-    rendercomponent.texture = texture;
+    static int i = 0;
+    i++;
+
+    world.renderComponents.ibos[i] = ibo;
+    world.renderComponents.vaos[i] = vao;
+    world.renderComponents.shaders[i] = shader;
+    world.renderComponents.textures[i] = texture;
 }
 
 void CreateNewSquare(RenderComponent& rendercomponent, std::string Texture_FilePath)

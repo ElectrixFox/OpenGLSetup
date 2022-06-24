@@ -33,12 +33,6 @@ typedef struct
 
 } RenderComponents;
 
-
-typedef struct
-{
-    RenderComponents renderComponents;
-} World;
-
 typedef struct
 {
     unsigned int vao;
@@ -46,5 +40,10 @@ typedef struct
     unsigned int shader;
     unsigned int texture;
 } RenderComponent;
+
+typedef struct
+{
+    RenderComponents renderComponents;
+} World;
 
 #endif

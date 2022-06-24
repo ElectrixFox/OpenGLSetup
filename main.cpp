@@ -90,15 +90,22 @@ int main()
     entity.EntityID = 0;
 
     world.renderComponents.ibos = (unsigned int*)malloc(sizeof(unsigned int*) * 128);
+    world.renderComponents.vaos = (unsigned int*)malloc(sizeof(unsigned int*) * 128);
+    world.renderComponents.shaders = (unsigned int*)malloc(sizeof(unsigned int*) * 128);
+    world.renderComponents.textures = (unsigned int*)malloc(sizeof(unsigned int*) * 128);
+
     world.renderComponents.ibos[0] = 20;
     world.renderComponents.vaos[0] = 20;
     world.renderComponents.shaders[0] = 20;
     world.renderComponents.textures[0] = 20;
+    
+
+    //RenderComponent re = ecs::get<RenderComponent>(world, entity);
+    //assert(0);
+
+    CreateNewSquare(world, ecs::get<RenderComponent>(world, entity));
 
     RenderComponent& re = ecs::get<RenderComponent>(world, entity);
-    assert(0);
-
-    CreateNewSquare(re);
 
     cout << re.ibo << '\n';
 

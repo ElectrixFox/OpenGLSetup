@@ -19,7 +19,7 @@
 
 // Component
 
-void CreateNewSquare(RenderComponent& rendercomponent);
+void CreateNewSquare(World& world, RenderComponent& rendercomponent);
 void CreateNewSquare(RenderComponent& rendercomponent, std::string Texture_FilePath);
 
 
