@@ -2,19 +2,21 @@
 #define RENDER_COMPONENT_H
 
 #pragma once
+#include <vector>
+
 #include "PlatformBindings.h"
 #include "RenderAssistant.h"
 
 #include "Rendering/Shader.h"
-#include "Rendering/IndexBuffer.h"
-
 #include "Rendering/Texture.h"
+
+#include "Rendering/IndexBuffer.h"
 
 #include "Rendering/VertexArray.h"
 #include "Rendering/VertexBuffer.h"
 
 #include "ecsTypes.h"
-#include <vector>
+
 
 #define PRESENT 167902105;
 

@@ -11,6 +11,21 @@ struct Entity
 
 typedef struct
 {
+    vec2* positions;
+    vec2* scales;
+    vec3* rotations;
+} TransformComponents;
+
+typedef struct
+{
+    vec2& position;
+    vec2& scale;
+    vec3& rotation;
+} TransformComponent;
+
+
+typedef struct
+{
     unsigned int* vaos;
     unsigned int* ibos;
     unsigned int* shaders;
@@ -46,6 +61,8 @@ typedef struct
 typedef struct
 {
     RenderComponents renderComponents;
+    TransformComponents transformComponents;
+    
 } World;
 
 inline void initWorld(World& world) 

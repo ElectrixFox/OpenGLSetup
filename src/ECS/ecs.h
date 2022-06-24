@@ -5,7 +5,7 @@
 #include "PlatformBindings.h"
 #include "ecsTypes.h"
 
-#define ECL_GET(world, entity) { world.renderComponents.vaos[entity.EntityID], world.renderComponents.ibos[entity.EntityID], world.renderComponents.shaders[entity.EntityID], world.renderComponents.textures[entity.EntityID] };
+#define ECL_GET(world, entity, type) { world.renderComponents.vaos[entity.EntityID], world.renderComponents.ibos[entity.EntityID], world.renderComponents.shaders[entity.EntityID], world.renderComponents.textures[entity.EntityID] };
 
 namespace ecs
 {
@@ -19,11 +19,15 @@ namespace ecs
     template<>
     inline RenderComponent get<RenderComponent>(World world, Entity entity)
     {
-        //RenderComponent& re = { world.renderComponents.vaos[entity.EntityID], world.renderComponents.ibos[entity.EntityID], world.renderComponents.shaders[entity.EntityID], world.renderComponents.textures[entity.EntityID] };
-        //RenderComponent& re = { world.renderComponents[0][entity.EntityID], world.renderComponents[1][entity.EntityID], world.renderComponents[2][entity.EntityID], world.renderComponents[3][entity.EntityID] };
-
         RenderComponent re = ECL_GET(world, entity);
         return re;
+    };
+
+    template<>
+    inline TransformComponent get<TransformComponent>(World world, Entity entity)
+    {
+        TransformComponent tr = { world.transformComponents.positions[entity.EntityID], world.transformComponents.scales[entity.EntityID], world.transformComponents.rotations[entity.EntityID] };
+        return tr;
     };
 };
 
