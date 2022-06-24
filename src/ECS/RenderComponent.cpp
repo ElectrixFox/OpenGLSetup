@@ -1,7 +1,7 @@
 #include "RenderComponent.h"
 #include "ecs.h"
 
-void CreateNewSquare(World& world, Entity entity)
+void CreateNewSquare(Entity entity)
 {
     float vertex[] =
     {
@@ -33,7 +33,7 @@ void CreateNewSquare(World& world, Entity entity)
     ecs::get<RenderComponent>(entity) = re;
 }
 
-void CreateNewSquare(World& world, Entity entity, std::string Texture_FilePath)
+void CreateNewSquare(Entity entity, std::string Texture_FilePath)
 {
     float vertex[] =
     {
@@ -66,19 +66,20 @@ void CreateNewSquare(World& world, Entity entity, std::string Texture_FilePath)
     ecs::get<RenderComponent>(entity) = re;
 }
 
-void Draw(RenderComponents res, std::vector<m4> projs, std::vector<Entity> entities)
+void Draw(RenderComponents res, std::vector<m4> projs, Entities entities)
 {
-    int n = entities.size();
+    int n = entities.size;
 
     for (int i = 0; i < n; i++)
     {
-        unsigned int ID = entities.at(i).EntityID;
+        unsigned int ID = entities.entities.at(i).EntityID;
+        
         unsigned int v[4] = { res.renderComponents[ID].texture, res.renderComponents[ID].shader, res.renderComponents[ID].vao, res.renderComponents[ID].ibo };
 
+        // To-Do: Separate this out to make it more parrallisable
         extern m4 View, Projection, VP;
+        m4 MVP = Mul(projs.at(i), VP);
 
-        m4 MVP = Mul(projs.at(ID), VP);
-        
         glBindTexture(GL_TEXTURE_2D, v[0]);
 
         glUseProgram(v[1]);

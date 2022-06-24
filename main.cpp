@@ -9,18 +9,20 @@
 #include "src/Transforms.h"
 
 #include "src/ECS/ecs.h"
+#include "src/ECS/RenderComponent.h"
 
 #define QUICK_Q(q) (TransformMatrix(q.front())); q.pop();
 
+using ecs::world;
+
 int main()
 {
+    initWorld(world);
+
     GLFWwindow* window = CreateWindow(960, 540, "Hello World!");
     InitialiseGraphics();
 
     initMatricies();
-    World world;
-
-    initWorld(world);
 
     float vertex[] =
     {
@@ -77,21 +79,21 @@ int main()
 
     for(int i = 0; i != 3; i++) { matricies.push_back QUICK_Q(q) }
 
-    vector<Entity> entities;
+    Entities entities;
 
-    Entity entity;
-    entity.EntityID = 0;
+    Entity entity, entity2, entity3;
+
+    ecs::add<RenderComponent>(entity);
+    ecs::add<RenderComponent>(entity2);
+    ecs::add<RenderComponent>(entity3);
     
-    Entity entity2;
-    entity2.EntityID = 1;
-
     entities.push_back(entity);
     entities.push_back(entity2);
+    entities.push_back(entity3);
 
-    CreateNewSquare(world, entity);
-    CreateNewSquare(world, entity2, "res/Boris.png");
-
-    extern RenderComponents renderComponents;
+    CreateNewSquare(entity);
+    CreateNewSquare(entity2, "res/Boris.png");
+    CreateNewSquare(entity3);
 
     while(!glfwWindowShouldClose(window))
     {
@@ -102,7 +104,7 @@ int main()
         // Updates the camera
         UpdateCamera();
 
-        Draw(renderComponents, matricies, entities);
+        Draw(world.renderComponents, matricies, entities);
 
         // Draw all of the objects here
         //Render(vbo2, vao2, ibo, shader2, texture, matricies[2]);

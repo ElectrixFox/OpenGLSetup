@@ -3,6 +3,7 @@
 
 #pragma once
 #include "PlatformBindings.h"
+#include <vector>
 
 struct Entity
 {
@@ -37,14 +38,22 @@ typedef struct
 
 } RenderComponents;
 
-
-
 typedef struct
 {
     RenderComponents renderComponents;
     TransformComponents transformComponents;
     
 } World;
+
+struct Entities
+{
+    std::vector<Entity> entities;
+    int size = 0;
+
+    inline void push_back(Entity x) { entities.push_back(x); size++; };
+};
+
+typedef struct Entities Entities;
 
 inline void initWorld(World& world) 
 {

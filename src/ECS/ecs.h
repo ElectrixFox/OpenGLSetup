@@ -5,8 +5,29 @@
 #include "PlatformBindings.h"
 #include "ecsTypes.h"
 
+#include <initializer_list>
+
 namespace ecs
 {
+    extern World world;
+    
+    extern unsigned int Hash(Entity& entity);
+};
+
+namespace ecs
+{
+    template<typename Component>
+    inline void add(Entity& entity) { };
+
+    template<>
+    inline void add<RenderComponent>(Entity& entity)
+    {
+        unsigned int ID = Hash(entity);
+
+        extern World world;
+        world.renderComponents.renderComponents[ID] = { 0 };
+    };
+
     template<typename Component>
     inline Component& get(Entity entity)
     {
@@ -17,16 +38,17 @@ namespace ecs
     template<>
     inline RenderComponent& get<RenderComponent>(Entity entity)
     {
-        RenderComponent& re = renderComponents.renderComponents[entity.EntityID];
+        extern World world;
+        RenderComponent& re = world.renderComponents.renderComponents[entity.EntityID];
         return re;
     };
 
-    template<>
+    /* template<>
     inline TransformComponent& get<TransformComponent>(Entity entity)
     {
-        TransformComponent& tr = transformComponents.transformComponents[entity.EntityID];
+        TransformComponent& tr = world.transformComponents.transformComponents[entity.EntityID];
         return tr;
-    };
+    }; */
 };
 
 // Use bits to find if entity has component

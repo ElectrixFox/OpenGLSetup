@@ -20,9 +20,9 @@
 
 #define PRESENT 167902105;
 
-void CreateNewSquare(World& world, Entity entity);
-void CreateNewSquare(World& world, Entity entity, std::string Texture_FilePath);
+void CreateNewSquare(Entity entity);
+void CreateNewSquare(Entity entity, std::string Texture_FilePath);
 
-void Draw(RenderComponents res, std::vector<m4> projs, std::vector<Entity> entities);
+void Draw(RenderComponents res, std::vector<m4> projs, Entities entities);
 
 #endif
