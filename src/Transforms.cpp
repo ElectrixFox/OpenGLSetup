@@ -1,41 +1,5 @@
 #include "Transforms.h"
 
-vec2* Transforms;
-
-struct Queue
-{
-    int current;
-    int size;
-	int bottom;
-};
-
-static struct Queue trns;
-
-void InitTransforms()
-{
-    Transforms = (vec2*)malloc(sizeof(vec2) * 128);
-
-	trns.current = 0;
-    trns.size = 0;
-	trns.bottom = 0;
-}
-
-void PushBack(vec2 Transform)
-{
-    trns.size++;
-    Transforms = (vec2*)realloc(Transforms, sizeof(vec2) * (trns.size + 1));
-
-    Transforms[trns.current++] = Transform;
-}
-
-vec2& PopOff()
-{
-    vec2& transform = Transforms[trns.bottom];
-	trns.bottom = (trns.bottom + 1) % trns.size;
-
-    return transform;
-}
-
 // To-Do: Change all of these so that they come straight from here and not the maths library.
 void TransformMatrix(m4& transform_matrix, const vec2 newTransform)
 {
@@ -92,15 +56,4 @@ void ViewMatrix(m4* view_matrix, vec3 cam_Pos)
 	SetMatrix(view_matrix, View.matrix);
 
 	//View = Mul(Rotation(View, cr, (vec3){1.0f, 0.0f, 0.0f}), LookAt((vec3){1, 0, 0}, (vec3){0, 1, 0}, (vec3){0, 0, 1}, crt));
-}
-
-m4 InitialiseObjectTransforms(vec2 position, vec3 scale, vec3 rotation)
-{
-	m4 model = M4_Identity();
-
-	TransformMatrix(model, position);
-	RotateMaxtrix(&model, rotation);
-	ScaleMatrix(&model, scale);
-
-	return model;
 }

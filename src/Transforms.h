@@ -5,13 +5,6 @@
 #include "PlatformBindings.h"
 #include <iostream>
 
-void InitTransforms();
-
-// Adds new transform to the array
-void PushBack(vec2 Transform);
-
-vec2& PopOff();
-
 // Need to take in an input for the currect transform matrix and output one.
 void TransformMatrix(m4& transform_matrix, const vec2 newTransform);
 m4 TransformMatrix(const vec2 newTransform);
@@ -24,7 +17,5 @@ void ScaleMatrix(m4* scale_matrix, vec3 scale);
 
 //View = Mul(Rotation(View, cr, (vec3){1.0f, 0.0f, 0.0f}), LookAt((vec3){1, 0, 0}, (vec3){0, 1, 0}, (vec3){0, 0, 1}, crt));
 void ViewMatrix(m4* view_matrix, vec3 cam_Pos);
-
-m4 InitialiseObjectTransforms(vec2 position, vec3 scale, vec3 rotation);
 
 #endif

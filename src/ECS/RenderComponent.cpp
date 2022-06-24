@@ -28,10 +28,9 @@ void CreateNewSquare(World& world, Entity entity)
 
     unsigned int texture = 0;
 
-    world.renderComponents.ibos[entity.EntityID] = ibo;
-    world.renderComponents.vaos[entity.EntityID] = vao;
-    world.renderComponents.shaders[entity.EntityID] = shader;
-    world.renderComponents.textures[entity.EntityID] = texture;
+    RenderComponent re = { vao, ibo, shader, texture };
+
+    ecs::get<RenderComponent>(entity) = re;
 }
 
 void CreateNewSquare(World& world, Entity entity, std::string Texture_FilePath)
@@ -62,38 +61,34 @@ void CreateNewSquare(World& world, Entity entity, std::string Texture_FilePath)
     unsigned int ibo = CreateIndexBuffer(index, 6);
     AddAttribute(1, 2, 5, 3);
 
+    RenderComponent re = { vao, ibo, shader, texture };
 
-    world.renderComponents.ibos[entity.EntityID] = ibo;
-    world.renderComponents.vaos[entity.EntityID] = vao;
-    world.renderComponents.shaders[entity.EntityID] = shader;
-    world.renderComponents.textures[entity.EntityID] = texture;
+    ecs::get<RenderComponent>(entity) = re;
 }
 
-void Draw(RenderComponents res, std::vector<m4> projs, std::vector<Entity> entities, int n)
+void Draw(RenderComponents res, std::vector<m4> projs, std::vector<Entity> entities)
 {
+    int n = entities.size();
+
     for (int i = 0; i < n; i++)
     {
         unsigned int ID = entities.at(i).EntityID;
-
-        unsigned int vao = res.vaos[ID];
-        unsigned int ibo = res.ibos[ID];
-        unsigned int shader =  res.shaders[ID];
-        unsigned int texture =  res.textures[ID];
+        unsigned int v[4] = { res.renderComponents[ID].texture, res.renderComponents[ID].shader, res.renderComponents[ID].vao, res.renderComponents[ID].ibo };
 
         extern m4 View, Projection, VP;
 
         m4 MVP = Mul(projs.at(ID), VP);
         
-        glBindTexture(GL_TEXTURE_2D, texture);
+        glBindTexture(GL_TEXTURE_2D, v[0]);
 
-        glUseProgram(shader);
-        SetUniformM4(shader, "U_Transform", MVP);
+        glUseProgram(v[1]);
+        SetUniformM4(v[1], "U_Transform", MVP);
 
-        glBindVertexArray(vao);
+        glBindVertexArray(v[2]);
 
-        if(ibo != 0)
+        if(v[3] != 0)
         {
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, v[3]);
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         }
 

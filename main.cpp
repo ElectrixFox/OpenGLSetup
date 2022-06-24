@@ -3,13 +3,14 @@
 #include <stdlib.h>
 
 #include <vector>
+#include <queue>
 
 #include "src/Rendering/Renderer.h"
 #include "src/Transforms.h"
 
 #include "src/ECS/ecs.h"
-#include "src/ECS/RenderComponent.h"
 
+#define QUICK_Q(q) (TransformMatrix(q.front())); q.pop();
 
 int main()
 {
@@ -20,7 +21,6 @@ int main()
     World world;
 
     initWorld(world);
-
 
     float vertex[] =
     {
@@ -35,8 +35,6 @@ int main()
         0, 1, 3,
         1, 2, 3
     };
-
-    InitTransforms();
 
     /* unsigned int shader = CreateShader("res/shader.shader");
     SetUniformM4(shader, "U_Transform", M4_Identity());
@@ -65,17 +63,19 @@ int main()
     unsigned int vbo1 = CreateVertexBuffer(vertex, sizeof(vertex));
     unsigned int ibo1 = CreateIndexBuffer(index, sizeof index); */
 
-    PushBack({0, 0});
-    PushBack({-500.0f, 0.0f});
-    PushBack({500.0f, 0.0f});
+    std::queue<vec2> q;
+    
+    q.push({0, 0});
+    q.push({-500.0f, 0.0f});
+    q.push({500.0f, 0.0f});
     
     FrameBufferObject fbo = initFrameBuffer();
     
     using namespace std;
     vector<m4> matricies;
 
-    for(int i = 0; i != 3; i++)
-        matricies.push_back(TransformMatrix(PopOff()));
+
+    for(int i = 0; i != 3; i++) { matricies.push_back QUICK_Q(q) }
 
     vector<Entity> entities;
 
@@ -91,6 +91,8 @@ int main()
     CreateNewSquare(world, entity);
     CreateNewSquare(world, entity2, "res/Boris.png");
 
+    extern RenderComponents renderComponents;
+
     while(!glfwWindowShouldClose(window))
     {
         // Bind frame buffer here
@@ -100,7 +102,7 @@ int main()
         // Updates the camera
         UpdateCamera();
 
-        Draw(world.renderComponents, matricies, entities, entities.size());
+        Draw(renderComponents, matricies, entities);
 
         // Draw all of the objects here
         //Render(vbo2, vao2, ibo, shader2, texture, matricies[2]);

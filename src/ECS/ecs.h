@@ -5,28 +5,26 @@
 #include "PlatformBindings.h"
 #include "ecsTypes.h"
 
-#define ECL_GET(world, entity, type) { world.renderComponents.vaos[entity.EntityID], world.renderComponents.ibos[entity.EntityID], world.renderComponents.shaders[entity.EntityID], world.renderComponents.textures[entity.EntityID] };
-
 namespace ecs
 {
     template<typename Component>
-    inline Component get(World world, Entity entity)
+    inline Component& get(Entity entity)
     {
         printf("Fail to choose type\n");
         assert(0);
     };
 
     template<>
-    inline RenderComponent get<RenderComponent>(World world, Entity entity)
+    inline RenderComponent& get<RenderComponent>(Entity entity)
     {
-        RenderComponent re = ECL_GET(world, entity);
+        RenderComponent& re = renderComponents.renderComponents[entity.EntityID];
         return re;
     };
 
     template<>
-    inline TransformComponent get<TransformComponent>(World world, Entity entity)
+    inline TransformComponent& get<TransformComponent>(Entity entity)
     {
-        TransformComponent tr = { world.transformComponents.positions[entity.EntityID], world.transformComponents.scales[entity.EntityID], world.transformComponents.rotations[entity.EntityID] };
+        TransformComponent& tr = transformComponents.transformComponents[entity.EntityID];
         return tr;
     };
 };

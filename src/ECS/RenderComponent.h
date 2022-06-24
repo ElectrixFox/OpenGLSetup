@@ -23,6 +23,6 @@
 void CreateNewSquare(World& world, Entity entity);
 void CreateNewSquare(World& world, Entity entity, std::string Texture_FilePath);
 
-void Draw(RenderComponents res, std::vector<m4> projs, std::vector<Entity> entities, int n = 0);
+void Draw(RenderComponents res, std::vector<m4> projs, std::vector<Entity> entities);
 
 #endif

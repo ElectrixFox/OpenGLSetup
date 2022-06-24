@@ -11,52 +11,33 @@ struct Entity
 
 typedef struct
 {
-    vec2* positions;
-    vec2* scales;
-    vec3* rotations;
+    unsigned int vao;
+    unsigned int ibo;
+    unsigned int shader;
+    unsigned int texture;
+} RenderComponent;
+
+typedef struct
+{
+    vec2 position;
+    vec2 scale;
+    vec3 rotation;
+} TransformComponent;
+
+typedef struct
+{
+    TransformComponent* transformComponents;
+    int size;
 } TransformComponents;
 
 typedef struct
 {
-    vec2& position;
-    vec2& scale;
-    vec3& rotation;
-} TransformComponent;
-
-
-typedef struct
-{
-    unsigned int* vaos;
-    unsigned int* ibos;
-    unsigned int* shaders;
-    unsigned int* textures;
-
-    unsigned int*& operator[](int i) 
-    { 
-        switch (i)
-        {
-            case 0:
-                return vaos;
-            case 1:
-                return ibos;
-            case 2:
-                return shaders;
-            case 3:
-                return textures;
-        }
-    }
-
+    RenderComponent* renderComponents;
     int size;
 
 } RenderComponents;
 
-typedef struct
-{
-    unsigned int& vao;
-    unsigned int& ibo;
-    unsigned int& shader;
-    unsigned int& texture;
-} RenderComponent;
+
 
 typedef struct
 {
@@ -67,10 +48,7 @@ typedef struct
 
 inline void initWorld(World& world) 
 {
-    world.renderComponents.ibos = (unsigned int*)malloc(sizeof(unsigned int*) * 128);
-    world.renderComponents.vaos = (unsigned int*)malloc(sizeof(unsigned int*) * 128);
-    world.renderComponents.shaders = (unsigned int*)malloc(sizeof(unsigned int*) * 128);
-    world.renderComponents.textures = (unsigned int*)malloc(sizeof(unsigned int*) * 128);
+    world.renderComponents.renderComponents = (RenderComponent*)malloc(sizeof(unsigned int*) * 128);
 };
 
 #endif
