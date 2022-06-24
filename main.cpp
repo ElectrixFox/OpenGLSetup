@@ -7,12 +7,9 @@
 #include "src/Rendering/Renderer.h"
 #include "src/Transforms.h"
 
-#include "src/Primatives.h"
+#include "src/ECS/ecs.h"
+#include "src/ECS/RenderComponent.h"
 
-#include "src/ecs.h"
-#include "src/RenderComponent.h"
-
-World world;
 
 int main()
 {
@@ -20,6 +17,9 @@ int main()
     InitialiseGraphics();
 
     initMatricies();
+    World world;
+
+    initWorld(world);
 
 
     float vertex[] =
@@ -74,28 +74,19 @@ int main()
     using namespace std;
     vector<m4> matricies;
 
-    m4 p1m = M4_Identity();
-    m4 p2m = M4_Identity();
-    m4 p3m = M4_Identity();
+    for(int i = 0; i != 3; i++)
+        matricies.push_back(TransformMatrix(PopOff()));
 
-    TransformMatrix(p1m, PopOff());
-    TransformMatrix(p2m, PopOff());
-    TransformMatrix(p3m, PopOff());
-	
-    matricies.push_back(p1m);
-    matricies.push_back(p2m);
-    matricies.push_back(p3m);
+    vector<Entity> entities;
 
     Entity entity;
     entity.EntityID = 0;
-
+    
     Entity entity2;
     entity2.EntityID = 1;
 
-    world.renderComponents.ibos = (unsigned int*)malloc(sizeof(unsigned int*) * 128);
-    world.renderComponents.vaos = (unsigned int*)malloc(sizeof(unsigned int*) * 128);
-    world.renderComponents.shaders = (unsigned int*)malloc(sizeof(unsigned int*) * 128);
-    world.renderComponents.textures = (unsigned int*)malloc(sizeof(unsigned int*) * 128);
+    entities.push_back(entity);
+    entities.push_back(entity2);
 
     CreateNewSquare(world, entity);
     CreateNewSquare(world, entity2, "res/Boris.png");
@@ -109,7 +100,7 @@ int main()
         // Updates the camera
         UpdateCamera();
 
-        Draw(world.renderComponents, matricies, 2);
+        Draw(world.renderComponents, matricies, entities, entities.size());
 
         // Draw all of the objects here
         //Render(vbo2, vao2, ibo, shader2, texture, matricies[2]);

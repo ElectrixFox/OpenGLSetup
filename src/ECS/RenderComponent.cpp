@@ -1,7 +1,6 @@
 #include "RenderComponent.h"
 #include "ecs.h"
 
-
 void CreateNewSquare(World& world, Entity entity)
 {
     float vertex[] =
@@ -70,18 +69,20 @@ void CreateNewSquare(World& world, Entity entity, std::string Texture_FilePath)
     world.renderComponents.textures[entity.EntityID] = texture;
 }
 
-void Draw(RenderComponents res, std::vector<m4> projs, int n)
+void Draw(RenderComponents res, std::vector<m4> projs, std::vector<Entity> entities, int n)
 {
     for (int i = 0; i < n; i++)
     {
-        unsigned int vao = res.vaos[i];
-        unsigned int ibo = res.ibos[i];
-        unsigned int shader =  res.shaders[i];
-        unsigned int texture =  res.textures[i];
+        unsigned int ID = entities.at(i).EntityID;
+
+        unsigned int vao = res.vaos[ID];
+        unsigned int ibo = res.ibos[ID];
+        unsigned int shader =  res.shaders[ID];
+        unsigned int texture =  res.textures[ID];
 
         extern m4 View, Projection, VP;
 
-        m4 MVP = Mul(projs.data()[i], VP);
+        m4 MVP = Mul(projs.at(ID), VP);
         
         glBindTexture(GL_TEXTURE_2D, texture);
 

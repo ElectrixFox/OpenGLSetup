@@ -31,6 +31,8 @@ typedef struct
         }
     }
 
+    int size;
+
 } RenderComponents;
 
 typedef struct
@@ -45,5 +47,13 @@ typedef struct
 {
     RenderComponents renderComponents;
 } World;
+
+inline void initWorld(World& world) 
+{
+    world.renderComponents.ibos = (unsigned int*)malloc(sizeof(unsigned int*) * 128);
+    world.renderComponents.vaos = (unsigned int*)malloc(sizeof(unsigned int*) * 128);
+    world.renderComponents.shaders = (unsigned int*)malloc(sizeof(unsigned int*) * 128);
+    world.renderComponents.textures = (unsigned int*)malloc(sizeof(unsigned int*) * 128);
+};
 
 #endif

@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -g -Wall -I. -I3rdParty -Isrc -Isrc/Rendering -I3rdParty/LCMaths
+CXXFLAGS = -g -Wall -I. -I3rdParty -Isrc -Isrc/Rendering -Isrc/ECS -I3rdParty/LCMaths -I3rdParty/GLFW
 LIBS = -lpthread -lm
 
 ifeq ($(OS), Windows_NT)
@@ -11,6 +11,7 @@ endif
 APPNAME = main
 
 SRCFILES := $(notdir $(wildcard src/Rendering/*.cpp))
+SRCFILES += $(notdir $(wildcard src/ECS/*.cpp))
 SRCFILES += $(notdir $(wildcard src/*.cpp))
 SRCFILES += $(notdir $(wildcard *.cpp))
 
@@ -20,6 +21,9 @@ OBJS += obj/LCMaths.o
 obj/%.o: src/Rendering/%.cpp
 	$(CXX) $(CXXFLAGS) -c -o $@ $^
 	
+obj/%.o: src/ECS/%.cpp
+	$(CXX) $(CXXFLAGS) -c -o $@ $^
+
 obj/%.o: src/%.cpp
 	$(CXX) $(CXXFLAGS) -c -o $@ $^
 

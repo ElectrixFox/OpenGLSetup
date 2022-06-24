@@ -53,6 +53,25 @@ void TransformMatrix(m4& transform_matrix, const vec2 newTransform)
 	transform_matrix.matrix[1][3] = trns[1];
 }
 
+m4 TransformMatrix(const vec2 newTransform)
+{
+	m4 transform_matrix = M4_Identity();
+
+	extern vec2 display;
+	int x = display[0];
+	int y = display[1];
+	
+	vec2 trns = newTransform;
+
+	trns[0] /= x;
+	trns[1] /= y;
+
+	transform_matrix.matrix[0][3] = trns[0];
+	transform_matrix.matrix[1][3] = trns[1];
+
+	return transform_matrix;
+}
+
 void RotateMaxtrix(m4* rotation_matrix, vec3 Rotation)
 {
 	Rotate_X(rotation_matrix, Rotation[0]);
