@@ -7,12 +7,8 @@
 
 #include "world.h"
 
-#include <initializer_list>
-
 namespace ecs
-{
-    extern World world;
-    
+{   
     extern unsigned int Hash(Entity& entity);
 };
 
