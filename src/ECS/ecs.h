@@ -5,6 +5,8 @@
 #include "PlatformBindings.h"
 #include "ecsTypes.h"
 
+#include "world.h"
+
 #include <initializer_list>
 
 namespace ecs
@@ -25,7 +27,7 @@ namespace ecs
         unsigned int ID = Hash(entity);
 
         extern World world;
-        world.renderComponents.renderComponents[ID] = { 0 };
+        world.renderComponents.renderComponents[ID] = {0, 0, 0, 0};
     };
 
     template<typename Component>

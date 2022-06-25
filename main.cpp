@@ -11,6 +11,8 @@
 #include "src/ECS/ecs.h"
 #include "src/ECS/RenderComponent.h"
 
+#include "src/ECS/world.h"
+
 #define QUICK_Q(q) (TransformMatrix(q.front())); q.pop();
 
 using ecs::world;
@@ -82,6 +84,7 @@ int main()
     Entities entities;
 
     Entity entity, entity2, entity3;
+
 
     ecs::add<RenderComponent>(entity);
     ecs::add<RenderComponent>(entity2);

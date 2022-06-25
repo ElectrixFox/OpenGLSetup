@@ -38,13 +38,6 @@ typedef struct
 
 } RenderComponents;
 
-typedef struct
-{
-    RenderComponents renderComponents;
-    TransformComponents transformComponents;
-    
-} World;
-
 struct Entities
 {
     std::vector<Entity> entities;
@@ -54,10 +47,5 @@ struct Entities
 };
 
 typedef struct Entities Entities;
-
-inline void initWorld(World& world) 
-{
-    world.renderComponents.renderComponents = (RenderComponent*)malloc(sizeof(unsigned int*) * 128);
-};
 
 #endif
