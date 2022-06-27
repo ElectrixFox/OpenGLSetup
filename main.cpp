@@ -8,6 +8,7 @@
 #include "src/Transforms.h"
 
 #include "src/ECS/ecs.h"
+#include "src/ECS/TransformComponent.h"
 #include "src/ECS/RenderComponent.h"
 
 #define QUICK_Q(q) (TransformMatrix(q.front())); q.pop();
@@ -18,6 +19,7 @@ int main()
 
     initWorld(&world);
     ecs_register(world, Types::T_Render, struct RenderComponent);
+    ecs_register(world, Types::T_Transform, struct TransformComponent);
 
     GLFWwindow* window = CreateWindow(960, 540, "Hello World!");
     InitialiseGraphics();
@@ -70,7 +72,9 @@ int main()
     q.push({0, 0});
     q.push({-500.0f, 0.0f});
     q.push({500.0f, 0.0f});
-    
+
+    TransformComponent trns_ent;
+    trns_ent.position = {0, 0};
     
     using namespace std;
     vector<m4> matricies;
@@ -101,6 +105,8 @@ int main()
 
     FrameBufferObject fbo = initFrameBuffer();
 
+    add<TransformComponent>(&world, entity, Types::T_Transform, trns_ent);
+
 
     while(!glfwWindowShouldClose(window))
     {
@@ -113,6 +119,11 @@ int main()
 
         RenderComponent* renderComponents = (RenderComponent*)malloc(sizeof(RenderComponent) * 5);   
         renderComponents = get_set<RenderComponent>(&world, Entities, Types::T_Render);
+
+        vec2 scale = {0.5f, 0.5f};
+        Scale(&world, entity, scale);
+
+        matricies[0] = ScaleMatrix(get<TransformComponent>(&world, entity, Types::T_Transform)->scale);
 
         Draw(renderComponents, matricies, entities);
 

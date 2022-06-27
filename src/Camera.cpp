@@ -13,7 +13,7 @@ void Camera(m4* cam, vec3 position)
 
 void UpdateCamera()
 {
-    VP = Mul(View, Projection);
+    VP = LC_Mul(View, Projection);
 
     vec3 funnel = {pos[0], pos[1], pos[2]};
     Camera(&View, funnel);
@@ -35,8 +35,8 @@ void TranslateCamera(vec3 translation)
 
 void initMatricies()
 {
-    View = M4_Identity();
-    Projection = M4_Identity();
+    View = LC_M4_Identity();
+    Projection = LC_M4_Identity();
 }
 
 FrameBufferObject initFrameBuffer()
@@ -78,10 +78,10 @@ FrameBufferObject initFrameBuffer()
 
 void DrawFBO(unsigned int vao, unsigned int shader, unsigned int screen_texture)
 {
-    m4 model = M4_Identity();
+    m4 model = LC_M4_Identity();
 
     extern m4 VP;
-    m4 MVP = Mul(model, VP);
+    m4 MVP = LC_Mul(model, VP);
 
     glBindTexture(GL_TEXTURE_2D, screen_texture);
 

@@ -239,7 +239,7 @@ void EasierUpdateProjection(unsigned int program, const char* name, m4* mvp, m4 
     mvp->matrix[0][3]  /= x;
     mvp->matrix[1][3] /= y;
 
-    SetMatrix(mvp, Mul(transform, scale).matrix);
-    SetMatrix(mvp, Mul(*mvp, rotation).matrix);
+    LC_SetMatrix(mvp, LC_Mul(transform, scale).matrix);
+    LC_SetMatrix(mvp, LC_Mul(*mvp, rotation).matrix);
     UpdateProjection(program, "U_Transform", *mvp);
 }

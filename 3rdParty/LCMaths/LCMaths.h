@@ -28,25 +28,25 @@ typedef struct
 
 typedef vec4 matrixv4[4];
 
-void LogM4(m4 p);
+void LC_LogM4(m4 p);
 
-void SetMatrix(m4* set, matrixv4 as);
+void LC_SetMatrix(m4* set, matrixv4 as);
 
-m4 Mul(m4 x, m4 y);
+m4 LC_Mul(m4 x, m4 y);
 
-m4 M4_Identity();
+m4 LC_M4_Identity();
 
-m4 Transform(m4* transform, vec3 pos);
-m4 Scale(m4* scale, vec3 sf);
+m4 LC_Transform(m4* transform, vec3 pos);
+m4 LC_Scale(m4* scale, vec3 sf);
 
-m4 Rotation(m4 rotation, double angle, vec3 axis);
+m4 LC_Rotation(m4 rotation, double angle, vec3 axis);
 
-m4 TotalRotation(m4 x, m4 y, m4 z);
+m4 LC_TotalRotation(m4 x, m4 y, m4 z);
 
-void Rotate_X(m4* Rotation, float degrees);
-void Rotate_Y(m4* Rotation, float degrees);
-void Rotate_Z(m4* Rotation, float degrees);
+void LC_Rotate_X(m4* Rotation, float degrees);
+void LC_Rotate_Y(m4* Rotation, float degrees);
+void LC_Rotate_Z(m4* Rotation, float degrees);
 
-m4 LookAt(vec3 V_Right, vec3 V_Up, vec3 V_Direction, vec3 V_Position);
+m4 LC_LookAt(vec3 V_Right, vec3 V_Up, vec3 V_Direction, vec3 V_Position);
 
 #endif

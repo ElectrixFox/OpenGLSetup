@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -g -Wall -I. -I3rdParty -Isrc -Isrc/Rendering -Isrc/ECS -I3rdParty/LCMaths -I3rdParty/GLFW
+CXXFLAGS = -g -Wall -I. -O3 -I3rdParty -Isrc -Isrc/Rendering -Isrc/ECS -I3rdParty/LCMaths -I3rdParty/GLFW
 LIBS = -lpthread -lm
 
 ifeq ($(OS), Windows_NT)

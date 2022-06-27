@@ -18,7 +18,7 @@ void CreateNewSquare(World* world, Entity entity)
 
 
     unsigned int shader = CreateShader("res/shader.shader");
-    SetUniformM4(shader, "U_Transform", M4_Identity());
+    SetUniformM4(shader, "U_Transform", LC_M4_Identity());
     SetUniform4f(shader, "U_Colour", 1.0, 0.0, 0.0, 1.0);
 
     unsigned int vao = CreateVertexArray();
@@ -46,7 +46,7 @@ void CreateNewSquare(World* world, Entity entity, std::string Texture_FilePath)
 
     unsigned int shader = CreateShader("res/texShader.shader");
     unsigned int texture = CreateTexture(Texture_FilePath.c_str());
-    SetUniformM4(shader, "U_Transform", M4_Identity());
+    SetUniformM4(shader, "U_Transform", LC_M4_Identity());
     SetUniform4f(shader, "U_Colour", 1.0, 0.0, 0.0, 1.0);
 
     SetUniform1i(shader, "U_Texture", 0);
@@ -72,7 +72,7 @@ void Draw(RenderComponent* res, std::vector<m4> projs, std::vector<Entity> entit
 
         // To-Do: Separate this out to make it more parrallisable
         extern m4 VP;
-        m4 MVP = Mul(projs.at(i), VP);
+        m4 MVP = LC_Mul(projs.at(i), VP);
 
         glBindTexture(GL_TEXTURE_2D, v[0]);
 

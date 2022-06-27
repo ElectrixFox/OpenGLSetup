@@ -21,7 +21,7 @@ void Render(unsigned int vbo, unsigned int vao, unsigned int ibo, unsigned int s
 { 
     extern m4 VP;
 
-    m4 MVP = Mul(proj, VP);
+    m4 MVP = LC_Mul(proj, VP);
 
     glBindTexture(GL_TEXTURE_2D, texture);
 
