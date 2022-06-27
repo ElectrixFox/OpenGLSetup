@@ -36,9 +36,9 @@ int main()
     {
         0, 1, 3,
         1, 2, 3
-    }; */
+    }; 
 
-    /* unsigned int shader = CreateShader("res/shader.shader");
+    unsigned int shader = CreateShader("res/shader.shader");
     SetUniformM4(shader, "U_Transform", M4_Identity());
     SetUniform4f(shader, "U_Colour", 1.0, 0.0, 0.0, 1.0);
 
@@ -71,13 +71,13 @@ int main()
     q.push({-500.0f, 0.0f});
     q.push({500.0f, 0.0f});
     
-    FrameBufferObject fbo = initFrameBuffer();
     
     using namespace std;
     vector<m4> matricies;
 
 
     for(int i = 0; i != 3; i++) { matricies.push_back QUICK_Q(q) }
+    q.empty();
 
     vector<Entity> entities;
 
@@ -99,6 +99,9 @@ int main()
     Entities[1] = entity2;
     Entities[2] = entity3;
 
+    FrameBufferObject fbo = initFrameBuffer();
+
+
     while(!glfwWindowShouldClose(window))
     {
         // Bind frame buffer here
@@ -108,21 +111,10 @@ int main()
         // Updates the camera
         UpdateCamera();
 
-        RenderComponent* renderComponents = (RenderComponent*)malloc(sizeof(RenderComponent) * 128);
-        //renderComponents[0] = *get<RenderComponent>(&world, entity, Types::T_Render);
-        //renderComponents[1] = *get<RenderComponent>(&world, entity2, Types::T_Render);
-        //renderComponents[2] = *get<RenderComponent>(&world, entity3, Types::T_Render);     
-        
+        RenderComponent* renderComponents = (RenderComponent*)malloc(sizeof(RenderComponent) * 5);   
         renderComponents = get_set<RenderComponent>(&world, Entities, Types::T_Render);
 
         Draw(renderComponents, matricies, entities);
-
-
-        // Draw all of the objects here
-        //Render(vbo2, vao2, ibo, shader2, texture, matricies[2]);
-        //Render(0, item.vao, item.ibo, item.shader, item.texture, matricies[0]);
-        //Render(vbo, vao, ibo, shader, 0, matricies[0]);
-        //Render(vbo1, vao1, ibo1, shader1, 0, matricies[1]);
 
 
         // End the render loop here

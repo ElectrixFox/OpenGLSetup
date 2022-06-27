@@ -29,14 +29,14 @@ void initMatricies();
 
 typedef struct
 {
-    unsigned char fbo;
-    unsigned char vao;
-    unsigned char shader;
-    unsigned char screen_texture;
-    unsigned char vbo;
+    unsigned int fbo;
+    unsigned int vao;
+    unsigned int shader;
+    unsigned int screen_texture;
+    unsigned int vbo;
 } FrameBufferObject;
 
 FrameBufferObject initFrameBuffer();
-void DrawFBO(unsigned char vao, unsigned char shader, unsigned char screen_texture);
+void DrawFBO(unsigned int vao, unsigned int shader, unsigned int screen_texture);
 
 #endif

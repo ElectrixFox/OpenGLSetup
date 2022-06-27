@@ -25,7 +25,7 @@ struct RenderComponent
     unsigned int ibo;
     unsigned int shader;
     unsigned int texture;
-    unsigned short int vbo;
+    unsigned int vbo;
 };
 typedef struct RenderComponent RenderComponent;
 

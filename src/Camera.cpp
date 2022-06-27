@@ -62,7 +62,7 @@ FrameBufferObject initFrameBuffer()
     SetUniform1i(FboShader, "screenTexture", 0);
 
 
-    unsigned char fbo = CreateFramebuffer();
+    unsigned int fbo = CreateFramebuffer();
     unsigned int screen_texture = TextureAttachment();
     unsigned int rbo = Renderbuffer();
 
@@ -76,7 +76,7 @@ FrameBufferObject initFrameBuffer()
     return fbO;
 };
 
-void DrawFBO(unsigned char vao, unsigned char shader, unsigned char screen_texture)
+void DrawFBO(unsigned int vao, unsigned int shader, unsigned int screen_texture)
 {
     m4 model = M4_Identity();
 

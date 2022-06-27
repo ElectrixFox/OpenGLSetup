@@ -22,12 +22,10 @@ void CreateNewSquare(World* world, Entity entity)
     SetUniform4f(shader, "U_Colour", 1.0, 0.0, 0.0, 1.0);
 
     unsigned int vao = CreateVertexArray();
-    unsigned short int vbo = CreateVertexBuffer(vertex, 20);
+    unsigned int vbo = CreateVertexBuffer(vertex, 20);
     unsigned int ibo = CreateIndexBuffer(index, 6);
-
-    unsigned int texture = 0;
     
-    add<RenderComponent>(world, entity, Types::T_Render, { vao, ibo, shader, texture, vbo });
+    add<RenderComponent>(world, entity, Types::T_Render, { vao, ibo, shader, 0, vbo });
 }
 
 void CreateNewSquare(World* world, Entity entity, std::string Texture_FilePath)
@@ -54,7 +52,7 @@ void CreateNewSquare(World* world, Entity entity, std::string Texture_FilePath)
     SetUniform1i(shader, "U_Texture", 0);
 
     unsigned int vao = CreateVertexArray();
-    unsigned short int vbo = CreateVertexBufferDepth(vertex, sizeof(vertex), 0, 3, 5, 0);
+    unsigned int vbo = CreateVertexBufferDepth(vertex, sizeof(vertex), 0, 3, 5, 0);
     unsigned int ibo = CreateIndexBuffer(index, 6);
     AddAttribute(1, 2, 5, 3);
 
@@ -91,4 +89,7 @@ void Draw(RenderComponent* res, std::vector<m4> projs, std::vector<Entity> entit
 
         glDrawArrays(GL_TRIANGLES, 0, 6);
     }
+
+// ===============================NEW=============================== //
+    free(res);
 }
