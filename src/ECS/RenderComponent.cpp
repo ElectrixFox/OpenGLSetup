@@ -1,7 +1,6 @@
 #include "RenderComponent.h"
-#include "ecs.h"
 
-void CreateNewSquare(Entity entity)
+void CreateNewSquare(World* world, Entity entity)
 {
     float vertex[] =
     {
@@ -27,13 +26,11 @@ void CreateNewSquare(Entity entity)
     unsigned int ibo = CreateIndexBuffer(index, 6);
 
     unsigned int texture = 0;
-
-    RenderComponent re = { vao, ibo, shader, texture };
-
-    ecs::get<RenderComponent>(entity) = re;
+    
+    add<RenderComponent>(world, entity, Types::T_Render, { vao, ibo, shader, texture });
 }
 
-void CreateNewSquare(Entity entity, std::string Texture_FilePath)
+void CreateNewSquare(World* world, Entity entity, std::string Texture_FilePath)
 {
     float vertex[] =
     {
@@ -61,20 +58,18 @@ void CreateNewSquare(Entity entity, std::string Texture_FilePath)
     unsigned int ibo = CreateIndexBuffer(index, 6);
     AddAttribute(1, 2, 5, 3);
 
-    RenderComponent re = { vao, ibo, shader, texture };
-
-    ecs::get<RenderComponent>(entity) = re;
+    add<RenderComponent>(world, entity, Types::T_Render, { vao, ibo, shader, texture });
 }
 
-void Draw(RenderComponents res, std::vector<m4> projs, Entities entities)
+void Draw(RenderComponent* res, std::vector<m4> projs, std::vector<Entity> entities)
 {
-    int n = entities.size;
+    int n = entities.size();
 
     for (int i = 0; i < n; i++)
     {
-        unsigned int ID = entities.entities.at(i).EntityID;
+        unsigned int ID = entities[i].ID;
         
-        unsigned int v[4] = { res.renderComponents[ID].texture, res.renderComponents[ID].shader, res.renderComponents[ID].vao, res.renderComponents[ID].ibo };
+        unsigned int v[4] = { res[ID].texture, res[ID].shader, res[ID].vao, res[ID].ibo };
 
         // To-Do: Separate this out to make it more parrallisable
         extern m4 View, Projection, VP;

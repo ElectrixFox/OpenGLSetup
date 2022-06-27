@@ -1,13 +1,19 @@
 #include "ecs.h"
 
-namespace ecs
+void initWorld(World* world)
 {
-    unsigned int Hash(Entity& entity)
-    {
-        unsigned int ID = rand() % 627318;
+    Archetype*& archs = world->archetecture.archetypes;
 
-        entity.EntityID = ID;
+    archs = (Archetype*)malloc(sizeof(Archetype) * 128);
+    archs->components = (Component*)malloc(sizeof(Component) * 128);
+}
 
-        return ID;
-    };
-};
+void CreateArchetype(World* world, Types type, int size)
+{
+    Archetecture& arch = world->archetecture;
+
+    arch.size++;
+    arch.archetypes[type].type = type;
+    arch.archetypes[type].size = 0;
+    arch.archetypes[type].components = (Component*)malloc(sizeof(Component) * 128);
+}

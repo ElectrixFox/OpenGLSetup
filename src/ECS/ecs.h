@@ -1,7 +1,9 @@
 #ifndef ECS_H
 #define ECS_H
 
-#pragma once
+#include "PlatformBindings.h"
+
+/* #pragma once
 #include "PlatformBindings.h"
 #include "ecsTypes.h"
 
@@ -41,12 +43,12 @@ namespace ecs
         return re;
     };
 
-    /* template<>
+    template<>
     inline TransformComponent& get<TransformComponent>(Entity entity)
     {
         TransformComponent& tr = world.transformComponents.transformComponents[entity.EntityID];
         return tr;
-    }; */
+    };
 };
 
 // Use bits to find if entity has component
@@ -56,7 +58,96 @@ namespace ecs
 // This reduces waste space
 
 
-// System
+// System */
 
+enum Types
+{
+    T_Transform = 0,
+    T_Render = 1,
+};
+typedef enum Types Types; 
+
+struct Entity
+{
+    unsigned int ID;
+};
+typedef struct Entity Entity;
+
+struct Component
+{
+    void* data;
+    int size;
+};
+typedef struct Component Component;
+
+struct Archetype
+{
+    Types type;
+    Component* components;
+    int size;
+};
+typedef struct Archetype Archetype;
+
+struct Archetecture
+{
+    Archetype* archetypes;
+    int size;
+};
+typedef struct Archetecture Archetecture;
+
+struct World
+{
+    Archetecture archetecture;
+};
+typedef struct World World;
+
+void initWorld(World* world);
+void CreateArchetype(World* world, Types type, int size);
+
+template<typename T>
+inline void add(World* world, Entity entity, Types type, T comp)
+{
+    Component& compy = world->archetecture.archetypes[type].components[entity.ID];
+    world->archetecture.archetypes[type].size++;
+
+    compy.size = sizeof(comp);
+    compy.data = malloc(compy.size);
+
+    memcpy(compy.data, &comp, sizeof(comp));
+};
+
+/* template<typename T>
+inline void add_new(World* world, Entity entity, Types type)
+{
+    world->archetecture.archetypes[type].components[entity.ID].data = malloc(sizeof(RenderComponent));
+}; */
+
+template<typename T>
+inline T* get(World* world, Entity entity, Types type)
+{
+    T* object;
+    object = (T*)world->archetecture.archetypes[type].components[entity.ID].data;
+
+    return object;
+};
+
+template<typename T>
+inline T* get_set(World* world, Entity* entities, Types type)
+{
+    T* objects = (T*)malloc(sizeof(T) * 128);
+
+    Archetype arch = world->archetecture.archetypes[type];
+
+
+    for(int i = 0; i < arch.size; i++)
+    {
+        memcpy((objects + i), arch.components[i].data, arch.components[i].size);
+    }
+
+    return objects;
+};
+
+
+#define ecs_register(world, eType, type) CreateArchetype(&world, eType, sizeof(type))
 
 #endif

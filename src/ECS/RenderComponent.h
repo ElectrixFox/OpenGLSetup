@@ -15,14 +15,23 @@
 #include "Rendering/VertexArray.h"
 #include "Rendering/VertexBuffer.h"
 
-#include "ecsTypes.h"
-
+#include "ecs.h"
 
 #define PRESENT 167902105;
 
-void CreateNewSquare(Entity entity);
-void CreateNewSquare(Entity entity, std::string Texture_FilePath);
+struct RenderComponent
+{
+    unsigned int vao;
+    unsigned int ibo;
+    unsigned int shader;
+    unsigned int texture;
+};
+typedef struct RenderComponent RenderComponent;
 
-void Draw(RenderComponents res, std::vector<m4> projs, Entities entities);
+
+void CreateNewSquare(World* world, Entity entity);
+void CreateNewSquare(World* world, Entity entity, std::string Texture_FilePath);
+
+void Draw(RenderComponent* res, std::vector<m4> projs, std::vector<Entity> entities);
 
 #endif

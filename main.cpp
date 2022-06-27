@@ -11,15 +11,14 @@
 #include "src/ECS/ecs.h"
 #include "src/ECS/RenderComponent.h"
 
-#include "src/ECS/world.h"
-
 #define QUICK_Q(q) (TransformMatrix(q.front())); q.pop();
-
-using ecs::world;
 
 int main()
 {
-    initWorld(world);
+    World world;
+
+    initWorld(&world);
+    ecs_register(world, Types::T_Render, struct RenderComponent);
 
     GLFWwindow* window = CreateWindow(960, 540, "Hello World!");
     InitialiseGraphics();
@@ -81,22 +80,25 @@ int main()
 
     for(int i = 0; i != 3; i++) { matricies.push_back QUICK_Q(q) }
 
-    Entities entities;
+    vector<Entity> entities;
 
     Entity entity, entity2, entity3;
-
-
-    ecs::add<RenderComponent>(entity);
-    ecs::add<RenderComponent>(entity2);
-    ecs::add<RenderComponent>(entity3);
+    entity.ID = 0;
+    entity2.ID = 1;
+    entity3.ID = 2;
     
     entities.push_back(entity);
     entities.push_back(entity2);
     entities.push_back(entity3);
 
-    CreateNewSquare(entity);
-    CreateNewSquare(entity2, "res/Boris.png");
-    CreateNewSquare(entity3);
+    CreateNewSquare(&world, entity);
+    CreateNewSquare(&world, entity2, "res/Boris.png");
+    CreateNewSquare(&world, entity3);
+
+    Entity* Entities = (Entity*)malloc(sizeof(Entity) * 5);
+    Entities[0] = entity;
+    Entities[1] = entity2;
+    Entities[2] = entity3;
 
     while(!glfwWindowShouldClose(window))
     {
@@ -107,7 +109,15 @@ int main()
         // Updates the camera
         UpdateCamera();
 
-        Draw(world.renderComponents, matricies, entities);
+        RenderComponent* renderComponents = (RenderComponent*)malloc(sizeof(RenderComponent) * 128);
+        //renderComponents[0] = *get<RenderComponent>(&world, entity, Types::T_Render);
+        //renderComponents[1] = *get<RenderComponent>(&world, entity2, Types::T_Render);
+        //renderComponents[2] = *get<RenderComponent>(&world, entity3, Types::T_Render);     
+        
+        renderComponents = get_set<RenderComponent>(&world, Entities, Types::T_Render);
+
+        Draw(renderComponents, matricies, entities);
+
 
         // Draw all of the objects here
         //Render(vbo2, vao2, ibo, shader2, texture, matricies[2]);
