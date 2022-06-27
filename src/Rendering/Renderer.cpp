@@ -19,7 +19,7 @@ void InitRenderLoop(GLFWwindow* window)
 
 void Render(unsigned int vbo, unsigned int vao, unsigned int ibo, unsigned int shader, unsigned short int texture, m4 proj)
 { 
-    extern m4 View, Projection, VP;
+    extern m4 VP;
 
     m4 MVP = Mul(proj, VP);
 

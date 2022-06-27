@@ -22,12 +22,12 @@ void CreateNewSquare(World* world, Entity entity)
     SetUniform4f(shader, "U_Colour", 1.0, 0.0, 0.0, 1.0);
 
     unsigned int vao = CreateVertexArray();
-    unsigned int vbo = CreateVertexBuffer(vertex, 20);
+    unsigned short int vbo = CreateVertexBuffer(vertex, 20);
     unsigned int ibo = CreateIndexBuffer(index, 6);
 
     unsigned int texture = 0;
     
-    add<RenderComponent>(world, entity, Types::T_Render, { vao, ibo, shader, texture });
+    add<RenderComponent>(world, entity, Types::T_Render, { vao, ibo, shader, texture, vbo });
 }
 
 void CreateNewSquare(World* world, Entity entity, std::string Texture_FilePath)
@@ -54,11 +54,12 @@ void CreateNewSquare(World* world, Entity entity, std::string Texture_FilePath)
     SetUniform1i(shader, "U_Texture", 0);
 
     unsigned int vao = CreateVertexArray();
-    unsigned int vbo = CreateVertexBufferDepth(vertex, sizeof(vertex), 0, 3, 5, 0);
+    unsigned short int vbo = CreateVertexBufferDepth(vertex, sizeof(vertex), 0, 3, 5, 0);
     unsigned int ibo = CreateIndexBuffer(index, 6);
     AddAttribute(1, 2, 5, 3);
 
-    add<RenderComponent>(world, entity, Types::T_Render, { vao, ibo, shader, texture });
+
+    add<RenderComponent>(world, entity, Types::T_Render, { vao, ibo, shader, texture, vbo });
 }
 
 void Draw(RenderComponent* res, std::vector<m4> projs, std::vector<Entity> entities)
@@ -72,7 +73,7 @@ void Draw(RenderComponent* res, std::vector<m4> projs, std::vector<Entity> entit
         unsigned int v[4] = { res[ID].texture, res[ID].shader, res[ID].vao, res[ID].ibo };
 
         // To-Do: Separate this out to make it more parrallisable
-        extern m4 View, Projection, VP;
+        extern m4 VP;
         m4 MVP = Mul(projs.at(i), VP);
 
         glBindTexture(GL_TEXTURE_2D, v[0]);

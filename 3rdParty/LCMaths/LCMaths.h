@@ -14,11 +14,11 @@ typedef struct
 {
     float x, y, z, w;
 
-    float& operator [](int i) { switch (i) { case 0: return x;  case 1: return y;  case 2: return z;  case 3: return w; } };
+    float& operator [](int i) { switch (i) { case 0: return x;  case 1: return y;  case 2: return z;  case 3: return w; } return x; };
 } vec4;
 
-typedef struct { float x; float y; float z; float& operator [](int i) { switch (i) { case 0: return x;  case 1: return y;  case 2: return z; } }; } vec3;
-typedef struct { float x; float y;  float& operator [](int i) { switch (i) { case 0: return x;  case 1: return y;}} } vec2;
+typedef struct { float x; float y; float z; float& operator [](int i) { switch (i) { case 0: return x;  case 1: return y;  case 2: return z; } return x; }; } vec3;
+typedef struct { float x; float y;  float& operator [](int i) { switch (i) { case 0: return x;  case 1: return y;} return x;} } vec2;
 
 typedef struct 
 { 

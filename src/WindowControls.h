@@ -4,7 +4,7 @@
 #pragma once
 #include "PlatformBindings.h"
 
-GLFWwindow* CreateWindow(int width, int height, char* title);
+GLFWwindow* CreateWindow(int width, int height, const char* title);
 
 void initMatricies();
 

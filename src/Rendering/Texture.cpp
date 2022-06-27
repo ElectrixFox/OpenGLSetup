@@ -3,7 +3,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <STB/stb_image.h>
 
-unsigned int CreateTexture(const LCstring FilePath) 
+unsigned int CreateTexture(const char* FilePath) 
 {
     unsigned int texture;
     glGenTextures(1, &texture);

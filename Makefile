@@ -16,6 +16,8 @@ SRCFILES += $(notdir $(wildcard src/*.cpp))
 SRCFILES += $(notdir $(wildcard *.cpp))
 
 OBJS := $(addprefix obj/, $(patsubst %.cpp, %.o, $(SRCFILES)))
+EXCLUDE := $(OBJS)
+
 OBJS += obj/LCMaths.o
 
 obj/%.o: src/Rendering/%.cpp
@@ -37,4 +39,8 @@ maths: 3rdParty/LCMaths/LCMaths.cpp
 	$(CXX) $(CXXFLAGS) -c -o obj/LCMaths.o $^
 
 clean:
+	rm $(EXCLUDE)
+
+clean_all:
 	rm obj/*.o
+

@@ -17,20 +17,20 @@ struct ShaderSources
     const std::string FragmentSource;
 };
 
-ShaderSources PharseShader(const LCstring FilePath);
+ShaderSources PharseShader(const char* FilePath);
 
-unsigned int CreateShader(const LCstring FilePath);
+unsigned int CreateShader(const char* FilePath);
 unsigned int CreateShader(const char* VertexSource, const char* FragmentSource);
 
-void SetUniform4f(unsigned int program, LCstring name, float v1, float v2, float v3, float v4);
-void SetUniform1d(unsigned int program, LCstring name, int value);
-void SetUniform1f(unsigned int program, LCstring name, float value);
-void SetUniform1i(unsigned int program, LCstring name, int value);
-void SetUniformMat4(unsigned int program, LCstring name, float value[4][4]);
+void SetUniform4f(unsigned int program, const char* name, float v1, float v2, float v3, float v4);
+void SetUniform1d(unsigned int program, const char* name, int value);
+void SetUniform1f(unsigned int program, const char* name, float value);
+void SetUniform1i(unsigned int program, const char* name, int value);
+void SetUniformMat4(unsigned int program, const char* name, float value[4][4]);
 
-void SetUniformM4(unsigned int program, LCstring name, m4 value);
+void SetUniformM4(unsigned int program, const char* name, m4 value);
 
-void UpdateProjection(unsigned int program, char* name, m4 mvp);
-void EasierUpdateProjection(unsigned int program, char* name, m4* mvp, m4 transform, m4 scale, m4 rotation);
+void UpdateProjection(unsigned int program, const char* name, m4 mvp);
+void EasierUpdateProjection(unsigned int program, const char* name, m4* mvp, m4 transform, m4 scale, m4 rotation);
 
 #endif

@@ -81,7 +81,6 @@ m4 Scale(m4* scale, vec3 sf)
 
 m4 Rotation(m4 rotation, double angle, vec3 axis)
 {
-    static int ang;
     m4 proj = rotation;
     m4 rx = M4_Identity();
     m4 ry = M4_Identity();
@@ -107,8 +106,6 @@ m4 Rotation(m4 rotation, double angle, vec3 axis)
         rz.matrix[1][0] = rotation.matrix[1][0];
         rz.matrix[1][1] = rotation.matrix[1][1]; 
     } */
-
-    ang = angle;
 
     if(axis[0] == 1)
     {

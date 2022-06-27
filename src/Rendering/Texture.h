@@ -4,6 +4,6 @@
 #pragma once
 #include "PlatformBindings.h"
 
-unsigned int CreateTexture(const LCstring FilePath);
+unsigned int CreateTexture(const char* FilePath);
 
 #endif

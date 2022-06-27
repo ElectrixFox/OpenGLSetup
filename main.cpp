@@ -1,4 +1,3 @@
-#pragma once
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -25,7 +24,7 @@ int main()
 
     initMatricies();
 
-    float vertex[] =
+/* float vertex[] =
     {
         0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
         0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
@@ -37,7 +36,7 @@ int main()
     {
         0, 1, 3,
         1, 2, 3
-    };
+    }; */
 
     /* unsigned int shader = CreateShader("res/shader.shader");
     SetUniformM4(shader, "U_Transform", M4_Identity());

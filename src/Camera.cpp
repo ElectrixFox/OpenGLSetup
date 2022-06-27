@@ -56,20 +56,23 @@ FrameBufferObject initFrameBuffer()
 
     unsigned int FboShader = CreateShader("res/FrameBuffer.shader");
     unsigned int Quadvao = CreateVertexArray();
-    unsigned int Quadvbo = CreateVertexBufferDepth(vertices, sizeof vertices, 0, 2, 4, 0);
+    unsigned int Quadvbo = CreateVertexBufferDepth(vertices, sizeof(vertices), 0, 2, 4, 0);
     AddAttribute(1, 2, 4, 2);
     glUseProgram(FboShader);
     SetUniform1i(FboShader, "screenTexture", 0);
 
+
     unsigned char fbo = CreateFramebuffer();
     unsigned int screen_texture = TextureAttachment();
-    unsigned char rbo = Renderbuffer();
+    unsigned int rbo = Renderbuffer();
+
 
     fbO.fbo = fbo;
     fbO.screen_texture = screen_texture;
     fbO.vao = Quadvao;
     fbO.shader = FboShader;
-
+    fbO.vbo = Quadvbo;
+    
     return fbO;
 };
 

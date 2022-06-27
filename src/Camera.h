@@ -33,7 +33,7 @@ typedef struct
     unsigned char vao;
     unsigned char shader;
     unsigned char screen_texture;
-
+    unsigned char vbo;
 } FrameBufferObject;
 
 FrameBufferObject initFrameBuffer();
