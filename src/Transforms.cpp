@@ -17,6 +17,22 @@ void TransformMatrix(m4& transform_matrix, const vec2 newTransform)
 	transform_matrix.matrix[1][3] = trns[1];
 }
 
+void TransformMatrix(m4* transform_matrix, const vec2 newTransform)
+{
+	// Gets the vec2 from the main.c file which has the display size on it.
+	extern vec2 display;
+	int x = display[0];
+	int y = display[1];
+	
+	vec2 trns = newTransform;
+
+	trns[0] /= x;
+	trns[1] /= y;
+
+	transform_matrix->matrix[0][3] = trns[0];
+	transform_matrix->matrix[1][3] = trns[1];
+}
+
 m4 TransformMatrix(const vec2 newTransform)
 {
 	m4 transform_matrix = LC_M4_Identity();
@@ -41,6 +57,17 @@ void RotateMaxtrix(m4* rotation_matrix, vec3 Rotation)
 	LC_Rotate_X(rotation_matrix, Rotation[0]);
 	LC_Rotate_Y(rotation_matrix, Rotation[1]);
 	LC_Rotate_Z(rotation_matrix, Rotation[2]);
+}
+
+m4 RotateMaxtrix(vec3 Rotation)
+{
+	m4 rotation_matrix = LC_M4_Identity();
+
+	LC_Rotate_X(&rotation_matrix, Rotation[0]);
+	LC_Rotate_Y(&rotation_matrix, Rotation[1]);
+	LC_Rotate_Z(&rotation_matrix, Rotation[2]);
+
+	return rotation_matrix;
 }
 
 void ScaleMatrix(m4* scale_matrix, vec3 scale)

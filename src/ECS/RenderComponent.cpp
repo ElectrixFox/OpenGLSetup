@@ -2,6 +2,7 @@
 
 void CreateNewSquare(World* world, Entity entity)
 {
+    static int x = 1;
     float vertex[] =
     {
         0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
@@ -19,7 +20,7 @@ void CreateNewSquare(World* world, Entity entity)
 
     unsigned int shader = CreateShader("res/shader.shader");
     SetUniformM4(shader, "U_Transform", LC_M4_Identity());
-    SetUniform4f(shader, "U_Colour", 1.0, 0.0, 0.0, 1.0);
+    SetUniform4f(shader, "U_Colour", 1.0 / x++, 0.0, 0.0, 1.0);
 
     unsigned int vao = CreateVertexArray();
     unsigned int vbo = CreateVertexBuffer(vertex, 20);
@@ -58,6 +59,40 @@ void CreateNewSquare(World* world, Entity entity, std::string Texture_FilePath)
 
 
     add<RenderComponent>(world, entity, Types::T_Render, { vao, ibo, shader, texture, vbo });
+}
+
+void Draw(RenderComponent* res, m4* projs, std::vector<Entity> entities)
+{
+    int n = entities.size();
+
+    for (int i = 0; i < n; i++)
+    {
+        unsigned int ID = entities[i].ID;
+        
+        unsigned int v[4] = { res[ID].texture, res[ID].shader, res[ID].vao, res[ID].ibo };
+
+        // To-Do: Separate this out to make it more parrallisable
+        //extern m4 VP;
+        //m4 MVP = LC_Mul(projs[i], VP);
+
+        glBindTexture(GL_TEXTURE_2D, v[0]);
+
+        glUseProgram(v[1]);
+        SetUniformM4(v[1], "U_Transform", projs[i]);
+
+        glBindVertexArray(v[2]);
+
+        if(v[3] != 0)
+        {
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, v[3]);
+            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        }
+
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+    }
+
+// ===============================NEW=============================== //
+    free(res);
 }
 
 void Draw(RenderComponent* res, std::vector<m4> projs, std::vector<Entity> entities)

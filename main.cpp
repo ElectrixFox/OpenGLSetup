@@ -74,7 +74,9 @@ int main()
     q.push({500.0f, 0.0f});
 
     TransformComponent trns_ent;
-    trns_ent.position = {0, 0};
+    trns_ent.position = {0.0f, 0.0f};
+    trns_ent.rotation = {0.0f, 0.0f, 0.0f};
+    trns_ent.scale = {1.0f, 1.0f};
     
     using namespace std;
     vector<m4> matricies;
@@ -82,6 +84,8 @@ int main()
 
     for(int i = 0; i != 3; i++) { matricies.push_back QUICK_Q(q) }
     q.empty();
+
+    LC_LogM4(matricies[2]);
 
     vector<Entity> entities;
 
@@ -105,8 +109,14 @@ int main()
 
     FrameBufferObject fbo = initFrameBuffer();
 
-    add<TransformComponent>(&world, entity, Types::T_Transform, trns_ent);
+    TransformComponent trns_ent2 = { {-500.0f, 0.0f}, {1.0f, 1.0f}, {0.0f, 0.0f, 0.0f} };
+    TransformComponent trns_ent3 = { {500.0f, 0.0f}, {1.0f, 1.0f}, {0.0f, 0.0f, 0.0f} };
 
+    add<TransformComponent>(&world, entity, Types::T_Transform, trns_ent);
+    add<TransformComponent>(&world, entity2, Types::T_Transform, trns_ent2);
+    add<TransformComponent>(&world, entity3, Types::T_Transform, trns_ent3);
+
+    initialise();
 
     while(!glfwWindowShouldClose(window))
     {
@@ -120,12 +130,18 @@ int main()
         RenderComponent* renderComponents = (RenderComponent*)malloc(sizeof(RenderComponent) * 5);   
         renderComponents = get_set<RenderComponent>(&world, Entities, Types::T_Render);
 
-        vec2 scale = {0.5f, 0.5f};
-        Scale(&world, entity, scale);
+        //float z = glfwGetTime();
+        //vec3 rotation = {0.0f, 0.0f, z};
+        //Rotate(&world, entity, rotation);
 
-        matricies[0] = ScaleMatrix(get<TransformComponent>(&world, entity, Types::T_Transform)->scale);
+        //matricies[0] = RotateMaxtrix(get<TransformComponent>(&world, entity, Types::T_Transform)->rotation);
 
-        Draw(renderComponents, matricies, entities);
+        TransformComponent* transformComponents =  (TransformComponent*)malloc(sizeof(TransformComponent) * 5);   
+        transformComponents = get_set<TransformComponent>(&world, Entities, Types::T_Transform);
+
+        Transform_Update(transformComponents, Entities, entities.size());
+
+        Draw(renderComponents, getMatricies(), entities);
 
 
         // End the render loop here

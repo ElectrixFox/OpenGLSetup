@@ -33,6 +33,7 @@ typedef struct RenderComponent RenderComponent;
 void CreateNewSquare(World* world, Entity entity);
 void CreateNewSquare(World* world, Entity entity, std::string Texture_FilePath);
 
+void Draw(RenderComponent* res, m4* projs, std::vector<Entity> entities);
 void Draw(RenderComponent* res, std::vector<m4> projs, std::vector<Entity> entities);
 
 #endif

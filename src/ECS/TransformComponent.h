@@ -6,14 +6,15 @@
 #include "LCMaths.h"
 
 #include "ecs.h"
+#include "src/Transforms.h"
 
 #define defmatr \
-    {{ \
+    { \
         { 1.0f, 0.0f, 0.0f, 0.0f }, \
         { 0.0f, 1.0f, 0.0f, 0.0f }, \
         { 0.0f, 0.0f, 1.0f, 0.0f }, \
         { 0.0f, 0.0f, 0.0f, 1.0f } \
-    }}
+    }
 
 struct TransformComponent
 {
@@ -33,10 +34,13 @@ inline void Scale(World* world, Entity entity, vec2 scale)
     get<TransformComponent>(world, entity, Types::T_Transform)->scale = scale; 
 };
 
-/* void Transform(m4& transform_matrix, const vec2 newTransform);
-m4 Transform(const vec2 newTransform);
+inline void Rotate(World* world, Entity entity, vec3 rotation) 
+{ 
+    get<TransformComponent>(world, entity, Types::T_Transform)->rotation = rotation; 
+};
 
-void Rotate(m4* rotation_matrix, vec3 Rotation);
-void Scale(m4* scale_matrix, vec2 scale); */
+void initialise(int size = 128);
+void Transform_Update(TransformComponent* transformComponents, Entity* entities, int size = 128);
+m4* getMatricies();
 
 #endif

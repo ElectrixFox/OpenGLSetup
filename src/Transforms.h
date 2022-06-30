@@ -7,10 +7,12 @@
 
 // Need to take in an input for the currect transform matrix and output one.
 void TransformMatrix(m4& transform_matrix, const vec2 newTransform);
+void TransformMatrix(m4* transform_matrix, const vec2 newTransform);
 m4 TransformMatrix(const vec2 newTransform);
 
 // Rotate the matrix.
 void RotateMaxtrix(m4* rotation_matrix, vec3 Rotation);
+m4 RotateMaxtrix(vec3 Rotation);
 
 // Scales the matrix
 void ScaleMatrix(m4* scale_matrix, vec3 scale);
