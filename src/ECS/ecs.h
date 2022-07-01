@@ -2,6 +2,7 @@
 #define ECS_H
 
 #include "PlatformBindings.h"
+#include <stdarg.h>
 
 /* #pragma once
 #include "PlatformBindings.h"
@@ -116,11 +117,38 @@ inline void add(World* world, Entity entity, Types type, T comp)
     memcpy(compy.data, &comp, sizeof(comp));
 };
 
-/* template<typename T>
-inline void add_new(World* world, Entity entity, Types type)
+template<typename T>
+inline void add_set(World* world, Types type, Entity* entities, T... comps)
 {
-    world->archetecture.archetypes[type].components[entity.ID].data = malloc(sizeof(RenderComponent));
-}; */
+    int size = 3;
+    
+    T c[size+1];
+
+    for(int i = 0; i < size; i++)
+    {
+        add<T>(world, entities[i], type, c[i]);
+    }
+};
+
+
+// Add set 1:
+/*template<typename T>
+inline void add_set(World* world, Types type, int size, ...)
+{
+    va_list args;
+    va_start(args, size);
+
+    int i = size;
+    while(i --> 0)
+    {
+        Entity e = va_arg(args, Entity);
+        T comp = va_arg(args, T);
+
+        add<T>(world, e, type, comp);
+    }
+    
+    va_end(args);
+};*/
 
 template<typename T>
 inline T* get(World* world, Entity entity, Types type)

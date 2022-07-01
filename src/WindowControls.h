@@ -6,6 +6,4 @@
 
 GLFWwindow* CreateWindow(int width, int height, const char* title);
 
-void initMatricies();
-
 #endif

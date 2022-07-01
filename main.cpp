@@ -99,9 +99,12 @@ int main()
     TransformComponent trns_ent2 = { {-500.0f, 0.0f}, {1.0f, 1.0f}, {0.0f, 0.0f, 0.0f} };
     TransformComponent trns_ent3 = { {500.0f, 0.0f}, {0.5f, 0.5f}, {0.0f, 0.0f, 0.0f} };
 
-    add<TransformComponent>(&world, entity, Types::T_Transform, trns_ent);
-    add<TransformComponent>(&world, entity2, Types::T_Transform, trns_ent2);
-    add<TransformComponent>(&world, entity3, Types::T_Transform, trns_ent3);
+    add_set<TransformComponent>(&world, Types::T_Transform, Entities, trns_ent, trns_ent2, trns_ent3);
+
+    //add<TransformComponent>(&world, entity, Types::T_Transform, trns_ent);
+    //add<TransformComponent>(&world, entity2, Types::T_Transform, trns_ent2);
+    //add<TransformComponent>(&world, entity3, Types::T_Transform, trns_ent3);
+
 
     initialise();
 
