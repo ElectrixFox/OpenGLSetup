@@ -16,14 +16,14 @@
 int main()
 {
     World world;
-
+    
     initWorld(&world);
-    ecs_register(world, Types::T_Render, struct RenderComponent);
-    ecs_register(world, Types::T_Transform, struct TransformComponent);
+
+    ecs_register(world, Types::T_Render, RenderComponent);
+    ecs_register(world, Types::T_Transform, TransformComponent);
 
     GLFWwindow* window = CreateWindow(960, 540, "Hello World!");
     InitialiseGraphics();
-
     initMatricies();
 
 /* float vertex[] =
@@ -66,26 +66,9 @@ int main()
     unsigned int vao1 = CreateVertexArray();
     unsigned int vbo1 = CreateVertexBuffer(vertex, sizeof(vertex));
     unsigned int ibo1 = CreateIndexBuffer(index, sizeof index); */
-
-    std::queue<vec2> q;
     
-    q.push({0, 0});
-    q.push({-500.0f, 0.0f});
-    q.push({500.0f, 0.0f});
-
-    TransformComponent trns_ent;
-    trns_ent.position = {0.0f, 0.0f};
-    trns_ent.rotation = {0.0f, 0.0f, 0.0f};
-    trns_ent.scale = {1.0f, 1.0f};
     
     using namespace std;
-    vector<m4> matricies;
-
-
-    for(int i = 0; i != 3; i++) { matricies.push_back QUICK_Q(q) }
-    q.empty();
-
-    LC_LogM4(matricies[2]);
 
     vector<Entity> entities;
 
@@ -109,8 +92,12 @@ int main()
 
     FrameBufferObject fbo = initFrameBuffer();
 
+    TransformComponent trns_ent;
+    trns_ent.position = {0.0f, 0.0f};
+    trns_ent.rotation = {0.0f, 0.0f, 0.0f};
+    trns_ent.scale = {1.0f, 1.0f};
     TransformComponent trns_ent2 = { {-500.0f, 0.0f}, {1.0f, 1.0f}, {0.0f, 0.0f, 0.0f} };
-    TransformComponent trns_ent3 = { {500.0f, 0.0f}, {1.0f, 1.0f}, {0.0f, 0.0f, 0.0f} };
+    TransformComponent trns_ent3 = { {500.0f, 0.0f}, {0.5f, 0.5f}, {0.0f, 0.0f, 0.0f} };
 
     add<TransformComponent>(&world, entity, Types::T_Transform, trns_ent);
     add<TransformComponent>(&world, entity2, Types::T_Transform, trns_ent2);
@@ -129,12 +116,6 @@ int main()
 
         RenderComponent* renderComponents = (RenderComponent*)malloc(sizeof(RenderComponent) * 5);   
         renderComponents = get_set<RenderComponent>(&world, Entities, Types::T_Render);
-
-        //float z = glfwGetTime();
-        //vec3 rotation = {0.0f, 0.0f, z};
-        //Rotate(&world, entity, rotation);
-
-        //matricies[0] = RotateMaxtrix(get<TransformComponent>(&world, entity, Types::T_Transform)->rotation);
 
         TransformComponent* transformComponents =  (TransformComponent*)malloc(sizeof(TransformComponent) * 5);   
         transformComponents = get_set<TransformComponent>(&world, Entities, Types::T_Transform);

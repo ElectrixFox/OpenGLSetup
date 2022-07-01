@@ -33,7 +33,8 @@ typedef struct RenderComponent RenderComponent;
 void CreateNewSquare(World* world, Entity entity);
 void CreateNewSquare(World* world, Entity entity, std::string Texture_FilePath);
 
-void Draw(RenderComponent* res, m4* projs, std::vector<Entity> entities);
+// To-Do: Make the vertecies and indecies automatically find their sizes 
+void Draw(RenderComponent* res, m4* projs, std::vector<Entity> entities, int vertex_size = 6, int indecies_size = 6);
 void Draw(RenderComponent* res, std::vector<m4> projs, std::vector<Entity> entities);
 
 #endif

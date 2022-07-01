@@ -20,29 +20,12 @@ void Transform_Update(TransformComponent* transformComponents, Entity* entities,
         TransformComponent trns = transformComponents[entities[i].ID];
         
         TransformMatrix(&matricies[i], trns.position);
-        ScaleMatrix(&matricies[i], trns.scale);
         RotateMaxtrix(&matricies[i], trns.rotation);
+        ScaleMatrix(&matricies[i], trns.scale);
         
         extern m4 VP;
         matricies[i] = LC_Mul(matricies[i], VP);
-
-
     }
-
-    static int x = 0;
-
-    if(x < 10)
-    {
-        for(int i = 0; i < nsize; i++)
-        {
-            std::cout << '\n';
-            LC_LogM4(matricies[i]);
-
-        }
-
-        std::cout << '\n' << "================================================" << '\n';
-    }
-    x++;
 }
 
 m4* getMatricies()
