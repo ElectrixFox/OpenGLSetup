@@ -117,17 +117,12 @@ inline void add(World* world, Entity entity, Types type, T comp)
     memcpy(compy.data, &comp, sizeof(comp));
 };
 
-template<typename T>
-inline void add_set(World* world, Types type, Entity* entities, T... comps)
+template<typename ...T>
+inline void add_set(World* world, Types type, Entity entity, T... comps)
 {
-    int size = 3;
-    
-    T c[size+1];
+    std::vector<T...> types;
 
-    for(int i = 0; i < size; i++)
-    {
-        add<T>(world, entities[i], type, c[i]);
-    }
+    (add<T>(world, entity, type, comps));
 };
 
 

@@ -81,7 +81,7 @@ int main()
     entities.push_back(entity2);
     entities.push_back(entity3);
 
-    CreateNewSquare(&world, entity);
+    RenderComponent rend_ent = CreateNewSquare(&world, entity, 0);
     CreateNewSquare(&world, entity2, "res/Boris.png");
     CreateNewSquare(&world, entity3);
 
@@ -99,7 +99,8 @@ int main()
     TransformComponent trns_ent2 = { {-500.0f, 0.0f}, {1.0f, 1.0f}, {0.0f, 0.0f, 0.0f} };
     TransformComponent trns_ent3 = { {500.0f, 0.0f}, {0.5f, 0.5f}, {0.0f, 0.0f, 0.0f} };
 
-    add_set<TransformComponent>(&world, Types::T_Transform, Entities, trns_ent, trns_ent2, trns_ent3);
+    //add_set<TransformComponent>(&world, Types::T_Transform, Entities, trns_ent, trns_ent2, trns_ent3);
+    add_set<TransformComponent, RenderComponent>(&world, Types::T_Transform, entity, trns_ent, rend_ent);
 
     //add<TransformComponent>(&world, entity, Types::T_Transform, trns_ent);
     //add<TransformComponent>(&world, entity2, Types::T_Transform, trns_ent2);

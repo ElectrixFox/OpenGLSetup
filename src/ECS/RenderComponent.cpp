@@ -29,6 +29,36 @@ void CreateNewSquare(World* world, Entity entity)
     add<RenderComponent>(world, entity, Types::T_Render, { vao, ibo, shader, 0, vbo });
 }
 
+RenderComponent CreateNewSquare(World* world, Entity entity, int flags)
+{
+    static int x = 1;
+    float vertex[] =
+    {
+        0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
+        0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+       -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
+       -0.5f,  0.5f, 0.0f, 0.0f, 1.0f
+    };
+
+    unsigned int index[] =
+    {
+        0, 1, 3,
+        1, 2, 3
+    };
+
+
+    unsigned int shader = CreateShader("res/shader.shader");
+    SetUniformM4(shader, "U_Transform", LC_M4_Identity());
+    SetUniform4f(shader, "U_Colour", 1.0 / x++, 0.0, 0.0, 1.0);
+
+    unsigned int vao = CreateVertexArray();
+    unsigned int vbo = CreateVertexBuffer(vertex, 20);
+    unsigned int ibo = CreateIndexBuffer(index, 6);
+    
+    RenderComponent re = { vao, ibo, shader, 0, vbo };
+    return re;
+}
+
 void CreateNewSquare(World* world, Entity entity, std::string Texture_FilePath)
 {
     // The vertex for the square

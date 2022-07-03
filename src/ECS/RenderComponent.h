@@ -31,6 +31,7 @@ typedef struct RenderComponent RenderComponent;
 
 
 void CreateNewSquare(World* world, Entity entity);
+RenderComponent CreateNewSquare(World* world, Entity entity, int flags);
 void CreateNewSquare(World* world, Entity entity, std::string Texture_FilePath);
 
 // To-Do: Make the vertecies and indecies automatically find their sizes 
