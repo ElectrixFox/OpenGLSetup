@@ -129,17 +129,29 @@ inline void addr(World* world, int type, Entity entity, T component)
     memcpy(compy.data, &component, sizeof(component));
 };
 
+#include <initializer_list>
+
 template<typename C, typename... T>
-inline void add_set(World* world, Types type, Entity entity, C comp, T... comps)
+inline void add_set(World* world, std::initializer_list<Types> type, Entity entity, C comp, T... comps)
 {
-    addr(world, type, entity, comp);
-    addr(world, type+1, entity, comps...);
+    int size = type.size();
+    Types ty[size];
+    
+    for(int i = 0; i < size; i++) 
+        ty[i] = *((Types*)(type.begin() + i));
+    
+    
+    addr(world, ty[0], entity, comp);
+
+    for(int i = 1; i < size; i++) 
+        addr(world, ty[i], entity, comps...);
+
 };
 
 
 // Add set 1:
-/*template<typename T>
-inline void add_set(World* world, Types type, int size, ...)
+template<typename T>
+inline void add_setn(World* world, Types type, int size, ...)
 {
     va_list args;
     va_start(args, size);
@@ -154,7 +166,7 @@ inline void add_set(World* world, Types type, int size, ...)
     }
     
     va_end(args);
-};*/
+};
 
 template<typename T>
 inline T* get(World* world, Entity entity, Types type)
