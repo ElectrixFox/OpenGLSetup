@@ -1,8 +1,9 @@
 #include "RenderComponent.h"
 
+static int x = 1;
+
 void CreateNewSquare(World* world, Entity entity)
 {
-    static int x = 1;
     float vertex[] =
     {
         0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
@@ -31,7 +32,6 @@ void CreateNewSquare(World* world, Entity entity)
 
 RenderComponent CreateNewSquare(World* world, Entity entity, int flags)
 {
-    static int x = 1;
     float vertex[] =
     {
         0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
@@ -55,6 +55,8 @@ RenderComponent CreateNewSquare(World* world, Entity entity, int flags)
     unsigned int vbo = CreateVertexBuffer(vertex, 20);
     unsigned int ibo = CreateIndexBuffer(index, 6);
     
+    if(flags) add<RenderComponent>(world, entity, Types::T_Render, { vao, ibo, shader, 0, vbo });
+
     RenderComponent re = { vao, ibo, shader, 0, vbo };
     return re;
 }

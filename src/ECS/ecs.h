@@ -117,12 +117,23 @@ inline void add(World* world, Entity entity, Types type, T comp)
     memcpy(compy.data, &comp, sizeof(comp));
 };
 
-template<typename ...T>
-inline void add_set(World* world, Types type, Entity entity, T... comps)
+template<typename T>
+inline void addr(World* world, int type, Entity entity, T component)
 {
-    std::vector<T...> types;
+    Component& compy = world->archetecture.archetypes[type].components[entity.ID];
+    world->archetecture.archetypes[type].size++;
 
-    (add<T>(world, entity, type, comps));
+    compy.size = sizeof(component);
+    compy.data = malloc(compy.size);
+    
+    memcpy(compy.data, &component, sizeof(component));
+};
+
+template<typename C, typename... T>
+inline void add_set(World* world, Types type, Entity entity, C comp, T... comps)
+{
+    addr(world, type, entity, comp);
+    addr(world, type+1, entity, comps...);
 };
 
 

@@ -103,9 +103,8 @@ int main()
     add_set<TransformComponent, RenderComponent>(&world, Types::T_Transform, entity, trns_ent, rend_ent);
 
     //add<TransformComponent>(&world, entity, Types::T_Transform, trns_ent);
-    //add<TransformComponent>(&world, entity2, Types::T_Transform, trns_ent2);
-    //add<TransformComponent>(&world, entity3, Types::T_Transform, trns_ent3);
-
+    add<TransformComponent>(&world, entity2, Types::T_Transform, trns_ent2);
+    add<TransformComponent>(&world, entity3, Types::T_Transform, trns_ent3);
 
     initialise();
 
@@ -118,7 +117,8 @@ int main()
         // Updates the camera
         UpdateCamera();
 
-        RenderComponent* renderComponents = (RenderComponent*)malloc(sizeof(RenderComponent) * 5);   
+
+        RenderComponent* renderComponents = (RenderComponent*)malloc(sizeof(RenderComponent) * 5);
         renderComponents = get_set<RenderComponent>(&world, Entities, Types::T_Render);
 
         TransformComponent* transformComponents =  (TransformComponent*)malloc(sizeof(TransformComponent) * 5);   
