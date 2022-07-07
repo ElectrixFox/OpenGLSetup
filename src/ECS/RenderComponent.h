@@ -36,6 +36,6 @@ void CreateNewSquare(World* world, Entity entity, std::string Texture_FilePath);
 
 // To-Do: Make the vertecies and indecies automatically find their sizes 
 void Draw(RenderComponent* res, m4* projs, std::vector<Entity> entities, int vertex_size = 6, int indecies_size = 6);
-void Draw(RenderComponent* res, std::vector<m4> projs, std::vector<Entity> entities);
+void Draw(RenderComponent* res, m4* projs, Entity* entities);
 
 #endif

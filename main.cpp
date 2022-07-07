@@ -10,6 +10,7 @@
 #include "src/ECS/ecs.h"
 #include "src/ECS/TransformComponent.h"
 #include "src/ECS/RenderComponent.h"
+#include "src/ECS/ecsComponents.h"
 
 #define QUICK_Q(q) (TransformMatrix(q.front())); q.pop();
 
@@ -18,9 +19,7 @@ int main()
     World world;
     
     initWorld(&world);
-
-    ecs_register(world, Types::T_Render, RenderComponent);
-    ecs_register(world, Types::T_Transform, TransformComponent);
+    init_ecs_internal(world);
 
     GLFWwindow* window = CreateWindow(960, 540, "Hello World!");
     InitialiseGraphics();
@@ -28,25 +27,15 @@ int main()
     
     using namespace std;
 
-    vector<Entity> entities;
-
     Entity entity, entity2, entity3;
-    entity.ID = 0;
-    entity2.ID = 1;
-    entity3.ID = 2;
-    
-    entities.push_back(entity);
-    entities.push_back(entity2);
-    entities.push_back(entity3);
+
+    entity = newEntity(&world);
+    entity2 = newEntity(&world, 5);
+    entity3 = newEntity(&world);
 
     CreateNewSquare(&world, entity);
     CreateNewSquare(&world, entity2, "res/Boris.png");
     CreateNewSquare(&world, entity3);
-
-    Entity* Entities = (Entity*)malloc(sizeof(Entity) * 5);
-    Entities[0] = entity;
-    Entities[1] = entity2;
-    Entities[2] = entity3;
 
     FrameBufferObject fbo = initFrameBuffer();
 
@@ -55,6 +44,11 @@ int main()
     add<TransformComponent>(&world, entity, Types::T_Transform, { {0.0f, 0.0f}, {1.0f, 1.0f}, {0.0f, 0.0f, 0.0f} });
 
     initialise();
+
+
+    cout << "Does entity 1 have a render component: " << has<RenderComponent>(world, entity, Types::T_Render) << '\n';
+    assert(0);
+
 
     while(!glfwWindowShouldClose(window))
     {
@@ -67,14 +61,14 @@ int main()
 
 
         RenderComponent* renderComponents = (RenderComponent*)malloc(sizeof(RenderComponent) * 5);
-        renderComponents = get_set<RenderComponent>(&world, Entities, Types::T_Render);
+        renderComponents = get_set<RenderComponent>(&world, (Entity*)world.entities, Types::T_Render);
 
         TransformComponent* transformComponents =  (TransformComponent*)malloc(sizeof(TransformComponent) * 5);   
-        transformComponents = get_set<TransformComponent>(&world, Entities, Types::T_Transform);
+        transformComponents = get_set<TransformComponent>(&world, (Entity*)world.entities, Types::T_Transform);
 
-        Transform_Update(transformComponents, Entities, entities.size());
+        Transform_Update(transformComponents, (Entity*)world.entities, 3);
 
-        Draw(renderComponents, getMatricies(), entities);
+        Draw(renderComponents, getMatricies(), (Entity*)world.entities);
 
 
         // End the render loop here

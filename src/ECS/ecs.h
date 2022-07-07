@@ -4,62 +4,11 @@
 #include "PlatformBindings.h"
 #include <stdarg.h>
 
-/* #pragma once
-#include "PlatformBindings.h"
-#include "ecsTypes.h"
-
-#include "world.h"
-
-namespace ecs
-{   
-    extern unsigned int Hash(Entity& entity);
-};
-
-namespace ecs
-{
-    template<typename Component>
-    inline void add(Entity& entity) { };
-
-    template<>
-    inline void add<RenderComponent>(Entity& entity)
-    {
-        unsigned int ID = Hash(entity);
-
-        extern World world;
-        world.renderComponents.renderComponents[ID] = {0, 0, 0, 0};
-    };
-
-    template<typename Component>
-    inline Component& get(Entity entity)
-    {
-        printf("Fail to choose type\n");
-        assert(0);
-    };
-
-    template<>
-    inline RenderComponent& get<RenderComponent>(Entity entity)
-    {
-        extern World world;
-        RenderComponent& re = world.renderComponents.renderComponents[entity.EntityID];
-        return re;
-    };
-
-    template<>
-    inline TransformComponent& get<TransformComponent>(Entity entity)
-    {
-        TransformComponent& tr = world.transformComponents.transformComponents[entity.EntityID];
-        return tr;
-    };
-};
-
-// Use bits to find if entity has component
-// The size is incremented
-// Then find the index using: ID % size of components array (array max size)
-// That index is where the component is created or accessed
-// This reduces waste space
-
-
-// System */
+/* Use bits to find if entity has component
+The size is incremented
+Then find the index using: ID % size of components array (array max size)
+That index is where the component is created or accessed
+This reduces waste space*/
 
 enum Types
 {
@@ -70,7 +19,7 @@ typedef enum Types Types;
 
 struct Entity
 {
-    unsigned int ID;
+    int ID;
 };
 typedef struct Entity Entity;
 
@@ -99,6 +48,8 @@ typedef struct Archetecture Archetecture;
 struct World
 {
     Archetecture archetecture;
+
+    int* entities;
 };
 typedef struct World World;
 
@@ -193,6 +144,51 @@ inline T* get_set(World* world, Entity* entities, Types type)
     return objects;
 };
 
+// Used to check see if a component is present
+template<typename T>
+inline int has(World world, Entity entity, Types type)
+{
+    return (world.archetecture.archetypes[type].components[entity.ID].size == -1) ? 1 : 0;
+};
+
+// To-Do: Find a way to make the hash funciton useful performance wise
+// Basic incremental hash for now
+static inline int Hash_Entity(int* entities, int flags = 0)
+{
+    static int i = 0;
+
+    // To-Do: Fix this
+bad:
+    if(entities[i] != -1) goto bad;
+
+    i++;
+    i += flags;
+
+    return i;
+};
+
+// Overloaded function to change the entities ID value without having to return an int
+void Hash_Entity(int* entities, Entity& entity, int flags = 0);
+
+static inline void _addto_EntityList(int* entities, Entity e)
+{
+    entities[e.ID] = e.ID;
+};
+
+// Creates a new entity and returns it
+static inline Entity newEntity(World* world, int flags = 0)
+{
+    Entity e;
+
+    Hash_Entity((int*)world->entities, e, flags);
+
+    _addto_EntityList(world->entities, e);
+
+    std::cout << "Entity Number: " << e.ID << '\n';
+
+
+    return e;
+};
 
 #define ecs_register(world, eType, type) CreateArchetype(&world, eType, sizeof(type))
 

@@ -132,19 +132,20 @@ void Draw(RenderComponent* res, m4* projs, std::vector<Entity> entities, int ver
     free(res);
 }
 
-void Draw(RenderComponent* res, std::vector<m4> projs, std::vector<Entity> entities)
+void Draw(RenderComponent* res, m4* projs, Entity* entities)
 {
-    int n = entities.size();
-
-    for (int i = 0; i < n; i++)
+    for (int i = 0; i < 3; i++)
     {
-        unsigned int ID = entities[i].ID;
-        
-        unsigned int v[4] = { res[ID].texture, res[ID].shader, res[ID].vao, res[ID].ibo };
+        // WARNING TEMPORARY SOLUTION 
+        // To-Do: Sort this out quickly
+
+        if(0 == 1) goto end;
+        RenderComponent r = res[entities[i].ID];
+        unsigned int v[4] = { r.texture, r.shader, r.vao, r.ibo };
 
         // To-Do: Separate this out to make it more parrallisable
         extern m4 VP;
-        m4 MVP = LC_Mul(projs.at(i), VP);
+        m4 MVP = LC_Mul(projs[i], VP);
 
         glBindTexture(GL_TEXTURE_2D, v[0]);
 
@@ -160,6 +161,10 @@ void Draw(RenderComponent* res, std::vector<m4> projs, std::vector<Entity> entit
         }
 
         glDrawArrays(GL_TRIANGLES, 0, 6);
+
+        std::cout << i << " times" << '\n';
+        
+        end:
     }
 
 // ===============================NEW=============================== //
